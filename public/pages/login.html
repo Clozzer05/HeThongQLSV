@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dang nhap | QuanLySinhVien</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <main class="auth-wrap">
+        <section class="auth-card">
+            <h1>He thong Quan Ly Sinh Vien</h1>
+            <p class="muted">Dang nhap theo vai tro admin, giang vien hoac sinh vien.</p>
+            <form id="loginForm">
+                <label for="ten_dang_nhap">Ten dang nhap</label>
+                <input id="ten_dang_nhap" required>
+
+                <label for="mat_khau">Mat khau</label>
+                <input id="mat_khau" type="password" required>
+
+                <button class="btn btn-primary" type="submit">Dang nhap</button>
+            </form>
+            <div id="loginAlert" class="alert hidden"></div>
+            <p class="muted small">Tai khoan mau: admin / 123456</p>
+        </section>
+    </main>
+    <script src="../js/common.js"></script>
+    <script src="../js/login.js"></script>
+</body>
+</html>

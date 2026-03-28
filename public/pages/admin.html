@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | QuanLySinhVien</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container nav-content">
+            <div class="brand">ADMIN - HE THONG QUAN LY SINH VIEN</div>
+            <div class="menu">
+                <a href="#" data-tab="dashboard" class="tab-link active">Trang chu</a>
+                <a href="#" data-tab="users" class="tab-link">Nguoi dung</a>
+                <a href="#" data-tab="subjects" class="tab-link">Mon hoc</a>
+                <a href="#" data-tab="classes" class="tab-link">Lop hoc</a>
+                <a href="#" data-tab="materials" class="tab-link">Tai lieu</a>
+                <a href="#" data-tab="announcements" class="tab-link">Thong bao</a>
+                <a href="#" id="btnLogout">Dang xuat</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div id="globalAlert" class="alert hidden"></div>
+
+        <section class="card tab-content" id="tab-dashboard">
+            <h3>Tong quan he thong</h3>
+            <div class="row">
+                <div class="stat-box"><span class="stat-label">So sinh vien</span><strong id="stSv">0</strong></div>
+                <div class="stat-box"><span class="stat-label">So giang vien</span><strong id="stGv">0</strong></div>
+                <div class="stat-box"><span class="stat-label">So lop hoc</span><strong id="stLop">0</strong></div>
+            </div>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-users">
+            <h3>Quan ly nguoi dung</h3>
+            <form id="userForm" class="grid-form">
+                <input type="hidden" id="userId">
+                <input id="u_username" placeholder="Ten dang nhap" required>
+                <input id="u_password" placeholder="Mat khau (de trong neu khong doi)">
+                <input id="u_name" placeholder="Ho ten" required>
+                <input id="u_email" placeholder="Email">
+                <select id="u_role"><option value="sv">Sinh vien</option><option value="gv">Giang vien</option><option value="admin">Admin</option></select>
+                <button class="btn btn-success" type="submit">Luu nguoi dung</button>
+            </form>
+            <table><thead><tr><th>ID</th><th>Tai khoan</th><th>Ho ten</th><th>Vai tro</th><th>Hanh dong</th></tr></thead><tbody id="userTable"></tbody></table>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-subjects">
+            <h3>Quan ly mon hoc</h3>
+            <form id="subjectForm" class="grid-form">
+                <input type="hidden" id="subjectId">
+                <input id="s_name" placeholder="Ten mon" required>
+                <input id="s_credit" type="number" min="1" value="3" required>
+                <input id="s_desc" placeholder="Mo ta">
+                <button class="btn btn-success" type="submit">Luu mon hoc</button>
+            </form>
+            <table><thead><tr><th>ID</th><th>Ten mon</th><th>Tin chi</th><th>Hanh dong</th></tr></thead><tbody id="subjectTable"></tbody></table>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-classes">
+            <h3>Quan ly lop hoc</h3>
+            <form id="classForm" class="grid-form">
+                <input type="hidden" id="classId">
+                <select id="c_subject" required></select>
+                <select id="c_teacher"></select>
+                <input id="c_name" placeholder="Ten lop" required>
+                <input id="c_semester" placeholder="Hoc ky">
+                <input id="c_limit" type="number" min="1" value="50">
+                <button class="btn btn-success" type="submit">Luu lop hoc</button>
+            </form>
+            <table><thead><tr><th>ID</th><th>Lop</th><th>Mon</th><th>GV</th><th>Hanh dong</th></tr></thead><tbody id="classTable"></tbody></table>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-materials">
+            <h3>Quan ly tai lieu</h3>
+            <form id="materialForm" enctype="multipart/form-data" class="grid-form">
+                <input id="m_title" placeholder="Tieu de" required>
+                <select id="m_class"></select>
+                <input id="m_file" type="file" required>
+                <button class="btn btn-success" type="submit">Them tai lieu</button>
+            </form>
+            <table><thead><tr><th>ID</th><th>Tieu de</th><th>Lop</th><th>File</th><th>Hanh dong</th></tr></thead><tbody id="materialTable"></tbody></table>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-announcements">
+            <h3>Quan ly thong bao</h3>
+            <form id="annForm" class="grid-form">
+                <input type="hidden" id="annId">
+                <input id="a_title" placeholder="Tieu de" required>
+                <input id="a_content" placeholder="Noi dung" required>
+                <select id="a_class"></select>
+                <button class="btn btn-success" type="submit">Luu thong bao</button>
+            </form>
+            <table><thead><tr><th>ID</th><th>Tieu de</th><th>Lop</th><th>Hanh dong</th></tr></thead><tbody id="annTable"></tbody></table>
+        </section>
+    </main>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

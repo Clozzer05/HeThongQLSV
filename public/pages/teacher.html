@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giang vien | QuanLySinhVien</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container nav-content">
+            <div class="brand">GIANG VIEN - QUAN LY LOP HOC</div>
+            <div class="menu">
+                <a href="#" data-tab="classes" class="tab-link active">Lop phu trach</a>
+                <a href="#" data-tab="attendance" class="tab-link">Diem danh</a>
+                <a href="#" data-tab="assignments" class="tab-link">Bai tap</a>
+                <a href="#" data-tab="grades" class="tab-link">Diem so</a>
+                <a href="#" data-tab="materials" class="tab-link">Tai lieu</a>
+                <a href="#" data-tab="announcements" class="tab-link">Thong bao</a>
+                <a href="#" id="btnLogout">Dang xuat</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div id="globalAlert" class="alert hidden"></div>
+
+        <section class="card tab-content" id="tab-classes">
+            <h3>Danh sach lop phu trach</h3>
+            <table><thead><tr><th>ID</th><th>Ten lop</th><th>Mon hoc</th><th>Hoc ky</th></tr></thead><tbody id="classTable"></tbody></table>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-attendance">
+            <h3>Diem danh</h3>
+            <div class="grid-form">
+                <select id="attClass"></select>
+                <input id="attDate" type="date">
+                <button class="btn btn-primary" id="btnLoadAtt">Tai DS sinh vien</button>
+                <button class="btn btn-success" id="btnSaveAtt">Luu diem danh</button>
+            </div>
+            <table><thead><tr><th>SV</th><th>Email</th><th>Trang thai</th></tr></thead><tbody id="attTable"></tbody></table>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-assignments">
+            <h3>Bai tap va nop bai</h3>
+            <form id="assignmentForm" enctype="multipart/form-data" class="grid-form">
+                <select id="asClass" required></select>
+                <input id="asTitle" placeholder="Tieu de" required>
+                <input id="asDesc" placeholder="Mo ta">
+                <input id="asDeadline" type="datetime-local">
+                <input id="asFile" type="file">
+                <button class="btn btn-success" type="submit">Tao bai tap</button>
+            </form>
+            <table><thead><tr><th>ID</th><th>Tieu de</th><th>Han nop</th><th>Nop bai</th><th>Hanh dong</th></tr></thead><tbody id="assignmentTable"></tbody></table>
+            <h4>Danh sach bai nop</h4>
+            <table><thead><tr><th>Sinh vien</th><th>File</th><th>Diem</th><th>Nhan xet</th><th>Luu</th></tr></thead><tbody id="submissionTable"></tbody></table>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-grades">
+            <h3>Cap nhat diem tong ket</h3>
+            <div class="grid-form">
+                <select id="gradeClass"></select>
+                <button class="btn btn-primary" id="btnLoadGrades">Tai danh sach</button>
+                <button class="btn btn-success" id="btnSaveGrades">Luu diem</button>
+            </div>
+            <table><thead><tr><th>Sinh vien</th><th>Email</th><th>Diem giua ky</th><th>Diem cuoi ky</th></tr></thead><tbody id="gradeTable"></tbody></table>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-materials">
+            <h3>Tai lieu lop hoc</h3>
+            <form id="materialForm" enctype="multipart/form-data" class="grid-form">
+                <select id="mClass" required></select>
+                <input id="mTitle" placeholder="Tieu de" required>
+                <input id="mFile" type="file" required>
+                <button class="btn btn-success" type="submit">Them tai lieu</button>
+            </form>
+            <table><thead><tr><th>ID</th><th>Tieu de</th><th>Lop</th><th>Hanh dong</th></tr></thead><tbody id="materialTable"></tbody></table>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-announcements">
+            <h3>Thong bao lop hoc</h3>
+            <form id="annForm" class="grid-form">
+                <input type="hidden" id="annId">
+                <select id="annClass" required></select>
+                <input id="annTitle" placeholder="Tieu de" required>
+                <input id="annContent" placeholder="Noi dung" required>
+                <button class="btn btn-success" type="submit">Luu thong bao</button>
+            </form>
+            <table><thead><tr><th>ID</th><th>Tieu de</th><th>Lop</th><th>Hanh dong</th></tr></thead><tbody id="annTable"></tbody></table>
+        </section>
+    </main>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/teacher.js"></script>
+</body>
+</html>

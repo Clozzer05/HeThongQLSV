@@ -1,0 +1,239 @@
+let classes = [];
+let activeAssignmentId = null;
+
+(async function init() {
+    const me = await requireRole('gv');
+    if (!me) return;
+
+    setupTabs();
+    document.getElementById('btnLogout').addEventListener('click', (e) => {
+        e.preventDefault();
+        doLogout();
+    });
+
+    bindEvents();
+    await loadClasses();
+    await loadMaterials();
+    await loadAnnouncements();
+})();
+
+function bindEvents() {
+    document.getElementById('btnLoadAtt').addEventListener('click', loadAttendanceStudents);
+    document.getElementById('btnSaveAtt').addEventListener('click', saveAttendance);
+    document.getElementById('assignmentForm').addEventListener('submit', saveAssignment);
+    document.getElementById('btnLoadGrades').addEventListener('click', loadGradeStudents);
+    document.getElementById('btnSaveGrades').addEventListener('click', saveGrades);
+    document.getElementById('materialForm').addEventListener('submit', saveMaterial);
+    document.getElementById('annForm').addEventListener('submit', saveAnnouncement);
+}
+
+async function loadClasses() {
+    classes = (await apiRequest('/teacher/classes')).data;
+
+    document.getElementById('classTable').innerHTML = classes.map((c) => `
+        <tr><td>${c.id}</td><td>${escapeHtml(c.ten_lop)}</td><td>${escapeHtml(c.ten_mon || '')}</td><td>${escapeHtml(c.hoc_ky || '')}</td></tr>
+    `).join('');
+
+    const options = classes.map((c) => `<option value="${c.id}">${escapeHtml(c.ten_lop)} - ${escapeHtml(c.ten_mon || '')}</option>`).join('');
+    ['attClass', 'asClass', 'gradeClass', 'mClass', 'annClass'].forEach((id) => {
+        document.getElementById(id).innerHTML = options;
+    });
+
+    await loadAssignments();
+}
+
+async function loadAttendanceStudents() {
+    const classId = document.getElementById('attClass').value;
+    const students = (await apiRequest(`/teacher/classes/${classId}/students`)).data;
+    document.getElementById('attTable').innerHTML = students.map((s) => `
+        <tr>
+            <td>${escapeHtml(s.ho_ten)}</td>
+            <td>${escapeHtml(s.email || '')}</td>
+            <td>
+                <select data-svid="${s.id}">
+                    <option value="co_mat">Co mat</option>
+                    <option value="vang_co_phep">Vang co phep</option>
+                    <option value="vang_khong_phep">Vang khong phep</option>
+                </select>
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function saveAttendance() {
+    const classId = document.getElementById('attClass').value;
+    const date = document.getElementById('attDate').value;
+    const rows = Array.from(document.querySelectorAll('#attTable select')).map((el) => ({
+        id_sinh_vien: Number(el.dataset.svid),
+        trang_thai: el.value,
+    }));
+
+    await apiRequest('/teacher/attendance', {
+        method: 'POST',
+        body: { id_lop: Number(classId), ngay_diem_danh: date, danh_sach: rows },
+    });
+    showAlert('globalAlert', 'Da luu diem danh.');
+}
+
+async function loadAssignments() {
+    const classId = document.getElementById('asClass').value;
+    if (!classId) return;
+    const assignments = (await apiRequest(`/teacher/assignments/${classId}`)).data;
+
+    document.getElementById('assignmentTable').innerHTML = assignments.map((a) => `
+        <tr>
+            <td>${a.id}</td>
+            <td>${escapeHtml(a.tieu_de)}</td>
+            <td>${escapeHtml(a.han_nop || '')}</td>
+            <td><button class="btn btn-primary btn-sm" onclick="loadSubmissions(${a.id})">Xem nop bai</button></td>
+            <td><button class="btn btn-danger btn-sm" onclick="deleteAssignment(${a.id})">Xoa</button></td>
+        </tr>
+    `).join('');
+}
+
+async function saveAssignment(e) {
+    e.preventDefault();
+    const fd = new FormData();
+    fd.append('id_lop', document.getElementById('asClass').value);
+    fd.append('tieu_de', document.getElementById('asTitle').value);
+    fd.append('mo_ta', document.getElementById('asDesc').value);
+    fd.append('han_nop', document.getElementById('asDeadline').value);
+    const file = document.getElementById('asFile').files[0];
+    if (file) fd.append('file_de_bai', file);
+
+    await apiRequest('/teacher/assignments', { method: 'POST', body: fd });
+    e.target.reset();
+    await loadAssignments();
+    showAlert('globalAlert', 'Da tao bai tap.');
+}
+
+async function loadSubmissions(assignmentId) {
+    activeAssignmentId = assignmentId;
+    const subs = (await apiRequest(`/teacher/assignments/${assignmentId}/submissions`)).data;
+
+    document.getElementById('submissionTable').innerHTML = subs.map((s) => `
+        <tr>
+            <td>${escapeHtml(s.ho_ten)}</td>
+            <td>${escapeHtml(s.file_bai_lam || '')}</td>
+            <td><input id="score-${s.id}" type="number" step="0.1" value="${s.diem ?? ''}"></td>
+            <td><input id="fb-${s.id}" value="${escapeHtml(s.nhan_xet || '')}"></td>
+            <td><button class="btn btn-success btn-sm" onclick="saveSubmissionScore(${s.id})">Luu</button></td>
+        </tr>
+    `).join('');
+}
+
+async function saveSubmissionScore(id) {
+    const diem = document.getElementById(`score-${id}`).value;
+    const nhan_xet = document.getElementById(`fb-${id}`).value;
+    await apiRequest(`/teacher/submissions/${id}/grade`, { method: 'POST', body: { diem, nhan_xet } });
+    showAlert('globalAlert', 'Da cham diem bai nop.');
+    if (activeAssignmentId) await loadSubmissions(activeAssignmentId);
+}
+
+async function deleteAssignment(id) {
+    await apiRequest(`/teacher/assignments/${id}`, { method: 'DELETE' });
+    await loadAssignments();
+    showAlert('globalAlert', 'Da xoa bai tap.');
+}
+
+async function loadGradeStudents() {
+    const classId = document.getElementById('gradeClass').value;
+    const students = (await apiRequest(`/teacher/classes/${classId}/students`)).data;
+    document.getElementById('gradeTable').innerHTML = students.map((s) => `
+        <tr>
+            <td>${escapeHtml(s.ho_ten)}</td>
+            <td>${escapeHtml(s.email || '')}</td>
+            <td><input id="gk-${s.id}" type="number" step="0.1" value="${s.diem_giua_ky ?? ''}"></td>
+            <td><input id="ck-${s.id}" type="number" step="0.1" value="${s.diem_cuoi_ky ?? ''}"></td>
+        </tr>
+    `).join('');
+}
+
+async function saveGrades() {
+    const classId = document.getElementById('gradeClass').value;
+    const rows = Array.from(document.querySelectorAll('#gradeTable tr')).map((tr) => {
+        const gk = tr.querySelector('[id^="gk-"]');
+        const ck = tr.querySelector('[id^="ck-"]');
+        if (!gk || !ck) return null;
+        const id = Number(gk.id.replace('gk-', ''));
+        return {
+            id_sinh_vien: id,
+            diem_giua_ky: gk.value,
+            diem_cuoi_ky: ck.value,
+        };
+    }).filter(Boolean);
+
+    await apiRequest(`/teacher/grades/${classId}`, { method: 'PUT', body: { danh_sach: rows } });
+    showAlert('globalAlert', 'Da cap nhat diem tong ket.');
+}
+
+async function loadMaterials() {
+    const mats = (await apiRequest('/teacher/materials')).data;
+    document.getElementById('materialTable').innerHTML = mats.map((m) => `
+        <tr>
+            <td>${m.id}</td>
+            <td>${escapeHtml(m.tieu_de)}</td>
+            <td>${escapeHtml(m.ten_lop || '')}</td>
+            <td><button class="btn btn-danger btn-sm" onclick="deleteMaterial(${m.id})">Xoa</button></td>
+        </tr>
+    `).join('');
+}
+
+async function saveMaterial(e) {
+    e.preventDefault();
+    const fd = new FormData();
+    fd.append('id_lop', document.getElementById('mClass').value);
+    fd.append('tieu_de', document.getElementById('mTitle').value);
+    fd.append('file_upload', document.getElementById('mFile').files[0]);
+    await apiRequest('/teacher/materials', { method: 'POST', body: fd });
+    e.target.reset();
+    await loadMaterials();
+    showAlert('globalAlert', 'Da them tai lieu.');
+}
+
+async function deleteMaterial(id) {
+    await apiRequest(`/teacher/materials/${id}`, { method: 'DELETE' });
+    await loadMaterials();
+    showAlert('globalAlert', 'Da xoa tai lieu.');
+}
+
+async function loadAnnouncements() {
+    const anns = (await apiRequest('/teacher/announcements')).data;
+    document.getElementById('annTable').innerHTML = anns.map((a) => `
+        <tr>
+            <td>${a.id}</td>
+            <td>${escapeHtml(a.tieu_de)}</td>
+            <td>${escapeHtml(a.ten_lop || '')}</td>
+            <td><button class="btn btn-danger btn-sm" onclick="deleteAnnouncement(${a.id})">Xoa</button></td>
+        </tr>
+    `).join('');
+}
+
+async function saveAnnouncement(e) {
+    e.preventDefault();
+    const id = document.getElementById('annId').value;
+    const body = {
+        id_lop: document.getElementById('annClass').value,
+        tieu_de: document.getElementById('annTitle').value,
+        noi_dung: document.getElementById('annContent').value,
+    };
+    await apiRequest(id ? `/teacher/announcements/${id}` : '/teacher/announcements', { method: id ? 'PUT' : 'POST', body });
+    e.target.reset();
+    document.getElementById('annId').value = '';
+    await loadAnnouncements();
+    showAlert('globalAlert', 'Da luu thong bao.');
+}
+
+async function deleteAnnouncement(id) {
+    await apiRequest(`/teacher/announcements/${id}`, { method: 'DELETE' });
+    await loadAnnouncements();
+    showAlert('globalAlert', 'Da xoa thong bao.');
+}
+
+document.getElementById('asClass').addEventListener('change', loadAssignments);
+
+window.loadSubmissions = loadSubmissions;
+window.deleteAssignment = deleteAssignment;
+window.saveSubmissionScore = saveSubmissionScore;
+window.deleteMaterial = deleteMaterial;
+window.deleteAnnouncement = deleteAnnouncement;

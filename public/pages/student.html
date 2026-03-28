@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinh vien | QuanLySinhVien</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container nav-content">
+            <div class="brand">SINH VIEN - HE THONG HOC TAP</div>
+            <div class="menu">
+                <a href="#" data-tab="my-classes" class="tab-link active">Lop da dang ky</a>
+                <a href="#" data-tab="available" class="tab-link">Dang ky lop</a>
+                <a href="#" data-tab="class-detail" class="tab-link">Chi tiet lop</a>
+                <a href="#" data-tab="announcements" class="tab-link">Thong bao</a>
+                <a href="#" id="btnLogout">Dang xuat</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div id="globalAlert" class="alert hidden"></div>
+
+        <section class="card tab-content" id="tab-my-classes">
+            <h3>Lop hoc cua toi</h3>
+            <table><thead><tr><th>ID</th><th>Ten lop</th><th>Mon hoc</th><th>Diem GK</th><th>Diem CK</th><th>Chi tiet</th></tr></thead><tbody id="myClassTable"></tbody></table>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-available">
+            <h3>Lop hoc mo dang ky</h3>
+            <table><thead><tr><th>ID</th><th>Lop</th><th>Mon hoc</th><th>Si so</th><th>Dang ky</th></tr></thead><tbody id="availableTable"></tbody></table>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-class-detail">
+            <h3>Chi tiet lop</h3>
+            <div class="grid-form">
+                <select id="detailClass"></select>
+                <button class="btn btn-primary" id="btnLoadDetail">Tai chi tiet</button>
+            </div>
+            <div class="row">
+                <div class="col-half">
+                    <h4>Tai lieu</h4>
+                    <ul id="detailMaterials" class="simple-list"></ul>
+                </div>
+                <div class="col-half">
+                    <h4>Thong bao</h4>
+                    <ul id="detailAnnouncements" class="simple-list"></ul>
+                </div>
+            </div>
+            <h4>Bai tap va nop bai</h4>
+            <table><thead><tr><th>Tieu de</th><th>Han nop</th><th>Trang thai</th><th>Nop bai</th></tr></thead><tbody id="detailAssignments"></tbody></table>
+        </section>
+
+        <section class="card tab-content hidden" id="tab-announcements">
+            <h3>Thong bao cua toi</h3>
+            <table><thead><tr><th>ID</th><th>Tieu de</th><th>Lop</th><th>Noi dung</th></tr></thead><tbody id="annTable"></tbody></table>
+        </section>
+    </main>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/student.js"></script>
+</body>
+</html>
