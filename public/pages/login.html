@@ -3,25 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dang nhap | QuanLySinhVien</title>
+    <title>Đăng nhập | Hệ Thống QLSV</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <main class="auth-wrap">
         <section class="auth-card">
-            <h1>He thong Quan Ly Sinh Vien</h1>
-            <p class="muted">Dang nhap theo vai tro admin, giang vien hoac sinh vien.</p>
-            <form id="loginForm">
-                <label for="ten_dang_nhap">Ten dang nhap</label>
-                <input id="ten_dang_nhap" required>
-
-                <label for="mat_khau">Mat khau</label>
-                <input id="mat_khau" type="password" required>
-
-                <button class="btn btn-primary" type="submit">Dang nhap</button>
+            <div style="text-align:center;margin-bottom:18px;">
+                <div style="font-size:2.5rem;color:var(--primary-color);margin-bottom:8px;"><i class="fas fa-user-graduate"></i></div>
+                <h1 style="margin:0;font-size:1.6rem;color:var(--primary-color);font-weight:700;">HỆ THỐNG QLSV</h1>
+                <div class="muted" style="margin-top:4px;">Đăng nhập với vai trò Admin, Giảng viên hoặc Sinh viên</div>
+            </div>
+            <form id="loginForm" autocomplete="off">
+                <div style="margin-bottom:14px;">
+                    <label for="ten_dang_nhap" class="small">Tên đăng nhập</label>
+                    <input id="ten_dang_nhap" placeholder="Nhập tên đăng nhập" required autofocus>
+                </div>
+                <div style="margin-bottom:18px;">
+                    <label for="mat_khau" class="small">Mật khẩu</label>
+                    <input id="mat_khau" type="password" placeholder="Nhập mật khẩu" required>
+                </div>
+                <button class="btn btn-primary" type="submit" style="width:100%;font-size:1.1rem;">Đăng nhập <i class="fas fa-sign-in-alt"></i></button>
             </form>
-            <div id="loginAlert" class="alert hidden"></div>
-            <p class="muted small">Tai khoan mau: admin / 123456</p>
+            <div id="loginAlert" class="alert hidden" style="margin-top:14px;"></div>
+            <p class="muted small" style="margin-top:18px;text-align:center;">Tài khoản mẫu: <b>admin</b> / <b>123456</b></p>
         </section>
     </main>
     <script src="../js/common.js"></script>

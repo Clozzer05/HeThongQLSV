@@ -16,7 +16,7 @@ function resolveApiBase() {
         return `${window.location.origin}/QuanLySinhVien/api`;
     }
 
-    return 'http://localhost/QuanLySinhVien/api';
+    return 'http://localhost/HeThongQLSV/api';
 }
 
 const API_BASE = resolveApiBase();

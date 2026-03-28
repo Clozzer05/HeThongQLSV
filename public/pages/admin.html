@@ -3,102 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin | QuanLySinhVien</title>
+    <title>Admin | Hệ Thống QLSV</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <nav>
-        <div class="container nav-content">
-            <div class="brand">ADMIN - HE THONG QUAN LY SINH VIEN</div>
-            <div class="menu">
-                <a href="#" data-tab="dashboard" class="tab-link active">Trang chu</a>
-                <a href="#" data-tab="users" class="tab-link">Nguoi dung</a>
-                <a href="#" data-tab="subjects" class="tab-link">Mon hoc</a>
-                <a href="#" data-tab="classes" class="tab-link">Lop hoc</a>
-                <a href="#" data-tab="materials" class="tab-link">Tai lieu</a>
-                <a href="#" data-tab="announcements" class="tab-link">Thong bao</a>
-                <a href="#" id="btnLogout">Dang xuat</a>
-            </div>
-        </div>
-    </nav>
+<div class="dashboard-wrapper modern-student">
+    <aside class="sidebar modern-sidebar">
+        <div class="sidebar-logo">🛡️ <span>ADMIN QLSV</span></div>
+        <nav class="sidebar-menu">
+            <a href="#" data-tab="dashboard" class="tab-link active"><i class="fas fa-tachometer-alt"></i> Trang chủ</a>
+            <a href="#" data-tab="users" class="tab-link"><i class="fas fa-users"></i> Người dùng</a>
+            <a href="#" data-tab="subjects" class="tab-link"><i class="fas fa-book"></i> Môn học</a>
+            <a href="#" data-tab="classes" class="tab-link"><i class="fas fa-chalkboard-teacher"></i> Lớp học</a>
+            <a href="#" data-tab="materials" class="tab-link"><i class="fas fa-folder-open"></i> Tài liệu</a>
+            <a href="#" data-tab="announcements" class="tab-link"><i class="fas fa-bullhorn"></i> Thông báo</a>
+            <a href="#" id="btnLogout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </nav>
+    </aside>
 
-    <main class="container">
+    <main class="main-content modern-main">
         <div id="globalAlert" class="alert hidden"></div>
 
-        <section class="card tab-content" id="tab-dashboard">
-            <h3>Tong quan he thong</h3>
-            <div class="row">
-                <div class="stat-box"><span class="stat-label">So sinh vien</span><strong id="stSv">0</strong></div>
-                <div class="stat-box"><span class="stat-label">So giang vien</span><strong id="stGv">0</strong></div>
-                <div class="stat-box"><span class="stat-label">So lop hoc</span><strong id="stLop">0</strong></div>
+        <div class="tab-content" id="tab-dashboard">
+            <div class="modern-card">
+                <div class="modern-card-title"><i class="fas fa-tachometer-alt"></i> Tổng quan hệ thống</div>
+                <div class="modern-stats">
+                    <div class="modern-stat">
+                        <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stSv">0</h3>
+                            <p>Sinh viên</p>
+                        </div>
+                    </div>
+                    <div class="modern-stat">
+                        <div class="stat-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stGv">0</h3>
+                            <p>Giảng viên</p>
+                        </div>
+                    </div>
+                    <div class="modern-stat">
+                        <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stLop">0</h3>
+                            <p>Lớp học</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
 
-        <section class="card tab-content hidden" id="tab-users">
-            <h3>Quan ly nguoi dung</h3>
-            <form id="userForm" class="grid-form">
-                <input type="hidden" id="userId">
-                <input id="u_username" placeholder="Ten dang nhap" required>
-                <input id="u_password" placeholder="Mat khau (de trong neu khong doi)">
-                <input id="u_name" placeholder="Ho ten" required>
-                <input id="u_email" placeholder="Email">
-                <select id="u_role"><option value="sv">Sinh vien</option><option value="gv">Giang vien</option><option value="admin">Admin</option></select>
-                <button class="btn btn-success" type="submit">Luu nguoi dung</button>
-            </form>
-            <table><thead><tr><th>ID</th><th>Tai khoan</th><th>Ho ten</th><th>Vai tro</th><th>Hanh dong</th></tr></thead><tbody id="userTable"></tbody></table>
-        </section>
+        <div class="tab-content" id="tab-users" style="display:none">
+            <div class="modern-card">
+                <div class="modern-card-title"><i class="fas fa-users"></i> Quản lý người dùng</div>
+                <form id="userForm" class="grid-form">
+                    <input type="hidden" id="userId">
+                    <input id="u_username" placeholder="Tên đăng nhập" required>
+                    <input id="u_password" placeholder="Mật khẩu (để trống nếu không đổi)">
+                    <input id="u_name" placeholder="Họ tên" required>
+                    <input id="u_email" placeholder="Email">
+                    <select id="u_role"><option value="sv">Sinh viên</option><option value="gv">Giảng viên</option><option value="admin">Admin</option></select>
+                    <button class="btn btn-success" type="submit">Lưu người dùng</button>
+                </form>
+                <div class="table-responsive">
+                    <table class="styled-table modern-table">
+                        <thead><tr><th>ID</th><th>Tài khoản</th><th>Họ tên</th><th>Vai trò</th><th>Hành động</th></tr></thead>
+                        <tbody id="userTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-        <section class="card tab-content hidden" id="tab-subjects">
-            <h3>Quan ly mon hoc</h3>
-            <form id="subjectForm" class="grid-form">
-                <input type="hidden" id="subjectId">
-                <input id="s_name" placeholder="Ten mon" required>
-                <input id="s_credit" type="number" min="1" value="3" required>
-                <input id="s_desc" placeholder="Mo ta">
-                <button class="btn btn-success" type="submit">Luu mon hoc</button>
-            </form>
-            <table><thead><tr><th>ID</th><th>Ten mon</th><th>Tin chi</th><th>Hanh dong</th></tr></thead><tbody id="subjectTable"></tbody></table>
-        </section>
+        <div class="tab-content" id="tab-subjects" style="display:none">
+            <div class="modern-card">
+                <div class="modern-card-title"><i class="fas fa-book"></i> Quản lý môn học</div>
+                <form id="subjectForm" class="grid-form">
+                    <input type="hidden" id="subjectId">
+                    <input id="s_name" placeholder="Tên môn" required>
+                    <input id="s_credit" type="number" min="1" value="3" required>
+                    <input id="s_desc" placeholder="Mô tả">
+                    <button class="btn btn-success" type="submit">Lưu môn học</button>
+                </form>
+                <div class="table-responsive">
+                    <table class="styled-table modern-table">
+                        <thead><tr><th>ID</th><th>Tên môn</th><th>Tín chỉ</th><th>Hành động</th></tr></thead>
+                        <tbody id="subjectTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-        <section class="card tab-content hidden" id="tab-classes">
-            <h3>Quan ly lop hoc</h3>
-            <form id="classForm" class="grid-form">
-                <input type="hidden" id="classId">
-                <select id="c_subject" required></select>
-                <select id="c_teacher"></select>
-                <input id="c_name" placeholder="Ten lop" required>
-                <input id="c_semester" placeholder="Hoc ky">
-                <input id="c_limit" type="number" min="1" value="50">
-                <button class="btn btn-success" type="submit">Luu lop hoc</button>
-            </form>
-            <table><thead><tr><th>ID</th><th>Lop</th><th>Mon</th><th>GV</th><th>Hanh dong</th></tr></thead><tbody id="classTable"></tbody></table>
-        </section>
+        <div class="tab-content" id="tab-classes" style="display:none">
+            <div class="modern-card">
+                <div class="modern-card-title"><i class="fas fa-chalkboard-teacher"></i> Quản lý lớp học</div>
+                <form id="classForm" class="grid-form">
+                    <input type="hidden" id="classId">
+                    <select id="c_subject" required></select>
+                    <select id="c_teacher"></select>
+                    <input id="c_name" placeholder="Tên lớp" required>
+                    <input id="c_semester" placeholder="Học kỳ">
+                    <input id="c_limit" type="number" min="1" value="50">
+                    <button class="btn btn-success" type="submit">Lưu lớp học</button>
+                </form>
+                <div class="table-responsive">
+                    <table class="styled-table modern-table">
+                        <thead><tr><th>ID</th><th>Lớp</th><th>Môn</th><th>GV</th><th>Hành động</th></tr></thead>
+                        <tbody id="classTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-        <section class="card tab-content hidden" id="tab-materials">
-            <h3>Quan ly tai lieu</h3>
-            <form id="materialForm" enctype="multipart/form-data" class="grid-form">
-                <input id="m_title" placeholder="Tieu de" required>
-                <select id="m_class"></select>
-                <input id="m_file" type="file" required>
-                <button class="btn btn-success" type="submit">Them tai lieu</button>
-            </form>
-            <table><thead><tr><th>ID</th><th>Tieu de</th><th>Lop</th><th>File</th><th>Hanh dong</th></tr></thead><tbody id="materialTable"></tbody></table>
-        </section>
+        <div class="tab-content" id="tab-materials" style="display:none">
+            <div class="modern-card">
+                <div class="modern-card-title"><i class="fas fa-folder-open"></i> Quản lý tài liệu</div>
+                <form id="materialForm" enctype="multipart/form-data" class="grid-form">
+                    <input id="m_title" placeholder="Tiêu đề" required>
+                    <select id="m_class"></select>
+                    <input id="m_file" type="file" required>
+                    <button class="btn btn-success" type="submit">Thêm tài liệu</button>
+                </form>
+                <div class="table-responsive">
+                    <table class="styled-table modern-table">
+                        <thead><tr><th>ID</th><th>Tiêu đề</th><th>Lớp</th><th>File</th><th>Hành động</th></tr></thead>
+                        <tbody id="materialTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-        <section class="card tab-content hidden" id="tab-announcements">
-            <h3>Quan ly thong bao</h3>
-            <form id="annForm" class="grid-form">
-                <input type="hidden" id="annId">
-                <input id="a_title" placeholder="Tieu de" required>
-                <input id="a_content" placeholder="Noi dung" required>
-                <select id="a_class"></select>
-                <button class="btn btn-success" type="submit">Luu thong bao</button>
-            </form>
-            <table><thead><tr><th>ID</th><th>Tieu de</th><th>Lop</th><th>Hanh dong</th></tr></thead><tbody id="annTable"></tbody></table>
-        </section>
+        <div class="tab-content" id="tab-announcements" style="display:none">
+            <div class="modern-card">
+                <div class="modern-card-title"><i class="fas fa-bullhorn"></i> Quản lý thông báo</div>
+                <form id="annForm" class="grid-form">
+                    <input type="hidden" id="annId">
+                    <input id="a_title" placeholder="Tiêu đề" required>
+                    <input id="a_content" placeholder="Nội dung" required>
+                    <select id="a_class"></select>
+                    <button class="btn btn-success" type="submit">Lưu thông báo</button>
+                </form>
+                <div class="table-responsive">
+                    <table class="styled-table modern-table">
+                        <thead><tr><th>ID</th><th>Tiêu đề</th><th>Lớp</th><th>Hành động</th></tr></thead>
+                        <tbody id="annTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </main>
-
-    <script src="../js/common.js"></script>
-    <script src="../js/admin.js"></script>
+</div>
+<script src="../js/common.js"></script>
+<script src="../js/admin.js"></script>
 </body>
 </html>

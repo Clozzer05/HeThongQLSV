@@ -1,5 +1,23 @@
 let myClasses = [];
 
+
+// Chức năng chuyển tab cho giao diện student
+function setupTabs() {
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            tabLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            tabContents.forEach(tc => tc.style.display = 'none');
+            const tab = this.getAttribute('data-tab');
+            const content = document.getElementById('tab-' + tab);
+            if (content) content.style.display = '';
+        });
+    });
+}
+
 (async function init() {
     const me = await requireRole('sv');
     if (!me) return;
@@ -41,7 +59,7 @@ async function loadAvailableClasses() {
             <td>${c.id}</td>
             <td>${escapeHtml(c.ten_lop)}</td>
             <td>${escapeHtml(c.ten_mon || '')}</td>
-            <td>${c.si_so_hien_tai}/${c.si_so_toi_da}</td>
+            <td>${escapeHtml(c.ten_giao_vien || '')}</td>
             <td><button class="btn btn-success btn-sm" onclick="enrollClass(${c.id})">Dang ky</button></td>
         </tr>
     `).join('');
@@ -65,6 +83,26 @@ async function loadClassDetail() {
     if (!classId) return;
 
     const detail = (await apiRequest(`/student/classes/${classId}`)).data;
+
+    // Hiển thị thông tin giảng viên và thời khóa biểu
+    const infoDiv = document.getElementById('classInfoBox');
+    if (infoDiv) {
+        let html = '';
+        if (detail.lop) {
+            html += `<div><strong>Giảng viên:</strong> ${escapeHtml(detail.lop.ten_giao_vien || 'Chưa có')} (${escapeHtml(detail.lop.email_giao_vien || '')})</div>`;
+            html += `<div><strong>Học kỳ:</strong> ${escapeHtml(detail.lop.hoc_ky || '')}</div>`;
+        }
+        if (detail.thoi_khoa_bieu && detail.thoi_khoa_bieu.length > 0) {
+            html += '<div><strong>Thời khóa biểu:</strong><ul>';
+            for (const tkb of detail.thoi_khoa_bieu) {
+                html += `<li>Thứ ${tkb.thu}, Tiết ${tkb.tiet_bat_dau} - ${tkb.tiet_ket_thuc}, Phòng: ${escapeHtml(tkb.phong || '')}</li>`;
+            }
+            html += '</ul></div>';
+        } else {
+            html += '<div><strong>Thời khóa biểu:</strong> Chưa cập nhật</div>';
+        }
+        infoDiv.innerHTML = html;
+    }
 
     document.getElementById('detailMaterials').innerHTML = detail.tai_lieu
         .map((t) => `<li>${escapeHtml(t.tieu_de)} - ${escapeHtml(t.duong_dan_file)}</li>`)

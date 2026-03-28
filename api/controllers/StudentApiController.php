@@ -70,9 +70,11 @@ class StudentApiController extends BaseApiController
     private function availableClasses(int $studentId): void
     {
         $sql = 'SELECT lh.*, mh.ten_mon,
-                (SELECT COUNT(*) FROM dang_ky dk WHERE dk.id_lop = lh.id) AS si_so_hien_tai
+                       nd.ho_ten AS ten_giao_vien,
+                       (SELECT COUNT(*) FROM dang_ky dk WHERE dk.id_lop = lh.id) AS si_so_hien_tai
                 FROM lop_hoc lh
                 JOIN mon_hoc mh ON mh.id = lh.id_mon_hoc
+                LEFT JOIN nguoi_dung nd ON nd.id = lh.id_giao_vien
                 WHERE lh.id NOT IN (
                     SELECT id_lop FROM dang_ky WHERE id_sinh_vien = :sv
                 )
@@ -172,8 +174,21 @@ class StudentApiController extends BaseApiController
 
     private function studentClassDetail(int $studentId, int $idLop): array
     {
-        $lopStmt = $this->db->prepare('SELECT lh.*, mh.ten_mon FROM lop_hoc lh JOIN mon_hoc mh ON mh.id = lh.id_mon_hoc WHERE lh.id = :id');
+        $lopStmt = $this->db->prepare('SELECT lh.*, mh.ten_mon, nd.ho_ten AS ten_giao_vien, nd.email AS email_giao_vien
+            FROM lop_hoc lh
+            JOIN mon_hoc mh ON mh.id = lh.id_mon_hoc
+            LEFT JOIN nguoi_dung nd ON nd.id = lh.id_giao_vien
+            WHERE lh.id = :id');
         $lopStmt->execute(['id' => $idLop]);
+        // Lấy thời khóa biểu (giả sử có bảng thoi_khoa_bieu hoặc thông tin lịch học trong lop_hoc)
+        // Nếu không có bảng riêng, có thể trả về thông tin mẫu hoặc trường hoc_ky, si_so_toi_da, ...
+        $tkbStmt = $this->db->prepare('SELECT * FROM thoi_khoa_bieu WHERE id_lop = :lop ORDER BY thu, tiet_bat_dau');
+        try {
+            $tkbStmt->execute(['lop' => $idLop]);
+            $thoi_khoa_bieu = $tkbStmt->fetchAll();
+        } catch (PDOException $e) {
+            $thoi_khoa_bieu = [];
+        }
 
         $gradeStmt = $this->db->prepare('SELECT diem_giua_ky, diem_cuoi_ky FROM dang_ky WHERE id_lop = :lop AND id_sinh_vien = :sv LIMIT 1');
         $gradeStmt->execute(['lop' => $idLop, 'sv' => $studentId]);
@@ -199,6 +214,7 @@ class StudentApiController extends BaseApiController
             'tai_lieu' => $matStmt->fetchAll(),
             'thong_bao' => $annStmt->fetchAll(),
             'bai_tap' => $assStmt->fetchAll(),
+            'thoi_khoa_bieu' => $thoi_khoa_bieu,
         ];
     }
 

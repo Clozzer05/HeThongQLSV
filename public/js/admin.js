@@ -7,6 +7,30 @@ let state = {
     announcements: [],
 };
 
+
+// Chức năng chuyển tab cho giao diện admin
+function setupTabs() {
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            tabLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            tabContents.forEach(tc => tc.style.display = 'none');
+            const tab = this.getAttribute('data-tab');
+            const content = document.getElementById('tab-' + tab);
+            if (content) content.style.display = '';
+        });
+    });
+    // Hiển thị tab đầu tiên khi load trang
+    const firstTab = document.querySelector('.tab-link');
+    if (firstTab) {
+        const firstContent = document.getElementById('tab-' + firstTab.getAttribute('data-tab'));
+        if (firstContent) firstContent.style.display = '';
+    }
+}
+
 (async function init() {
     const me = await requireRole('admin');
     if (!me) return;

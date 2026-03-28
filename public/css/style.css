@@ -1,3 +1,216 @@
+/* Modern Student Dashboard Styles */
+.modern-student {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg-color);
+}
+
+.modern-sidebar {
+    width: 240px;
+    background: #fff;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border-radius: 0 18px 18px 0;
+    z-index: 2;
+}
+.sidebar-logo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    padding: 28px 0 18px 0;
+    text-align: center;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #f8faff;
+}
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 18px 0;
+}
+.sidebar-menu a {
+    color: var(--text-color);
+    font-weight: 500;
+    padding: 12px 32px;
+    border-radius: 0 20px 20px 0;
+    transition: background 0.18s, color 0.18s;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.sidebar-menu a.active, .sidebar-menu a:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+.logout-btn {
+    margin-top: 24px;
+    color: var(--danger-color) !important;
+    font-weight: 600;
+}
+
+.modern-main {
+    flex: 1;
+    padding: 36px 36px 36px 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.modern-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+.modern-header h2 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+.modern-profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #f8faff;
+    padding: 8px 18px 8px 8px;
+    border-radius: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.user-name {
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+.modern-stats {
+    display: flex;
+    gap: 28px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+.modern-stat {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 180px;
+    flex: 1 1 180px;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.modern-stat:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+}
+.stat-icon {
+    font-size: 2.2rem;
+    color: var(--primary-color);
+    background: #f0f6ff;
+    border-radius: 50%;
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.stat-info h3 {
+    margin: 0 0 2px 0;
+    font-size: 1.6rem;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+.stat-info p {
+    margin: 0;
+    color: #666;
+    font-size: 1rem;
+}
+
+.modern-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    padding: 28px 24px 18px 24px;
+    margin-bottom: 32px;
+}
+.modern-card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+.modern-table {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    background: #fff;
+}
+.modern-table th, .modern-table td {
+    padding: 14px 12px;
+    font-size: 1rem;
+}
+.modern-table th {
+    background: #f0f6ff;
+    color: var(--primary-color);
+    font-weight: 700;
+    border-bottom: 2px solid #e0e7ef;
+}
+.modern-table tr {
+    transition: background 0.13s;
+}
+.modern-table tbody tr:hover {
+    background: #f5faff;
+}
+
+@media (max-width: 900px) {
+    .modern-student {
+        flex-direction: column;
+    }
+    .modern-sidebar {
+        width: 100%;
+        border-radius: 0 0 18px 18px;
+        flex-direction: row;
+        justify-content: space-between;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .modern-main {
+        padding: 24px 6px;
+    }
+    .modern-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .modern-stats {
+        gap: 12px;
+    }
+}
 :root {
     --primary-color: #007bff;
     --secondary-color: #6c757d;
