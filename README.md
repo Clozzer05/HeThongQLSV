@@ -20,6 +20,7 @@ Du an web chay tren localhost XAMPP theo mo hinh RESTful API, tach rieng giao di
 2. Mo phpMyAdmin va import file `database/schema.sql`.
 3. Kiem tra ket noi DB trong `api/config/database.php`.
 4. Truy cap: `http://localhost/QuanLySinhVien/`
+5. Test API bang huong dan trong `API_TESTING.md`
 
 ## Tai khoan mau
 
@@ -37,12 +38,28 @@ Du an web chay tren localhost XAMPP theo mo hinh RESTful API, tach rieng giao di
 ## API chinh
 
 - `GET /QuanLySinhVien/api/health`
+- `GET /QuanLySinhVien/api/v1/health`
 - `POST /QuanLySinhVien/api/auth/login`
 - `POST /QuanLySinhVien/api/auth/logout`
 - `GET /QuanLySinhVien/api/auth/me`
 - `GET|POST|PUT|DELETE /QuanLySinhVien/api/admin/*`
 - `GET|POST|PUT|PATCH|DELETE /QuanLySinhVien/api/teacher/*`
 - `GET|POST /QuanLySinhVien/api/student/*`
+
+### RESTful aliases (khuyen dung)
+
+- `POST /QuanLySinhVien/api/v1/student/enrollments`
+- `POST /QuanLySinhVien/api/v1/student/submissions`
+- `PATCH /QuanLySinhVien/api/v1/teacher/submissions/{id}`
+- `GET /QuanLySinhVien/api/v1/admin/{resource}/{id}`
+
+## Luu y session/CORS
+
+- API su dung PHP session cookie de xac thuc.
+- Neu frontend chay o `localhost:3000`, dam bao API base tro ve:
+	- `http://localhost/QuanLySinhVien/api`
+- Tu frontend JS, da co helper:
+	- `setApiBase('http://localhost/QuanLySinhVien/api')`
 
 ## Upload
 

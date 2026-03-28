@@ -1,10 +1,34 @@
-const API_BASE = '/QuanLySinhVien/api';
+function resolveApiBase() {
+    if (typeof window !== 'undefined' && typeof window.__API_BASE === 'string' && window.__API_BASE.trim() !== '') {
+        return window.__API_BASE.trim().replace(/\/$/, '');
+    }
+
+    try {
+        const stored = localStorage.getItem('qlsv_api_base');
+        if (stored && stored.trim() !== '') {
+            return stored.trim().replace(/\/$/, '');
+        }
+    } catch (error) {
+    }
+
+    const onProjectPath = window.location.pathname.includes('/QuanLySinhVien/');
+    if (onProjectPath) {
+        return `${window.location.origin}/QuanLySinhVien/api`;
+    }
+
+    return 'http://localhost/QuanLySinhVien/api';
+}
+
+const API_BASE = resolveApiBase();
 
 async function apiRequest(path, options = {}) {
     const config = {
         method: options.method || 'GET',
         credentials: 'include',
-        headers: options.headers || {},
+        headers: {
+            Accept: 'application/json',
+            ...(options.headers || {}),
+        },
     };
 
     if (options.body instanceof FormData) {
@@ -27,6 +51,15 @@ async function apiRequest(path, options = {}) {
     }
 
     return data;
+}
+
+function setApiBase(baseUrl) {
+    if (!baseUrl || typeof baseUrl !== 'string') {
+        throw new Error('API base URL khong hop le.');
+    }
+    const normalized = baseUrl.trim().replace(/\/$/, '');
+    localStorage.setItem('qlsv_api_base', normalized);
+    return normalized;
 }
 
 function showAlert(elementId, message, type = 'success') {
@@ -111,3 +144,5 @@ window.requireRole = requireRole;
 window.redirectByRole = redirectByRole;
 window.doLogout = doLogout;
 window.setupTabs = setupTabs;
+window.setApiBase = setApiBase;
+window.API_BASE = API_BASE;
