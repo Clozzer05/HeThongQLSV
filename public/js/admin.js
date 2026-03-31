@@ -7,8 +7,6 @@ let state = {
     announcements: [],
 };
 
-
-// Chức năng chuyển tab cho giao diện admin
 function setupTabs() {
     const tabLinks = document.querySelectorAll('.tab-link');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -23,7 +21,7 @@ function setupTabs() {
             if (content) content.style.display = '';
         });
     });
-    // Hiển thị tab đầu tiên khi load trang
+
     const firstTab = document.querySelector('.tab-link');
     if (firstTab) {
         const firstContent = document.getElementById('tab-' + firstTab.getAttribute('data-tab'));

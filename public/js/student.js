@@ -1,7 +1,5 @@
 let myClasses = [];
 
-
-// Chức năng chuyển tab cho giao diện student
 function setupTabs() {
     const tabLinks = document.querySelectorAll('.tab-link');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -16,7 +14,32 @@ function setupTabs() {
             if (content) content.style.display = '';
         });
     });
+
+    tabContents.forEach((tc, idx) => {
+        tc.style.display = idx === 0 ? '' : 'none';
+    });
 }
+
+async function loadMaterials() {
+    const mats = (await apiRequest('/student/materials')).data;
+    document.getElementById('materialTable').innerHTML = mats.map((m) => `
+        <tr>
+            <td>${m.id}</td>
+            <td>${escapeHtml(m.tieu_de)}</td>
+            <td>${escapeHtml(m.ten_lop || '')}</td>
+            <td><a href="${escapeHtml(m.duong_dan_file)}" target="_blank" class="btn btn-primary btn-sm">Tải về</a></td>
+        </tr>
+    `).join('');
+}
+
+(function bindMaterialTab() {
+    const tab = document.querySelector('[data-tab="materials"]');
+    if (tab) {
+        tab.addEventListener('click', function() {
+            loadMaterials();
+        });
+    }
+})();
 
 (async function init() {
     const me = await requireRole('sv');
@@ -84,7 +107,6 @@ async function loadClassDetail() {
 
     const detail = (await apiRequest(`/student/classes/${classId}`)).data;
 
-    // Hiển thị thông tin giảng viên và thời khóa biểu
     const infoDiv = document.getElementById('classInfoBox');
     if (infoDiv) {
         let html = '';
@@ -105,7 +127,20 @@ async function loadClassDetail() {
     }
 
     document.getElementById('detailMaterials').innerHTML = detail.tai_lieu
-        .map((t) => `<li>${escapeHtml(t.tieu_de)} - ${escapeHtml(t.duong_dan_file)}</li>`)
+        .map((t) => {
+            let fileName = t.duong_dan_file;
+            
+            let fileUrl = fileName.startsWith('/') || fileName.startsWith('http')
+                ? fileName
+                : '/HeThongQLSV/public/uploads/tai_lieu/' + fileName;
+            return `
+                <tr>
+                    <td>${escapeHtml(t.tieu_de)}</td>
+                    <td>${escapeHtml(fileName)}</td>
+                    <td><a href="${escapeHtml(fileUrl)}" target="_blank" class="btn btn-primary btn-sm">Tải về</a></td>
+                </tr>
+            `;
+        })
         .join('');
 
     document.getElementById('detailAnnouncements').innerHTML = detail.thong_bao
@@ -154,3 +189,4 @@ async function loadAnnouncements() {
 window.enrollClass = enrollClass;
 window.setDetailClass = setDetailClass;
 window.submitAssignment = submitAssignment;
+

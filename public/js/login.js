@@ -5,7 +5,6 @@ const alertDiv = document.getElementById('loginAlert');
 const inputUser = document.getElementById('ten_dang_nhap');
 const inputPass = document.getElementById('mat_khau');
 
-// Tự động focus vào ô nhập đầu tiên
 window.addEventListener('DOMContentLoaded', () => {
     inputUser.focus();
 });
@@ -17,7 +16,6 @@ window.addEventListener('DOMContentLoaded', () => {
     } catch (error) {}
 })();
 
-// Ẩn alert khi nhập lại
 inputUser.addEventListener('input', () => alertDiv.classList.add('hidden'));
 inputPass.addEventListener('input', () => alertDiv.classList.add('hidden'));
 

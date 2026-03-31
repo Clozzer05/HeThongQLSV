@@ -1,8 +1,6 @@
 let classes = [];
 let activeAssignmentId = null;
 
-
-// Chức năng chuyển tab cho giao diện giáo viên
 function setupTabs() {
     const tabLinks = document.querySelectorAll('.tab-link');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -17,7 +15,7 @@ function setupTabs() {
             if (content) content.style.display = '';
         });
     });
-    // Hiển thị tab đầu tiên khi load trang
+
     const firstTab = document.querySelector('.tab-link');
     if (firstTab) {
         const firstContent = document.getElementById('tab-' + firstTab.getAttribute('data-tab'));
@@ -42,13 +40,57 @@ function setupTabs() {
 })();
 
 function bindEvents() {
-    document.getElementById('btnLoadAtt').addEventListener('click', loadAttendanceStudents);
-    document.getElementById('btnSaveAtt').addEventListener('click', saveAttendance);
+    document.getElementById('btnLoadAtt').addEventListener('click', function(e) {
+        e.preventDefault();
+        loadAttendanceStudents();
+    });
+    document.getElementById('btnSaveAtt').addEventListener('click', function(e) {
+        e.preventDefault();
+        saveAttendance();
+    });
     document.getElementById('assignmentForm').addEventListener('submit', saveAssignment);
-    document.getElementById('btnLoadGrades').addEventListener('click', loadGradeStudents);
+    document.getElementById('btnLoadGrades').addEventListener('click', function(e) {
+        e.preventDefault();
+        loadGradeStudents();
+    });
     document.getElementById('btnSaveGrades').addEventListener('click', saveGrades);
     document.getElementById('materialForm').addEventListener('submit', saveMaterial);
     document.getElementById('annForm').addEventListener('submit', saveAnnouncement);
+    document.getElementById('btnShowAttHistory').addEventListener('click', showAttendanceHistoryModal);
+    document.getElementById('closeAttHistory').addEventListener('click', closeAttendanceHistoryModal);
+
+    document.getElementById('attHistoryModal').addEventListener('click', function(e) {
+        if (e.target === this) closeAttendanceHistoryModal();
+    });
+}
+
+async function showAttendanceHistoryModal() {
+    const classId = document.getElementById('attClass').value;
+    if (!classId) return;
+
+    const res = await apiRequest(`/teacher/attendance/${classId}`);
+    const data = res.data || [];
+
+    document.getElementById('attHistoryTable').innerHTML = data.map(row => `
+        <tr>
+            <td>${escapeHtml(row.ngay_diem_danh)}</td>
+            <td>${escapeHtml(row.ho_ten)}</td>
+            <td>${escapeHtml(row.email || '')}</td>
+            <td>${renderTrangThai(row.trang_thai)}</td>
+        </tr>
+    `).join('');
+    document.getElementById('attHistoryModal').style.display = 'block';
+}
+
+function closeAttendanceHistoryModal() {
+    document.getElementById('attHistoryModal').style.display = 'none';
+}
+
+function renderTrangThai(tt) {
+    if (tt === 'co_mat') return 'Có mặt';
+    if (tt === 'vang_co_phep') return 'Vắng có phép';
+    if (tt === 'vang_khong_phep') return 'Vắng không phép';
+    return tt;
 }
 
 async function loadClasses() {
@@ -68,16 +110,22 @@ async function loadClasses() {
 
 async function loadAttendanceStudents() {
     const classId = document.getElementById('attClass').value;
+    document.getElementById('attTable').innerHTML = '';
+    if (!classId) return;
     const students = (await apiRequest(`/teacher/classes/${classId}/students`)).data;
+    if (!students || students.length === 0) {
+        document.getElementById('attTable').innerHTML = '<tr><td colspan="3" style="text-align:center;color:#888;">Lớp này chưa có sinh viên đăng ký.</td></tr>';
+        return;
+    }
     document.getElementById('attTable').innerHTML = students.map((s) => `
         <tr>
             <td>${escapeHtml(s.ho_ten)}</td>
             <td>${escapeHtml(s.email || '')}</td>
             <td>
                 <select data-svid="${s.id}">
-                    <option value="co_mat">Co mat</option>
-                    <option value="vang_co_phep">Vang co phep</option>
-                    <option value="vang_khong_phep">Vang khong phep</option>
+                    <option value="co_mat">Có mặt</option>
+                    <option value="vang_co_phep">Vắng có phép</option>
+                    <option value="vang_khong_phep">Vắng không phép</option>
                 </select>
             </td>
         </tr>
@@ -135,15 +183,25 @@ async function loadSubmissions(assignmentId) {
     activeAssignmentId = assignmentId;
     const subs = (await apiRequest(`/teacher/assignments/${assignmentId}/submissions`)).data;
 
-    document.getElementById('submissionTable').innerHTML = subs.map((s) => `
-        <tr>
-            <td>${escapeHtml(s.ho_ten)}</td>
-            <td>${escapeHtml(s.file_bai_lam || '')}</td>
-            <td><input id="score-${s.id}" type="number" step="0.1" value="${s.diem ?? ''}"></td>
-            <td><input id="fb-${s.id}" value="${escapeHtml(s.nhan_xet || '')}"></td>
-            <td><button class="btn btn-success btn-sm" onclick="saveSubmissionScore(${s.id})">Luu</button></td>
-        </tr>
-    `).join('');
+    document.getElementById('submissionTable').innerHTML = subs.map((s, idx) => {
+        let fileNameCell = '';
+        let fileDownloadCell = '';
+        if (s.file_bai_lam) {
+            let fileUrl = '/HeThongQLSV/public/uploads/bai_nop/' + s.file_bai_lam;
+            fileNameCell = `<span style='font-size:13px;'>${escapeHtml(s.file_bai_lam)}</span>`;
+            fileDownloadCell = `<a href="${escapeHtml(fileUrl)}" target="_blank" class="btn btn-primary btn-sm">Tải về</a>`;
+        }
+        return `
+            <tr style="background:${idx%2===0?'#f9fbff':'#fff'};">
+                <td style="text-align:center;">${escapeHtml(s.ho_ten)}</td>
+                <td style="text-align:center;">${fileNameCell}</td>
+                <td style="text-align:center;">${fileDownloadCell}</td>
+                <td style="text-align:center;"><input id="score-${s.id}" type="number" step="0.1" value="${s.diem ?? ''}" style="width:60px;padding:4px 8px;border-radius:6px;border:1px solid #ccc;text-align:center;"></td>
+                <td style="text-align:center;"><input id="fb-${s.id}" value="${escapeHtml(s.nhan_xet || '')}" style="width:120px;padding:4px 8px;border-radius:6px;border:1px solid #ccc;"></td>
+                <td style="text-align:center;"><button class="btn btn-success btn-sm" style="padding:4px 12px;min-width:48px;" onclick="saveSubmissionScore(${s.id})">Lưu</button></td>
+            </tr>
+        `;
+    }).join('');
 }
 
 async function saveSubmissionScore(id) {
@@ -227,6 +285,7 @@ async function loadAnnouncements() {
         <tr>
             <td>${a.id}</td>
             <td>${escapeHtml(a.tieu_de)}</td>
+            <td>${escapeHtml(a.noi_dung || '')}</td>
             <td>${escapeHtml(a.ten_lop || '')}</td>
             <td><button class="btn btn-danger btn-sm" onclick="deleteAnnouncement(${a.id})">Xoa</button></td>
         </tr>

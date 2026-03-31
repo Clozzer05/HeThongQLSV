@@ -1,3 +1,75 @@
+/* Bảng bài nộp dễ nhìn hơn */
+.easy-mark-table th, .easy-mark-table td {
+    vertical-align: middle !important;
+    font-size: 15px;
+}
+.easy-mark-table input[type="number"], .easy-mark-table input[type="text"] {
+    outline: none;
+    transition: border 0.2s;
+}
+.easy-mark-table input:focus {
+    border: 1.5px solid #007bff;
+    background: #f0f7ff;
+}
+.easy-mark-table .btn.btn-success.btn-sm {
+    font-size: 14px;
+    border-radius: 6px;
+}
+.easy-mark-table .btn.btn-primary.btn-sm {
+    font-size: 14px;
+    border-radius: 6px;
+}
+/* Nút lịch sử điểm danh nổi bật */
+#btnShowAttHistory {
+    background: #17a2b8;
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background 0.18s, color 0.18s;
+    margin-left: 12px;
+    box-shadow: 0 2px 8px rgba(23,162,184,0.08);
+}
+#btnShowAttHistory:hover {
+    background: #138496;
+    color: #fff;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.3);
+}
+.modal-content {
+    background: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 900px;
+    position: relative;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.15);
+}
+.modal-content h3 {
+    margin-top: 0;
+}
+#closeAttHistory {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+}
+#closeAttHistory:hover {
+    color: #e74c3c;
+}
 /* Modern Student Dashboard Styles */
 .modern-student {
     display: flex;
