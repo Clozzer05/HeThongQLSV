@@ -483,9 +483,10 @@ tr:nth-child(even) { background: #fafafa; }
     justify-content: center;
     padding: 20px;
     background-image: linear-gradient(rgba(8, 22, 40, 0.24), rgba(8, 22, 40, 0.24)), url('../images/cover-fit-1.png');
-    background-size: cover;
+    background-size: 82% auto;
     background-position: 65% center;
     background-repeat: no-repeat;
+    background-color: #0b2038;
 }
 
 .auth-card {
@@ -513,6 +514,7 @@ tr:nth-child(even) { background: #fafafa; }
     }
 
     .auth-wrap {
+        background-size: cover;
         background-position: center;
     }
 }
