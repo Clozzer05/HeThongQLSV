@@ -18,7 +18,7 @@ class Database {
                 ]
             );
         } catch (PDOException $e) {
-            die("❌ DB ERROR: " . $e->getMessage());
+            die("DB ERROR: " . $e->getMessage());
         }
     }
 
