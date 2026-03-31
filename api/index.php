@@ -20,7 +20,7 @@ require_once __DIR__ . '/core/Api.php';
 require_once __DIR__ . '/core/Utils.php';
 require_once __DIR__ . '/core/Response.php';
 
-// Allow credentialed requests from local frontend origins.
+
 $allowedOrigins = [
     'http://localhost',
     'http://127.0.0.1',
