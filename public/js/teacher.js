@@ -187,7 +187,7 @@ async function loadSubmissions(assignmentId) {
         let fileNameCell = '';
         let fileDownloadCell = '';
         if (s.file_bai_lam) {
-            let fileUrl = '/HeThongQLSV/public/uploads/bai_nop/' + s.file_bai_lam;
+            let fileUrl = '/public/uploads/bai_nop/' + s.file_bai_lam;
             fileNameCell = `<span style='font-size:13px;'>${escapeHtml(s.file_bai_lam)}</span>`;
             fileDownloadCell = `<a href="${escapeHtml(fileUrl)}" target="_blank" class="btn btn-primary btn-sm">Tải về</a>`;
         }

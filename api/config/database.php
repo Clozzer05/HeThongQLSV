@@ -1,9 +1,6 @@
 <?php
 return [
-    'host' => '127.0.0.1',
-    'port' => 3306,
-    'dbname' => 'quan_ly_sinh_vien',
-    'username' => 'root',
-    'password' => '',
-    'charset' => 'utf8mb4',
+    'dsn' => 'mysql:unix_socket=/cloudsql/php-app-491210:asia-southeast1:qlsv-db;dbname=quan_ly_sinh_vien;charset=utf8mb4',
+    'username' => 'qlsv-db',
+    'password' => '123456Aa@', 
 ];

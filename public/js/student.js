@@ -132,7 +132,7 @@ async function loadClassDetail() {
             
             let fileUrl = fileName.startsWith('/') || fileName.startsWith('http')
                 ? fileName
-                : '/HeThongQLSV/public/uploads/tai_lieu/' + fileName;
+                : '/public/uploads/tai_lieu/' + fileName;
             return `
                 <tr>
                     <td>${escapeHtml(t.tieu_de)}</td>

@@ -1,9 +1,9 @@
 RewriteEngine On
 
-# If file or directory exists, serve it directly.
+# Nếu file hoặc folder tồn tại thì giữ nguyên
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Route every API request to index.php
+# Mọi route trong /api/* sẽ vào front controller
 RewriteRule ^ index.php [QSA,L]

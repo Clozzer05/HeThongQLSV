@@ -1,28 +1,39 @@
 <?php
 
-class Database
-{
-    private static ?PDO $connection = null;
+class Database {
+    private static $instance = null;
+    private $pdo;
 
-    public static function connection(): PDO
-    {
-        if (self::$connection === null) {
-            $config = require __DIR__ . '/../config/database.php';
+    private function __construct() {
+        $config = require __DIR__ . '/../config/database.php';
 
-            $dsn = sprintf(
-                'mysql:host=%s;port=%d;dbname=%s;charset=%s',
-                $config['host'],
-                $config['port'],
-                $config['dbname'],
-                $config['charset']
+        try {
+            $this->pdo = new PDO(
+                $config['dsn'],
+                $config['username'],
+                $config['password'],
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                ]
             );
-
-            self::$connection = new PDO($dsn, $config['username'], $config['password'], [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            ]);
+        } catch (PDOException $e) {
+            die("❌ DB ERROR: " . $e->getMessage());
         }
+    }
 
-        return self::$connection;
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new Database();
+        }
+        return self::$instance;
+    }
+
+    public function getConnection() {
+        return $this->pdo;
+    }
+
+    public static function connection() {
+        return self::getInstance()->getConnection();
     }
 }
