@@ -482,18 +482,13 @@ tr:nth-child(even) { background: #fafafa; }
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background-image: linear-gradient(rgba(8, 22, 40, 0.24), rgba(8, 22, 40, 0.24)), url('../images/cover-fit-1.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: #0b2038;
+    background: #fff;
 }
 
 .auth-card {
     width: 100%;
     max-width: 460px;
-    background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(2px);
+    background: #fff;
     border-radius: 10px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     padding: 24px;
