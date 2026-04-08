@@ -49,6 +49,14 @@ function buildUploadUrl(folder, fileName) {
     return `${resolvePublicBase()}/public/uploads/${folder}/${encodeURIComponent(file)}`;
 }
 
+function buildDownloadUrl(folder, fileName) {
+    const file = (fileName || '').toString().trim();
+    if (!file) {
+        return '';
+    }
+    return `${API_BASE}/files/${encodeURIComponent(folder)}/${encodeURIComponent(file)}`;
+}
+
 async function apiRequest(path, options = {}) {
     const config = {
         method: options.method || 'GET',
@@ -174,4 +182,5 @@ window.doLogout = doLogout;
 window.setupTabs = setupTabs;
 window.setApiBase = setApiBase;
 window.buildUploadUrl = buildUploadUrl;
+window.buildDownloadUrl = buildDownloadUrl;
 window.API_BASE = API_BASE;

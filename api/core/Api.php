@@ -42,6 +42,11 @@ class Api
             return;
         }
 
+        if ($resource === 'files') {
+            $this->fileRoutes($method, $segments);
+            return;
+        }
+
         $this->ensureDb();
 
         if ($resource === 'admin') {
@@ -87,6 +92,43 @@ class Api
         }
 
         Response::error('Auth endpoint khong ton tai.', 404);
+    }
+
+    private function fileRoutes(string $method, array $segments): void
+    {
+        if ($method !== 'GET') {
+            Response::error('Files endpoint khong ton tai.', 404);
+            return;
+        }
+
+        if (!isset($_SESSION['user'])) {
+            Response::error('Chua dang nhap.', 401);
+            return;
+        }
+
+        $folder = (string) ($segments[1] ?? '');
+        $fileNameRaw = (string) ($segments[2] ?? '');
+        $allowedFolders = ['tai_lieu', 'bai_tap', 'bai_nop'];
+
+        if ($folder === '' || $fileNameRaw === '' || !in_array($folder, $allowedFolders, true)) {
+            Response::error('File khong hop le.', 422);
+            return;
+        }
+
+        $fileName = basename(urldecode($fileNameRaw));
+        $filePath = dirname(__DIR__, 2) . '/public/uploads/' . $folder . '/' . $fileName;
+
+        if (!is_file($filePath)) {
+            Response::error('Khong tim thay file.', 404);
+            return;
+        }
+
+        $mimeType = mime_content_type($filePath) ?: 'application/octet-stream';
+        header('Content-Type: ' . $mimeType);
+        header('Content-Length: ' . (string) filesize($filePath));
+        header("Content-Disposition: attachment; filename*=UTF-8''" . rawurlencode($fileName));
+        readfile($filePath);
+        exit;
     }
 
     private function body(): array
