@@ -21,6 +21,34 @@ function resolveApiBase() {
 
 const API_BASE = resolveApiBase();
 
+function resolvePublicBase() {
+    try {
+        const apiUrl = new URL(API_BASE, window.location.origin);
+        const basePath = apiUrl.pathname.replace(/\/$/, '').replace(/\/api(?:\/v\d+)?$/i, '');
+        return `${apiUrl.origin}${basePath}`;
+    } catch (error) {
+        const fallback = API_BASE.replace(/\/$/, '').replace(/\/api(?:\/v\d+)?$/i, '');
+        if (fallback.startsWith('http://') || fallback.startsWith('https://')) {
+            return fallback;
+        }
+        if (fallback.startsWith('/')) {
+            return `${window.location.origin}${fallback}`;
+        }
+        return window.location.origin;
+    }
+}
+
+function buildUploadUrl(folder, fileName) {
+    const file = (fileName || '').toString().trim();
+    if (!file) {
+        return '';
+    }
+    if (file.startsWith('http://') || file.startsWith('https://') || file.startsWith('/')) {
+        return file;
+    }
+    return `${resolvePublicBase()}/public/uploads/${folder}/${encodeURIComponent(file)}`;
+}
+
 async function apiRequest(path, options = {}) {
     const config = {
         method: options.method || 'GET',
@@ -145,4 +173,5 @@ window.redirectByRole = redirectByRole;
 window.doLogout = doLogout;
 window.setupTabs = setupTabs;
 window.setApiBase = setApiBase;
+window.buildUploadUrl = buildUploadUrl;
 window.API_BASE = API_BASE;

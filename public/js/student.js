@@ -27,7 +27,7 @@ async function loadMaterials() {
             <td>${m.id}</td>
             <td>${escapeHtml(m.tieu_de)}</td>
             <td>${escapeHtml(m.ten_lop || '')}</td>
-            <td><a href="${escapeHtml(m.duong_dan_file)}" target="_blank" class="btn btn-primary btn-sm">Tải về</a></td>
+            <td><a href="${escapeHtml(buildUploadUrl('tai_lieu', m.duong_dan_file))}" target="_blank" class="btn btn-primary btn-sm">Tải về</a></td>
         </tr>
     `).join('');
 }
@@ -129,10 +129,8 @@ async function loadClassDetail() {
     document.getElementById('detailMaterials').innerHTML = detail.tai_lieu
         .map((t) => {
             let fileName = t.duong_dan_file;
-            
-            let fileUrl = fileName.startsWith('/') || fileName.startsWith('http')
-                ? fileName
-                : '/public/uploads/tai_lieu/' + fileName;
+
+            let fileUrl = buildUploadUrl('tai_lieu', fileName);
             return `
                 <tr>
                     <td>${escapeHtml(t.tieu_de)}</td>
