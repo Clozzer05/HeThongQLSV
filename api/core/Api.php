@@ -115,10 +115,9 @@ class Api
             return;
         }
 
-        $fileName = basename(urldecode($fileNameRaw));
-        $filePath = dirname(__DIR__, 2) . '/public/uploads/' . $folder . '/' . $fileName;
+        [$filePath, $fileName] = $this->resolveDownloadFile($folder, $fileNameRaw, $allowedFolders);
 
-        if (!is_file($filePath)) {
+        if ($filePath === null || !is_file($filePath)) {
             Response::error('Khong tim thay file.', 404);
             return;
         }
@@ -138,6 +137,70 @@ class Api
         header("Content-Disposition: attachment; filename*=UTF-8''" . rawurlencode($fileName));
         readfile($filePath);
         exit;
+    }
+
+    private function resolveDownloadFile(string $folder, string $fileNameRaw, array $allowedFolders): array
+    {
+        $uploadsRoot = dirname(__DIR__, 2) . '/public/uploads/';
+        $attempts = [];
+
+        $values = [$fileNameRaw];
+        $decoded = $fileNameRaw;
+        for ($i = 0; $i < 3; $i++) {
+            $next = rawurldecode($decoded);
+            if ($next === $decoded) {
+                break;
+            }
+            $values[] = $next;
+            $decoded = $next;
+        }
+
+        foreach ($values as $value) {
+            $value = trim((string) $value);
+            if ($value === '') {
+                continue;
+            }
+
+            $value = str_replace('\\', '/', $value);
+            $urlPath = parse_url($value, PHP_URL_PATH);
+            if (is_string($urlPath) && $urlPath !== '') {
+                $value = $urlPath;
+            }
+
+            $value = trim($value, " \t\n\r\0\x0B\"'");
+            if ($value === '') {
+                continue;
+            }
+
+            $parts = array_values(array_filter(explode('/', $value), static fn($p) => $p !== ''));
+            $baseName = end($parts) ?: '';
+            if ($baseName !== '') {
+                $attempts[] = [$folder, $baseName];
+            }
+
+            if (count($parts) >= 2) {
+                $parent = $parts[count($parts) - 2];
+                if (in_array($parent, $allowedFolders, true) && $baseName !== '') {
+                    $attempts[] = [$parent, $baseName];
+                }
+            }
+        }
+
+        $seen = [];
+        foreach ($attempts as [$tryFolder, $tryName]) {
+            $key = $tryFolder . '|' . $tryName;
+            if (isset($seen[$key])) {
+                continue;
+            }
+            $seen[$key] = true;
+
+            $fullPath = $uploadsRoot . $tryFolder . '/' . $tryName;
+            if (is_file($fullPath)) {
+                return [$fullPath, $tryName];
+            }
+        }
+
+        return [null, ''];
     }
 
     private function body(): array
