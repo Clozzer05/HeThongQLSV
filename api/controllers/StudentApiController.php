@@ -180,8 +180,7 @@ class StudentApiController extends BaseApiController
             LEFT JOIN nguoi_dung nd ON nd.id = lh.id_giao_vien
             WHERE lh.id = :id');
         $lopStmt->execute(['id' => $idLop]);
-        // Lấy thời khóa biểu (giả sử có bảng thoi_khoa_bieu hoặc thông tin lịch học trong lop_hoc)
-        // Nếu không có bảng riêng, có thể trả về thông tin mẫu hoặc trường hoc_ky, si_so_toi_da, ...
+
         $tkbStmt = $this->db->prepare('SELECT * FROM thoi_khoa_bieu WHERE id_lop = :lop ORDER BY thu, tiet_bat_dau');
         try {
             $tkbStmt->execute(['lop' => $idLop]);

@@ -6,7 +6,7 @@ require_once __DIR__ . '/../core/Response.php';
 
 abstract class BaseApiController
 {
-    protected const MAX_UPLOAD_BYTES = 20971520; // 20MB
+    protected const MAX_UPLOAD_BYTES = 20971520; 
 
     protected PDO $db;
 
