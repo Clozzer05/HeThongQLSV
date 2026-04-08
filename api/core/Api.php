@@ -37,6 +37,11 @@ class Api
             return;
         }
 
+        if ($resource === 'debug') {
+            $this->debugEndpoint($segments);
+            return;
+        }
+
         if ($resource === 'auth') {
             $this->authRoutes($method, $segments);
             return;
@@ -69,6 +74,42 @@ class Api
 
         Response::error('Endpoint khong ton tai.', 404);
     }
+
+    private function debugEndpoint(array $segments): void
+    {
+        $action = $segments[1] ?? '';
+
+        if ($action === 'files') {
+            $files = [];
+            foreach (['tai_lieu', 'bai_tap', 'bai_nop'] as $folder) {
+                $dir = dirname(__DIR__, 2) . '/public/uploads/' . $folder;
+                if (is_dir($dir)) {
+                    $items = scandir($dir);
+                    $files[$folder] = array_values(array_filter($items, static fn($f) => $f !== '.' && $f !== '..' && is_file($dir . '/' . $f)));
+                }
+            }
+            Response::json(['success' => true, 'data' => $files]);
+            return;
+        }
+
+        if ($action === 'db-files') {
+            $this->ensureDb();
+            $data = [];
+            foreach (['tai_lieu' => 'duong_dan_file', 'bai_tap' => 'file_de_bai', 'bai_nop' => 'file_bai_lam'] as $table => $col) {
+                try {
+                    $stmt = $this->db->query("SELECT id, {$col} AS fname FROM {$table} ORDER BY id DESC LIMIT 100");
+                    $data[$table] = $stmt->fetchAll();
+                } catch (Throwable $e) {
+                    $data[$table] = ['error' => $e->getMessage()];
+                }
+            }
+            Response::json(['success' => true, 'data' => $data]);
+            return;
+        }
+
+        Response::error('Debug action khong ton tai.', 404);
+    }
+
 
     private function authRoutes(string $method, array $segments): void
     {
@@ -107,7 +148,7 @@ class Api
         }
 
         $folder = (string) ($segments[1] ?? '');
-        $fileNameRaw = (string) ($segments[2] ?? '');
+        $fileNameRaw = implode('/', array_slice($segments, 2));
         $allowedFolders = ['tai_lieu', 'bai_tap', 'bai_nop'];
 
         if ($folder === '' || $fileNameRaw === '' || !in_array($folder, $allowedFolders, true)) {
@@ -118,6 +159,7 @@ class Api
         [$filePath, $fileName] = $this->resolveDownloadFile($folder, $fileNameRaw, $allowedFolders);
 
         if ($filePath === null || !is_file($filePath)) {
+            error_log("[DOWNLOAD_404] folder={$folder}, fileNameRaw={$fileNameRaw}, resolved={$fileName}, attempted_path=" . ($filePath ?? 'null'));
             Response::error('Khong tim thay file.', 404);
             return;
         }
@@ -141,6 +183,7 @@ class Api
 
     private function resolveDownloadFile(string $folder, string $fileNameRaw, array $allowedFolders): array
     {
+        error_log("[RESOLVE_START] folder={$folder}, fileNameRaw={$fileNameRaw}");
         $uploadsRoot = dirname(__DIR__, 2) . '/public/uploads/';
         $attempts = [];
 
@@ -196,10 +239,13 @@ class Api
 
             $fullPath = $uploadsRoot . $tryFolder . '/' . $tryName;
             if (is_file($fullPath)) {
+                error_log("[DOWNLOAD_FOUND] {$fullPath}");
                 return [$fullPath, $tryName];
             }
+            error_log("[DOWNLOAD_ATTEMPT_FAIL] {$fullPath}");
         }
 
+        error_log("[DOWNLOAD_ALL_ATTEMPTS_FAILED] fileNameRaw={$fileNameRaw}, attempts_count=" . count($attempts));
         return [null, ''];
     }
 
