@@ -229,11 +229,26 @@ async function saveMaterial(e) {
     const fd = new FormData();
     fd.append('tieu_de', document.getElementById('m_title').value);
     fd.append('id_lop', document.getElementById('m_class').value);
-    fd.append('file_upload', document.getElementById('m_file').files[0]);
-    await apiRequest('/admin/materials', { method: 'POST', body: fd });
-    e.target.reset();
-    await loadMaterials();
-    showAlert('globalAlert', 'Da them tai lieu.');
+    const file = document.getElementById('m_file').files[0];
+    if (!file) {
+        showAlert('globalAlert', 'Vui long chon file tai lieu.', 'error');
+        return;
+    }
+    const validation = validateUploadFile(file);
+    if (!validation.ok) {
+        showAlert('globalAlert', validation.message, 'error');
+        return;
+    }
+    fd.append('file_upload', file);
+
+    try {
+        await apiRequest('/admin/materials', { method: 'POST', body: fd });
+        e.target.reset();
+        await loadMaterials();
+        showAlert('globalAlert', 'Da them tai lieu.');
+    } catch (error) {
+        showAlert('globalAlert', error.message || 'Upload tai lieu that bai.', 'error');
+    }
 }
 
 async function saveAnnouncement(e) {

@@ -390,6 +390,11 @@ class AdminApiController extends BaseApiController
                 return;
             }
 
+            $this->validateUploadedFile(
+                $_FILES['file_upload'],
+                ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'csv', 'zip', 'rar', '7z', 'jpg', 'jpeg', 'png']
+            );
+
             $idLop = !empty($_POST['id_lop']) ? (int) $_POST['id_lop'] : null;
             $fileName = $this->saveUploadedFile($_FILES['file_upload'], 'tai_lieu');
             $stmt = $this->db->prepare('INSERT INTO tai_lieu (tieu_de, duong_dan_file, nguoi_upload, id_lop)

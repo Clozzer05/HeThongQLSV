@@ -6,6 +6,8 @@ require_once __DIR__ . '/../core/Response.php';
 
 abstract class BaseApiController
 {
+    protected const MAX_UPLOAD_BYTES = 20971520; // 20MB
+
     protected PDO $db;
 
     public function __construct(PDO $db)
@@ -47,6 +49,9 @@ abstract class BaseApiController
 
         $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
         $base = preg_replace('/[^A-Za-z0-9._-]/', '', pathinfo($file['name'], PATHINFO_FILENAME));
+        if ($base === '') {
+            $base = 'file';
+        }
         $name = time() . '_' . $base . ($ext ? '.' . $ext : '');
 
         if (!move_uploaded_file($file['tmp_name'], $dir . $name)) {
@@ -55,6 +60,27 @@ abstract class BaseApiController
         }
 
         return $name;
+    }
+
+    protected function validateUploadedFile(array $file, array $allowedExtensions, int $maxBytes = self::MAX_UPLOAD_BYTES): void
+    {
+        $size = (int) ($file['size'] ?? 0);
+        if ($size <= 0) {
+            Response::error('File upload khong hop le hoac rong.', 422);
+            exit;
+        }
+
+        if ($size > $maxBytes) {
+            $maxMb = (int) floor($maxBytes / (1024 * 1024));
+            Response::error('File vuot qua dung luong toi da ' . $maxMb . 'MB.', 422);
+            exit;
+        }
+
+        $extension = strtolower((string) pathinfo((string) ($file['name'] ?? ''), PATHINFO_EXTENSION));
+        if ($extension === '' || !in_array($extension, $allowedExtensions, true)) {
+            Response::error('Dinh dang file khong duoc ho tro. Cho phep: ' . implode(', ', $allowedExtensions) . '.', 422);
+            exit;
+        }
     }
 
     protected function uploadErrorMessage(int $errorCode): string

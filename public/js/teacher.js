@@ -171,12 +171,23 @@ async function saveAssignment(e) {
     fd.append('mo_ta', document.getElementById('asDesc').value);
     fd.append('han_nop', document.getElementById('asDeadline').value);
     const file = document.getElementById('asFile').files[0];
-    if (file) fd.append('file_de_bai', file);
+    if (file) {
+        const validation = validateUploadFile(file);
+        if (!validation.ok) {
+            showAlert('globalAlert', validation.message, 'error');
+            return;
+        }
+        fd.append('file_de_bai', file);
+    }
 
-    await apiRequest('/teacher/assignments', { method: 'POST', body: fd });
-    e.target.reset();
-    await loadAssignments();
-    showAlert('globalAlert', 'Da tao bai tap.');
+    try {
+        await apiRequest('/teacher/assignments', { method: 'POST', body: fd });
+        e.target.reset();
+        await loadAssignments();
+        showAlert('globalAlert', 'Da tao bai tap.');
+    } catch (error) {
+        showAlert('globalAlert', error.message || 'Upload de bai that bai.', 'error');
+    }
 }
 
 async function loadSubmissions(assignmentId) {
@@ -269,11 +280,26 @@ async function saveMaterial(e) {
     const fd = new FormData();
     fd.append('id_lop', document.getElementById('mClass').value);
     fd.append('tieu_de', document.getElementById('mTitle').value);
-    fd.append('file_upload', document.getElementById('mFile').files[0]);
-    await apiRequest('/teacher/materials', { method: 'POST', body: fd });
-    e.target.reset();
-    await loadMaterials();
-    showAlert('globalAlert', 'Da them tai lieu.');
+    const file = document.getElementById('mFile').files[0];
+    if (!file) {
+        showAlert('globalAlert', 'Vui long chon file tai lieu.', 'error');
+        return;
+    }
+    const validation = validateUploadFile(file);
+    if (!validation.ok) {
+        showAlert('globalAlert', validation.message, 'error');
+        return;
+    }
+    fd.append('file_upload', file);
+
+    try {
+        await apiRequest('/teacher/materials', { method: 'POST', body: fd });
+        e.target.reset();
+        await loadMaterials();
+        showAlert('globalAlert', 'Da them tai lieu.');
+    } catch (error) {
+        showAlert('globalAlert', error.message || 'Upload tai lieu that bai.', 'error');
+    }
 }
 
 async function deleteMaterial(id) {

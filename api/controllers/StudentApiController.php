@@ -230,6 +230,11 @@ class StudentApiController extends BaseApiController
             return;
         }
 
+        $this->validateUploadedFile(
+            $_FILES['file'],
+            ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'csv', 'zip', 'rar', '7z', 'jpg', 'jpeg', 'png']
+        );
+
         $fileName = $this->saveUploadedFile($_FILES['file'], 'bai_nop');
 
         $stmt = $this->db->prepare('SELECT id FROM bai_nop WHERE id_bai_tap = :bt AND id_sinh_vien = :sv LIMIT 1');

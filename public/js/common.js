@@ -20,6 +20,8 @@ function resolveApiBase() {
 }
 
 const API_BASE = resolveApiBase();
+const UPLOAD_MAX_BYTES = 20 * 1024 * 1024;
+const UPLOAD_ALLOWED_EXTENSIONS = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'csv', 'zip', 'rar', '7z', 'jpg', 'jpeg', 'png'];
 
 function resolvePublicBase() {
     try {
@@ -96,6 +98,36 @@ function setApiBase(baseUrl) {
     const normalized = baseUrl.trim().replace(/\/$/, '');
     localStorage.setItem('qlsv_api_base', normalized);
     return normalized;
+}
+
+function validateUploadFile(file, options = {}) {
+    const maxBytes = Number(options.maxBytes || UPLOAD_MAX_BYTES);
+    const allowedExtensions = Array.isArray(options.allowedExtensions) && options.allowedExtensions.length > 0
+        ? options.allowedExtensions
+        : UPLOAD_ALLOWED_EXTENSIONS;
+
+    if (!file) {
+        return { ok: false, message: 'Vui long chon file.' };
+    }
+
+    if (!file.name || !file.name.includes('.')) {
+        return { ok: false, message: 'Ten file khong hop le.' };
+    }
+
+    const extension = file.name.split('.').pop().toLowerCase();
+    if (!allowedExtensions.includes(extension)) {
+        return {
+            ok: false,
+            message: `Dinh dang file khong duoc ho tro. Cho phep: ${allowedExtensions.join(', ')}.`,
+        };
+    }
+
+    if (file.size > maxBytes) {
+        const maxMb = Math.floor(maxBytes / (1024 * 1024));
+        return { ok: false, message: `File vuot qua dung luong toi da ${maxMb}MB.` };
+    }
+
+    return { ok: true };
 }
 
 function showAlert(elementId, message, type = 'success') {
@@ -184,3 +216,6 @@ window.setApiBase = setApiBase;
 window.buildUploadUrl = buildUploadUrl;
 window.buildDownloadUrl = buildDownloadUrl;
 window.API_BASE = API_BASE;
+window.UPLOAD_MAX_BYTES = UPLOAD_MAX_BYTES;
+window.UPLOAD_ALLOWED_EXTENSIONS = UPLOAD_ALLOWED_EXTENSIONS;
+window.validateUploadFile = validateUploadFile;

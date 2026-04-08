@@ -181,7 +181,16 @@ class TeacherApiController extends BaseApiController
             $idLop = (int) ($_POST['id_lop'] ?? 0);
             $this->assertTeacherClass($teacherId, $idLop);
             $fileName = null;
-            if (isset($_FILES['file_de_bai']) && $_FILES['file_de_bai']['error'] === 0) {
+            if (isset($_FILES['file_de_bai'])) {
+                $uploadError = (int) ($_FILES['file_de_bai']['error'] ?? UPLOAD_ERR_NO_FILE);
+                if ($uploadError !== UPLOAD_ERR_OK) {
+                    Response::error($this->uploadErrorMessage($uploadError), 422);
+                    return;
+                }
+                $this->validateUploadedFile(
+                    $_FILES['file_de_bai'],
+                    ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'csv', 'zip', 'rar', '7z', 'jpg', 'jpeg', 'png']
+                );
                 $fileName = $this->saveUploadedFile($_FILES['file_de_bai'], 'bai_tap');
             }
 
@@ -341,6 +350,11 @@ class TeacherApiController extends BaseApiController
                 Response::error($this->uploadErrorMessage((int) $_FILES['file_upload']['error']), 422);
                 return;
             }
+
+            $this->validateUploadedFile(
+                $_FILES['file_upload'],
+                ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'csv', 'zip', 'rar', '7z', 'jpg', 'jpeg', 'png']
+            );
 
             $idLop = !empty($_POST['id_lop']) ? (int) $_POST['id_lop'] : null;
             if ($idLop !== null) {

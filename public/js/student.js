@@ -151,7 +151,7 @@ async function loadClassDetail() {
             <td>${escapeHtml(a.han_nop || '')}</td>
             <td>${a.da_nop ? 'Da nop' : 'Chua nop'}</td>
             <td>
-                <input type="file" id="file-${a.id}">
+                <input type="file" id="file-${a.id}" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png">
                 <button class="btn btn-success btn-sm" onclick="submitAssignment(${a.id})">Nop</button>
             </td>
         </tr>
@@ -166,10 +166,20 @@ async function submitAssignment(id) {
     }
 
     const fd = new FormData();
-    fd.append('file', input.files[0]);
-    await apiRequest(`/student/assignments/${id}/submit`, { method: 'POST', body: fd });
-    showAlert('globalAlert', 'Nop bai thanh cong.');
-    await loadClassDetail();
+    const file = input.files[0];
+    const validation = validateUploadFile(file);
+    if (!validation.ok) {
+        showAlert('globalAlert', validation.message, 'error');
+        return;
+    }
+    fd.append('file', file);
+    try {
+        await apiRequest(`/student/assignments/${id}/submit`, { method: 'POST', body: fd });
+        showAlert('globalAlert', 'Nop bai thanh cong.');
+        await loadClassDetail();
+    } catch (error) {
+        showAlert('globalAlert', error.message || 'Nop bai that bai.', 'error');
+    }
 }
 
 async function loadAnnouncements() {
