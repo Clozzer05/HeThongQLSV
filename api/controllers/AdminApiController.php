@@ -380,8 +380,13 @@ class AdminApiController extends BaseApiController
         }
 
         if ($method === 'POST' && $id === null) {
-            if (!isset($_FILES['file_upload']) || $_FILES['file_upload']['error'] !== 0) {
+            if (!isset($_FILES['file_upload'])) {
                 Response::error('Vui long chon file tai lieu.', 422);
+                return;
+            }
+
+            if ((int) $_FILES['file_upload']['error'] !== UPLOAD_ERR_OK) {
+                Response::error($this->uploadErrorMessage((int) $_FILES['file_upload']['error']), 422);
                 return;
             }
 

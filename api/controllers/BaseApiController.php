@@ -31,6 +31,20 @@ abstract class BaseApiController
             mkdir($dir, 0777, true);
         }
 
+        if (!is_writable($dir)) {
+            @chmod($dir, 0777);
+        }
+
+        if (!is_uploaded_file($file['tmp_name'] ?? '')) {
+            Response::error('File upload khong hop le.', 422);
+            exit;
+        }
+
+        if (!is_writable($dir)) {
+            Response::error('Thu muc upload khong co quyen ghi: ' . $dir, 500);
+            exit;
+        }
+
         $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
         $base = preg_replace('/[^A-Za-z0-9._-]/', '', pathinfo($file['name'], PATHINFO_FILENAME));
         $name = time() . '_' . $base . ($ext ? '.' . $ext : '');
@@ -41,6 +55,19 @@ abstract class BaseApiController
         }
 
         return $name;
+    }
+
+    protected function uploadErrorMessage(int $errorCode): string
+    {
+        return match ($errorCode) {
+            UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'File qua lon. Vui long tang upload_max_filesize/post_max_size hoac chon file nho hon.',
+            UPLOAD_ERR_PARTIAL => 'File chi duoc upload mot phan. Vui long thu lai.',
+            UPLOAD_ERR_NO_FILE => 'Vui long chon file.',
+            UPLOAD_ERR_NO_TMP_DIR => 'Server thieu thu muc tam de upload.',
+            UPLOAD_ERR_CANT_WRITE => 'Server khong the ghi file upload (quyen ghi).',
+            UPLOAD_ERR_EXTENSION => 'Upload bi chan boi PHP extension.',
+            default => 'Upload that bai (ma loi: ' . $errorCode . ').',
+        };
     }
 
     protected function assertTeacherClass(int $teacherId, int $classId): void

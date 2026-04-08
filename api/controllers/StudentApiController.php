@@ -220,8 +220,13 @@ class StudentApiController extends BaseApiController
 
     private function submitAssignment(int $studentId, int $assignmentId): void
     {
-        if (!isset($_FILES['file']) || $_FILES['file']['error'] !== 0) {
+        if (!isset($_FILES['file'])) {
             Response::error('Vui long chon file bai nop.', 422);
+            return;
+        }
+
+        if ((int) $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
+            Response::error($this->uploadErrorMessage((int) $_FILES['file']['error']), 422);
             return;
         }
 
