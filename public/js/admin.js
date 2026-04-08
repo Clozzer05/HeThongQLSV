@@ -151,7 +151,10 @@ function renderMaterials() {
             <td>${escapeHtml(m.tieu_de)}</td>
             <td>${escapeHtml(m.ten_lop || 'Tat ca')}</td>
             <td>${escapeHtml(m.duong_dan_file || '')}</td>
-            <td><button class="btn btn-danger btn-sm" onclick='deleteMaterial(${m.id})'>Xoa</button></td>
+            <td>
+                ${m.duong_dan_file ? `<a href="${escapeHtml(buildDownloadUrl('tai_lieu', m.duong_dan_file))}" target="_blank" class="btn btn-primary btn-sm">Tai ve</a>` : ''}
+                <button class="btn btn-danger btn-sm" onclick='deleteMaterial(${m.id})'>Xoa</button>
+            </td>
         </tr>
     `).join('');
 }

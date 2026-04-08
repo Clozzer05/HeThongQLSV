@@ -123,9 +123,18 @@ class Api
             return;
         }
 
-        $mimeType = mime_content_type($filePath) ?: 'application/octet-stream';
+        $mimeType = 'application/octet-stream';
+        if (function_exists('mime_content_type')) {
+            $detected = mime_content_type($filePath);
+            if (is_string($detected) && $detected !== '') {
+                $mimeType = $detected;
+            }
+        }
         header('Content-Type: ' . $mimeType);
         header('Content-Length: ' . (string) filesize($filePath));
+        header('Content-Transfer-Encoding: binary');
+        header('Cache-Control: private, max-age=0, must-revalidate');
+        header('Pragma: public');
         header("Content-Disposition: attachment; filename*=UTF-8''" . rawurlencode($fileName));
         readfile($filePath);
         exit;
