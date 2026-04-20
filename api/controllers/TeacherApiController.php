@@ -221,19 +221,22 @@ class TeacherApiController extends BaseApiController
         if ($method === 'POST' && ($segments[2] ?? '') === '') {
             $idLop = (int) ($_POST['id_lop'] ?? 0);
             $this->assertTeacherClass($teacherId, $idLop);
-            $fileName = null;
-            if (isset($_FILES['file_de_bai'])) {
-                $uploadError = (int) ($_FILES['file_de_bai']['error'] ?? UPLOAD_ERR_NO_FILE);
-                if ($uploadError !== UPLOAD_ERR_OK) {
-                    Response::error($this->uploadErrorMessage($uploadError), 422);
-                    return;
-                }
-                $this->validateUploadedFile(
-                    $_FILES['file_de_bai'],
-                    ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'csv', 'zip', 'rar', '7z', 'jpg', 'jpeg', 'png']
-                );
-                $fileName = $this->saveUploadedFile($_FILES['file_de_bai'], 'bai_tap');
+            if (!isset($_FILES['file_de_bai'])) {
+                Response::error('Vui long dinh kem file de bai de sinh vien tai ve.', 422);
+                return;
             }
+
+            $uploadError = (int) ($_FILES['file_de_bai']['error'] ?? UPLOAD_ERR_NO_FILE);
+            if ($uploadError !== UPLOAD_ERR_OK) {
+                Response::error($this->uploadErrorMessage($uploadError), 422);
+                return;
+            }
+
+            $this->validateUploadedFile(
+                $_FILES['file_de_bai'],
+                ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'csv', 'zip', 'rar', '7z', 'jpg', 'jpeg', 'png']
+            );
+            $fileName = $this->saveUploadedFile($_FILES['file_de_bai'], 'bai_tap');
 
             $stmt = $this->db->prepare('INSERT INTO bai_tap (id_lop, tieu_de, mo_ta, han_nop, file_de_bai)
                                         VALUES (:lop, :td, :mt, :hn, :fd)');

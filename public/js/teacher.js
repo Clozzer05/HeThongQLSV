@@ -171,14 +171,17 @@ async function saveAssignment(e) {
     fd.append('mo_ta', document.getElementById('asDesc').value);
     fd.append('han_nop', document.getElementById('asDeadline').value);
     const file = document.getElementById('asFile').files[0];
-    if (file) {
-        const validation = validateUploadFile(file);
-        if (!validation.ok) {
-            showAlert('globalAlert', validation.message, 'error');
-            return;
-        }
-        fd.append('file_de_bai', file);
+    if (!file) {
+        showAlert('globalAlert', 'Vui long dinh kem file de bai de sinh vien tai ve.', 'error');
+        return;
     }
+
+    const validation = validateUploadFile(file);
+    if (!validation.ok) {
+        showAlert('globalAlert', validation.message, 'error');
+        return;
+    }
+    fd.append('file_de_bai', file);
 
     try {
         await apiRequest('/teacher/assignments', { method: 'POST', body: fd });
