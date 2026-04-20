@@ -165,10 +165,12 @@ async function loadClassDetail() {
             <td>
                 ${a.file_de_bai ? `<a href="${escapeHtml(buildDownloadUrl('bai_tap', a.file_de_bai))}" target="_blank" class="btn btn-primary btn-sm">Tải đề</a>` : '<span style="color:#888;">Không có file</span>'}
             </td>
-            <td>${a.da_nop ? 'Da nop' : 'Chua nop'}</td>
+            <td>
+                <span class="badge ${a.da_nop ? 'badge-success' : 'badge-warning'}">${a.da_nop ? 'Đã nộp' : 'Chưa nộp'}</span>
+            </td>
             <td>
                 <input type="file" id="file-${a.id}" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png">
-                <button class="btn btn-success btn-sm" onclick="submitAssignment(${a.id})">Nop</button>
+                <button class="btn btn-success btn-sm" onclick="submitAssignment(${a.id})">${a.da_nop ? 'Nộp lại' : 'Nộp bài'}</button>
             </td>
         </tr>
     `).join('') || '<tr><td colspan="5" style="text-align:center;color:#888;">Chưa có bài tập cho lớp này.</td></tr>';
