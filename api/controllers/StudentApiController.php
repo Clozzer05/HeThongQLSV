@@ -51,6 +51,11 @@ class StudentApiController extends BaseApiController
             return;
         }
 
+        if ($method === 'GET' && $resource === 'materials') {
+            $this->materials($studentId);
+            return;
+        }
+
         Response::error('Student endpoint khong ton tai.', 404);
     }
 
@@ -172,6 +177,21 @@ class StudentApiController extends BaseApiController
         Response::json(['success' => true, 'data' => $stmt->fetchAll()]);
     }
 
+    private function materials(int $studentId): void
+    {
+        $sql = 'SELECT tl.*, nd.ho_ten AS nguoi_upload_ten, lh.ten_lop
+                FROM tai_lieu tl
+                LEFT JOIN nguoi_dung nd ON nd.id = tl.nguoi_upload
+                LEFT JOIN lop_hoc lh ON lh.id = tl.id_lop
+                WHERE tl.id_lop IS NULL OR tl.id_lop IN (
+                    SELECT id_lop FROM dang_ky WHERE id_sinh_vien = :sv
+                )
+                ORDER BY tl.id DESC';
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['sv' => $studentId]);
+        Response::json(['success' => true, 'data' => $stmt->fetchAll()]);
+    }
+
     private function studentClassDetail(int $studentId, int $idLop): array
     {
         $lopStmt = $this->db->prepare('SELECT lh.*, mh.ten_mon, nd.ho_ten AS ten_giao_vien, nd.email AS email_giao_vien
@@ -192,7 +212,7 @@ class StudentApiController extends BaseApiController
         $gradeStmt = $this->db->prepare('SELECT diem_giua_ky, diem_cuoi_ky FROM dang_ky WHERE id_lop = :lop AND id_sinh_vien = :sv LIMIT 1');
         $gradeStmt->execute(['lop' => $idLop, 'sv' => $studentId]);
 
-        $matStmt = $this->db->prepare('SELECT * FROM tai_lieu WHERE id_lop = :lop ORDER BY id DESC');
+        $matStmt = $this->db->prepare('SELECT * FROM tai_lieu WHERE id_lop = :lop OR id_lop IS NULL ORDER BY id DESC');
         $matStmt->execute(['lop' => $idLop]);
 
         $annStmt = $this->db->prepare('SELECT tb.*, nd.ho_ten AS nguoi_gui_ten
