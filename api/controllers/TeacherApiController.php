@@ -91,20 +91,60 @@ class TeacherApiController extends BaseApiController
             $ngay = (string) ($body['ngay_diem_danh'] ?? '');
             $danhSach = $body['danh_sach'] ?? [];
 
-            $this->assertTeacherClass($teacherId, $idLop);
-            $delete = $this->db->prepare('DELETE FROM diem_danh WHERE id_lop = :lop AND ngay_diem_danh = :ngay');
-            $delete->execute(['lop' => $idLop, 'ngay' => $ngay]);
+            if ($idLop <= 0) {
+                Response::error('id_lop khong hop le.', 422);
+                return;
+            }
 
-            $ins = $this->db->prepare('INSERT INTO diem_danh (id_lop, id_sinh_vien, ngay_diem_danh, trang_thai, ghi_chu)
-                                       VALUES (:lop, :sv, :ngay, :tt, :gc)');
-            foreach ($danhSach as $item) {
-                $ins->execute([
-                    'lop' => $idLop,
-                    'sv' => (int) $item['id_sinh_vien'],
-                    'ngay' => $ngay,
-                    'tt' => $item['trang_thai'] ?? 'co_mat',
-                    'gc' => $item['ghi_chu'] ?? null,
-                ]);
+            if ($ngay === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $ngay)) {
+                Response::error('ngay_diem_danh khong hop le. Dinh dang: YYYY-MM-DD.', 422);
+                return;
+            }
+
+            if (!is_array($danhSach)) {
+                Response::error('danh_sach khong hop le.', 422);
+                return;
+            }
+
+            $this->assertTeacherClass($teacherId, $idLop);
+
+            try {
+                $this->db->beginTransaction();
+
+                $delete = $this->db->prepare('DELETE FROM diem_danh WHERE id_lop = :lop AND ngay_diem_danh = :ngay');
+                $delete->execute(['lop' => $idLop, 'ngay' => $ngay]);
+
+                $ins = $this->db->prepare('INSERT INTO diem_danh (id_lop, id_sinh_vien, ngay_diem_danh, trang_thai, ghi_chu)
+                                           VALUES (:lop, :sv, :ngay, :tt, :gc)');
+                foreach ($danhSach as $item) {
+                    $studentId = (int) ($item['id_sinh_vien'] ?? 0);
+                    if ($studentId <= 0) {
+                        throw new InvalidArgumentException('id_sinh_vien khong hop le trong danh_sach.');
+                    }
+
+                    $ins->execute([
+                        'lop' => $idLop,
+                        'sv' => $studentId,
+                        'ngay' => $ngay,
+                        'tt' => $item['trang_thai'] ?? 'co_mat',
+                        'gc' => $item['ghi_chu'] ?? null,
+                    ]);
+                }
+
+                $this->db->commit();
+            } catch (InvalidArgumentException $e) {
+                if ($this->db->inTransaction()) {
+                    $this->db->rollBack();
+                }
+                Response::error($e->getMessage(), 422);
+                return;
+            } catch (PDOException $e) {
+                if ($this->db->inTransaction()) {
+                    $this->db->rollBack();
+                }
+                error_log('[TEACHER_ATTENDANCE_DB_ERROR] ' . $e->getMessage());
+                Response::error('Khong the luu diem danh.', 500);
+                return;
             }
 
             Response::json(['success' => true, 'message' => 'Da luu diem danh.']);
@@ -247,18 +287,41 @@ class TeacherApiController extends BaseApiController
     {
         if (($method === 'PUT' || $method === 'PATCH') && isset($segments[2])) {
             $idLop = (int) $segments[2];
+            if ($idLop <= 0) {
+                Response::error('id_lop khong hop le.', 422);
+                return;
+            }
+
             $this->assertTeacherClass($teacherId, $idLop);
             $body = $this->body();
             $danhSach = $body['danh_sach'] ?? [];
+            if (!is_array($danhSach) || $danhSach === []) {
+                Response::error('danh_sach khong hop le hoac dang rong.', 422);
+                return;
+            }
 
-            $stmt = $this->db->prepare('UPDATE dang_ky SET diem_giua_ky = :gk, diem_cuoi_ky = :ck WHERE id_lop = :lop AND id_sinh_vien = :sv');
-            foreach ($danhSach as $item) {
-                $stmt->execute([
-                    'gk' => $item['diem_giua_ky'] ?? null,
-                    'ck' => $item['diem_cuoi_ky'] ?? null,
-                    'lop' => $idLop,
-                    'sv' => (int) $item['id_sinh_vien'],
-                ]);
+            try {
+                $stmt = $this->db->prepare('UPDATE dang_ky SET diem_giua_ky = :gk, diem_cuoi_ky = :ck WHERE id_lop = :lop AND id_sinh_vien = :sv');
+                foreach ($danhSach as $item) {
+                    $studentId = (int) ($item['id_sinh_vien'] ?? 0);
+                    if ($studentId <= 0) {
+                        throw new InvalidArgumentException('id_sinh_vien khong hop le trong danh_sach.');
+                    }
+
+                    $stmt->execute([
+                        'gk' => $item['diem_giua_ky'] ?? null,
+                        'ck' => $item['diem_cuoi_ky'] ?? null,
+                        'lop' => $idLop,
+                        'sv' => $studentId,
+                    ]);
+                }
+            } catch (InvalidArgumentException $e) {
+                Response::error($e->getMessage(), 422);
+                return;
+            } catch (PDOException $e) {
+                error_log('[TEACHER_GRADES_DB_ERROR] ' . $e->getMessage());
+                Response::error('Khong the cap nhat diem tong ket.', 500);
+                return;
             }
 
             Response::json(['success' => true, 'message' => 'Da cap nhat diem tong ket.']);

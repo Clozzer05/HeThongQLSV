@@ -14,15 +14,26 @@ class Response
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 
-    public static function error(string $message, int $statusCode = 400): void
+    public static function error(string $message, int $statusCode = 400, array $meta = []): void
     {
-        self::json([
+        $payload = [
             'success' => false,
             'message' => $message,
             'error' => [
                 'status' => $statusCode,
                 'message' => $message,
             ],
-        ], $statusCode);
+        ];
+
+        $requestId = $_SERVER['APP_REQUEST_ID'] ?? null;
+        if (is_string($requestId) && $requestId !== '') {
+            $payload['request_id'] = $requestId;
+        }
+
+        if ($meta !== []) {
+            $payload = array_merge($payload, $meta);
+        }
+
+        self::json($payload, $statusCode);
     }
 }

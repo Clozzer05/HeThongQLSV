@@ -18,7 +18,8 @@ class Database {
                 ]
             );
         } catch (PDOException $e) {
-            die("DB ERROR: " . $e->getMessage());
+            error_log('[DB_CONNECT_ERROR] ' . $e->getMessage());
+            throw new RuntimeException('Khong the ket noi den co so du lieu.', 0, $e);
         }
     }
 

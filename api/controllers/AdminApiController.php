@@ -71,15 +71,42 @@ class AdminApiController extends BaseApiController
 
         if ($method === 'POST' && $id === null) {
             $b = $this->body();
+            $username = trim((string) ($b['ten_dang_nhap'] ?? ''));
+            $fullName = trim((string) ($b['ho_ten'] ?? ''));
+            $email = isset($b['email']) ? trim((string) $b['email']) : null;
+            $role = trim((string) ($b['vai_tro'] ?? 'sv'));
+
+            if ($username === '' || $fullName === '') {
+                Response::error('ten_dang_nhap va ho_ten la bat buoc.', 422);
+                return;
+            }
+
+            if (!in_array($role, ['admin', 'gv', 'sv'], true)) {
+                Response::error('vai_tro khong hop le.', 422);
+                return;
+            }
+
             $stmt = $this->db->prepare('INSERT INTO nguoi_dung (ten_dang_nhap, mat_khau, ho_ten, email, vai_tro)
                                         VALUES (:u, :p, :h, :e, :v)');
-            $stmt->execute([
-                'u' => $b['ten_dang_nhap'] ?? '',
-                'p' => $b['mat_khau'] ?? '123456',
-                'h' => $b['ho_ten'] ?? '',
-                'e' => $b['email'] ?? null,
-                'v' => $b['vai_tro'] ?? 'sv',
-            ]);
+            try {
+                $stmt->execute([
+                    'u' => $username,
+                    'p' => $b['mat_khau'] ?? '123456',
+                    'h' => $fullName,
+                    'e' => $email !== '' ? $email : null,
+                    'v' => $role,
+                ]);
+            } catch (PDOException $e) {
+                if (($e->errorInfo[1] ?? null) === 1062) {
+                    Response::error('ten_dang_nhap hoac email da ton tai.', 409);
+                    return;
+                }
+
+                error_log('[ADMIN_CREATE_USER_DB_ERROR] ' . $e->getMessage());
+                Response::error('Khong the tao nguoi dung.', 500);
+                return;
+            }
+
             Response::json(['success' => true, 'message' => 'Da tao nguoi dung.'], 201);
             return;
         }

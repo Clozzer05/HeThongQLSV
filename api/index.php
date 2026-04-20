@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+error_reporting(E_ALL);
+ini_set('display_errors', '0');
+
 $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
     || (($_SERVER['SERVER_PORT'] ?? '') === '443');
 
@@ -15,6 +18,10 @@ session_set_cookie_params([
 ]);
 
 session_start();
+
+$requestId = bin2hex(random_bytes(8));
+$_SERVER['APP_REQUEST_ID'] = $requestId;
+header('X-Request-Id: ' . $requestId);
 
 require_once __DIR__ . '/core/Api.php';
 require_once __DIR__ . '/core/Utils.php';
@@ -51,5 +58,19 @@ try {
     $api = new Api();
     $api->run($method, $segments);
 } catch (Throwable $e) {
-    Response::error('Loi he thong API: ' . $e->getMessage(), 500);
+    $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
+    $userId = $_SESSION['user']['id'] ?? 'guest';
+    error_log(sprintf(
+        '[API_EXCEPTION] request_id=%s method=%s uri=%s user_id=%s error=%s trace=%s',
+        $requestId,
+        $method,
+        $requestUri,
+        (string) $userId,
+        $e->getMessage(),
+        $e->getTraceAsString()
+    ));
+
+    Response::error('Loi he thong API.', 500, [
+        'request_id' => $requestId,
+    ]);
 }
