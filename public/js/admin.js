@@ -93,13 +93,13 @@ function renderUsers() {
             <td>${escapeHtml(u.ho_ten)}</td>
             <td>${escapeHtml(u.vai_tro)}</td>
             <td class="actions">
-                <button class="btn btn-primary btn-sm" onclick='editUser(${JSON.stringify(u)})'>Sua</button>
-                <button class="btn btn-danger btn-sm" onclick='deleteUser(${u.id})'>Xoa</button>
+                <button class="btn btn-primary btn-sm" onclick='editUser(${JSON.stringify(u)})'>Sửa</button>
+                <button class="btn btn-danger btn-sm" onclick='deleteUser(${u.id})'>Xóa</button>
             </td>
         </tr>
     `).join('');
 
-    const teacherOptions = ['<option value="">Chon giang vien</option>']
+    const teacherOptions = ['<option value="">Chọn giảng viên</option>']
         .concat(state.teachers.map((t) => `<option value="${t.id}">${escapeHtml(t.ho_ten)}</option>`));
     document.getElementById('c_teacher').innerHTML = teacherOptions.join('');
 }
@@ -112,8 +112,8 @@ function renderSubjects() {
             <td>${escapeHtml(s.ten_mon)}</td>
             <td>${s.so_tin_chi}</td>
             <td class="actions">
-                <button class="btn btn-primary btn-sm" onclick='editSubject(${JSON.stringify(s)})'>Sua</button>
-                <button class="btn btn-danger btn-sm" onclick='deleteSubject(${s.id})'>Xoa</button>
+                <button class="btn btn-primary btn-sm" onclick='editSubject(${JSON.stringify(s)})'>Sửa</button>
+                <button class="btn btn-danger btn-sm" onclick='deleteSubject(${s.id})'>Xóa</button>
             </td>
         </tr>
     `).join('');
@@ -131,13 +131,13 @@ function renderClasses() {
             <td>${escapeHtml(c.ten_mon || '')}</td>
             <td>${escapeHtml(c.ten_giao_vien || '')}</td>
             <td class="actions">
-                <button class="btn btn-primary btn-sm" onclick='editClass(${JSON.stringify(c)})'>Sua</button>
-                <button class="btn btn-danger btn-sm" onclick='deleteClass(${c.id})'>Xoa</button>
+                <button class="btn btn-primary btn-sm" onclick='editClass(${JSON.stringify(c)})'>Sửa</button>
+                <button class="btn btn-danger btn-sm" onclick='deleteClass(${c.id})'>Xóa</button>
             </td>
         </tr>
     `).join('');
 
-    const classOptions = ['<option value="">Thong bao/Tai lieu chung</option>']
+    const classOptions = ['<option value="">Tài liệu chung</option>']
         .concat(state.classes.map((c) => `<option value="${c.id}">${escapeHtml(c.ten_lop)}</option>`));
     document.getElementById('m_class').innerHTML = classOptions.join('');
     document.getElementById('a_class').innerHTML = classOptions.join('');
@@ -149,11 +149,11 @@ function renderMaterials() {
         <tr>
             <td>${m.id}</td>
             <td>${escapeHtml(m.tieu_de)}</td>
-            <td>${escapeHtml(m.ten_lop || 'Tat ca')}</td>
+            <td>${escapeHtml(m.ten_lop || 'Tất cả')}</td>
             <td>${escapeHtml(m.duong_dan_file || '')}</td>
             <td>
-                ${m.duong_dan_file ? `<a href="${escapeHtml(buildDownloadUrl('tai_lieu', m.duong_dan_file))}" target="_blank" class="btn btn-primary btn-sm">Tai ve</a>` : ''}
-                <button class="btn btn-danger btn-sm" onclick='deleteMaterial(${m.id})'>Xoa</button>
+                ${m.duong_dan_file ? `<a href="${escapeHtml(buildDownloadUrl('tai_lieu', m.duong_dan_file))}" target="_blank" class="btn btn-primary btn-sm">ải về</a>` : ''}
+                <button class="btn btn-danger btn-sm" onclick='deleteMaterial(${m.id})'>Xóa</button>
             </td>
         </tr>
     `).join('');
@@ -165,10 +165,10 @@ function renderAnnouncements() {
         <tr>
             <td>${a.id}</td>
             <td>${escapeHtml(a.tieu_de)}</td>
-            <td>${escapeHtml(a.ten_lop || 'Tat ca')}</td>
+            <td>${escapeHtml(a.ten_lop || 'Tất cả')}</td>
             <td class="actions">
-                <button class="btn btn-primary btn-sm" onclick='editAnn(${JSON.stringify(a)})'>Sua</button>
-                <button class="btn btn-danger btn-sm" onclick='deleteAnn(${a.id})'>Xoa</button>
+                <button class="btn btn-primary btn-sm" onclick='editAnn(${JSON.stringify(a)})'>Sửa</button>
+                <button class="btn btn-danger btn-sm" onclick='deleteAnn(${a.id})'>Xóa</button>
             </td>
         </tr>
     `).join('');
@@ -188,7 +188,7 @@ async function saveUser(e) {
     e.target.reset();
     document.getElementById('userId').value = '';
     await loadUsers();
-    showAlert('globalAlert', 'Da luu nguoi dung.');
+    showAlert('globalAlert', 'Đã lưu người dùng');
 }
 
 async function saveSubject(e) {
@@ -204,7 +204,7 @@ async function saveSubject(e) {
     document.getElementById('subjectId').value = '';
     await loadSubjects();
     await loadClasses();
-    showAlert('globalAlert', 'Da luu mon hoc.');
+    showAlert('globalAlert', 'Đã lưu môn học');
 }
 
 async function saveClass(e) {
@@ -221,7 +221,7 @@ async function saveClass(e) {
     e.target.reset();
     document.getElementById('classId').value = '';
     await loadClasses();
-    showAlert('globalAlert', 'Da luu lop hoc.');
+    showAlert('globalAlert', 'Đã lưu lớp học');
 }
 
 async function saveMaterial(e) {
@@ -231,7 +231,7 @@ async function saveMaterial(e) {
     fd.append('id_lop', document.getElementById('m_class').value);
     const file = document.getElementById('m_file').files[0];
     if (!file) {
-        showAlert('globalAlert', 'Vui long chon file tai lieu.', 'error');
+        showAlert('globalAlert', 'Vui lòng chọn file tài liệu', 'error');
         return;
     }
     const validation = validateUploadFile(file);
@@ -245,9 +245,9 @@ async function saveMaterial(e) {
         await apiRequest('/admin/materials', { method: 'POST', body: fd });
         e.target.reset();
         await loadMaterials();
-        showAlert('globalAlert', 'Da them tai lieu.');
+        showAlert('globalAlert', 'Đã thêm tài liệu');
     } catch (error) {
-        showAlert('globalAlert', error.message || 'Upload tai lieu that bai.', 'error');
+        showAlert('globalAlert', error.message || 'Upload tài liệu thất bại', 'error');
     }
 }
 
@@ -263,7 +263,7 @@ async function saveAnnouncement(e) {
     e.target.reset();
     document.getElementById('annId').value = '';
     await loadAnnouncements();
-    showAlert('globalAlert', 'Da luu thong bao.');
+    showAlert('globalAlert', 'Đã lưu thông báo');
 }
 
 function editUser(u) {
@@ -297,11 +297,11 @@ function editAnn(a) {
     document.getElementById('a_class').value = a.id_lop || '';
 }
 
-async function deleteUser(id) { await apiRequest(`/admin/users/${id}`, { method: 'DELETE' }); await loadUsers(); showAlert('globalAlert', 'Da xoa nguoi dung.'); }
-async function deleteSubject(id) { await apiRequest(`/admin/subjects/${id}`, { method: 'DELETE' }); await loadSubjects(); await loadClasses(); showAlert('globalAlert', 'Da xoa mon hoc.'); }
-async function deleteClass(id) { await apiRequest(`/admin/classes/${id}`, { method: 'DELETE' }); await loadClasses(); showAlert('globalAlert', 'Da xoa lop hoc.'); }
-async function deleteMaterial(id) { await apiRequest(`/admin/materials/${id}`, { method: 'DELETE' }); await loadMaterials(); showAlert('globalAlert', 'Da xoa tai lieu.'); }
-async function deleteAnn(id) { await apiRequest(`/admin/announcements/${id}`, { method: 'DELETE' }); await loadAnnouncements(); showAlert('globalAlert', 'Da xoa thong bao.'); }
+async function deleteUser(id) { await apiRequest(`/admin/users/${id}`, { method: 'DELETE' }); await loadUsers(); showAlert('globalAlert', 'Đã xóa người dùng'); }
+async function deleteSubject(id) { await apiRequest(`/admin/subjects/${id}`, { method: 'DELETE' }); await loadSubjects(); await loadClasses(); showAlert('globalAlert', 'Đã xóa môn học'); }
+async function deleteClass(id) { await apiRequest(`/admin/classes/${id}`, { method: 'DELETE' }); await loadClasses(); showAlert('globalAlert', 'Đã xóa lớp học.'); }
+async function deleteMaterial(id) { await apiRequest(`/admin/materials/${id}`, { method: 'DELETE' }); await loadMaterials(); showAlert('globalAlert', 'Đã xóa tài liệu'); }
+async function deleteAnn(id) { await apiRequest(`/admin/announcements/${id}`, { method: 'DELETE' }); await loadAnnouncements(); showAlert('globalAlert', 'Đã xóa thông báo'); }
 
 window.editUser = editUser;
 window.editSubject = editSubject;
