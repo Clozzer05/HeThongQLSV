@@ -73,6 +73,10 @@ async function loadMyClasses() {
 
     const options = myClasses.map((c) => `<option value="${c.id}">${escapeHtml(c.ten_lop)} - ${escapeHtml(c.ten_mon || '')}</option>`).join('');
     document.getElementById('detailClass').innerHTML = options;
+
+    if (myClasses.length > 0) {
+        document.getElementById('detailClass').value = String(myClasses[0].id);
+    }
 }
 
 async function loadAvailableClasses() {
@@ -103,7 +107,11 @@ function setDetailClass(id) {
 
 async function loadClassDetail() {
     const classId = document.getElementById('detailClass').value;
-    if (!classId) return;
+    if (!classId) {
+        document.getElementById('detailMaterials').innerHTML = '<tr><td colspan="3" style="text-align:center;color:#888;">Bạn chưa đăng ký lớp nào.</td></tr>';
+        document.getElementById('detailAssignments').innerHTML = '<tr><td colspan="5" style="text-align:center;color:#888;">Bạn chưa đăng ký lớp nào.</td></tr>';
+        return;
+    }
 
     const detail = (await apiRequest(`/student/classes/${classId}`)).data;
 
@@ -126,7 +134,8 @@ async function loadClassDetail() {
         infoDiv.innerHTML = html;
     }
 
-    document.getElementById('detailMaterials').innerHTML = detail.tai_lieu
+    const materials = Array.isArray(detail.tai_lieu) ? detail.tai_lieu : [];
+    document.getElementById('detailMaterials').innerHTML = materials
         .map((t) => {
             let fileName = t.duong_dan_file;
 
@@ -139,23 +148,27 @@ async function loadClassDetail() {
                 </tr>
             `;
         })
-        .join('');
+        .join('') || '<tr><td colspan="3" style="text-align:center;color:#888;">Chưa có tài liệu.</td></tr>';
 
     document.getElementById('detailAnnouncements').innerHTML = detail.thong_bao
         .map((t) => `<li><strong>${escapeHtml(t.tieu_de)}:</strong> ${escapeHtml(t.noi_dung)}</li>`)
         .join('');
 
-    document.getElementById('detailAssignments').innerHTML = detail.bai_tap.map((a) => `
+    const assignments = Array.isArray(detail.bai_tap) ? detail.bai_tap : [];
+    document.getElementById('detailAssignments').innerHTML = assignments.map((a) => `
         <tr>
             <td>${escapeHtml(a.tieu_de)}</td>
             <td>${escapeHtml(a.han_nop || '')}</td>
+            <td>
+                ${a.file_de_bai ? `<a href="${escapeHtml(buildDownloadUrl('bai_tap', a.file_de_bai))}" target="_blank" class="btn btn-primary btn-sm">Tải đề</a>` : '<span style="color:#888;">Không có file</span>'}
+            </td>
             <td>${a.da_nop ? 'Da nop' : 'Chua nop'}</td>
             <td>
                 <input type="file" id="file-${a.id}" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png">
                 <button class="btn btn-success btn-sm" onclick="submitAssignment(${a.id})">Nop</button>
             </td>
         </tr>
-    `).join('');
+    `).join('') || '<tr><td colspan="5" style="text-align:center;color:#888;">Chưa có bài tập cho lớp này.</td></tr>';
 }
 
 async function submitAssignment(id) {
@@ -197,4 +210,11 @@ async function loadAnnouncements() {
 window.enrollClass = enrollClass;
 window.setDetailClass = setDetailClass;
 window.submitAssignment = submitAssignment;
+
+document.getElementById('detailClass').addEventListener('change', loadClassDetail);
+document.querySelector('[data-tab="class-detail"]')?.addEventListener('click', function() {
+    if (document.getElementById('detailClass').value) {
+        loadClassDetail();
+    }
+});
 
