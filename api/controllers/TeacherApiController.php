@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/BaseApiController.php';
+require_once __DIR__ . '/../core/Storage.php';
 
 class TeacherApiController extends BaseApiController
 {
@@ -454,10 +455,7 @@ class TeacherApiController extends BaseApiController
             $stmt->execute(['id' => $id]);
             $row = $stmt->fetch();
             if ($row && !empty($row['duong_dan_file'])) {
-                $filePath = dirname(__DIR__, 2) . '/public/uploads/tai_lieu/' . $row['duong_dan_file'];
-                if (file_exists($filePath)) {
-                    unlink($filePath);
-                }
+                Storage::deleteStoredFile('tai_lieu', (string) $row['duong_dan_file']);
             }
             $del = $this->db->prepare('DELETE FROM tai_lieu WHERE id = :id');
             $del->execute(['id' => $id]);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/Database.php';
 require_once __DIR__ . '/Response.php';
+require_once __DIR__ . '/Storage.php';
 require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/AdminApiController.php';
 require_once __DIR__ . '/../controllers/TeacherApiController.php';
@@ -156,35 +157,26 @@ class Api
             return;
         }
 
-        [$filePath, $fileName] = $this->resolveDownloadFile($folder, $fileNameRaw, $allowedFolders);
+        [$resolvedFolder, $resolvedName] = $this->resolveDownloadTarget($folder, $fileNameRaw, $allowedFolders);
 
-        if ($filePath === null || !is_file($filePath)) {
-            error_log("[DOWNLOAD_404] folder={$folder}, fileNameRaw={$fileNameRaw}, resolved={$fileName}, attempted_path=" . ($filePath ?? 'null'));
+        if ($resolvedFolder === null || $resolvedName === null) {
+            error_log("[DOWNLOAD_404] folder={$folder}, fileNameRaw={$fileNameRaw}, resolved=, attempted_path=null");
             Response::error('Khong tim thay file.', 404);
             return;
         }
 
-        $mimeType = 'application/octet-stream';
-        if (function_exists('mime_content_type')) {
-            $detected = mime_content_type($filePath);
-            if (is_string($detected) && $detected !== '') {
-                $mimeType = $detected;
-            }
+        if (!Storage::streamToClient($resolvedFolder, $resolvedName, $resolvedName)) {
+            error_log("[DOWNLOAD_STREAM_FAIL] folder={$resolvedFolder}, fileName={$resolvedName}, raw={$fileNameRaw}");
+            Response::error('Khong the tai file.', 500);
+            return;
         }
-        header('Content-Type: ' . $mimeType);
-        header('Content-Length: ' . (string) filesize($filePath));
-        header('Content-Transfer-Encoding: binary');
-        header('Cache-Control: private, max-age=0, must-revalidate');
-        header('Pragma: public');
-        header("Content-Disposition: attachment; filename*=UTF-8''" . rawurlencode($fileName));
-        readfile($filePath);
+
         exit;
     }
 
-    private function resolveDownloadFile(string $folder, string $fileNameRaw, array $allowedFolders): array
+    private function resolveDownloadTarget(string $folder, string $fileNameRaw, array $allowedFolders): array
     {
         error_log("[RESOLVE_START] folder={$folder}, fileNameRaw={$fileNameRaw}");
-        $uploadsRoot = dirname(__DIR__, 2) . '/public/uploads/';
         $attempts = [];
 
         $values = [$fileNameRaw];
@@ -237,16 +229,15 @@ class Api
             }
             $seen[$key] = true;
 
-            $fullPath = $uploadsRoot . $tryFolder . '/' . $tryName;
-            if (is_file($fullPath)) {
-                error_log("[DOWNLOAD_FOUND] {$fullPath}");
-                return [$fullPath, $tryName];
+            if (Storage::objectExists($tryFolder, $tryName)) {
+                error_log('[DOWNLOAD_FOUND] ' . $tryFolder . '/' . $tryName);
+                return [$tryFolder, $tryName];
             }
-            error_log("[DOWNLOAD_ATTEMPT_FAIL] {$fullPath}");
+            error_log('[DOWNLOAD_ATTEMPT_FAIL] ' . $tryFolder . '/' . $tryName);
         }
 
         error_log("[DOWNLOAD_ALL_ATTEMPTS_FAILED] fileNameRaw={$fileNameRaw}, attempts_count=" . count($attempts));
-        return [null, ''];
+        return [null, null];
     }
 
     private function body(): array

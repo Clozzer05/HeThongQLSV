@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../core/Response.php';
+require_once __DIR__ . '/../core/Storage.php';
 
 abstract class BaseApiController
 {
@@ -28,22 +29,8 @@ abstract class BaseApiController
 
     protected function saveUploadedFile(array $file, string $folder): string
     {
-        $dir = dirname(__DIR__, 2) . '/public/uploads/' . $folder . '/';
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-
-        if (!is_writable($dir)) {
-            @chmod($dir, 0777);
-        }
-
         if (!is_uploaded_file($file['tmp_name'] ?? '')) {
             Response::error('File upload khong hop le.', 422);
-            exit;
-        }
-
-        if (!is_writable($dir)) {
-            Response::error('Thu muc upload khong co quyen ghi: ' . $dir, 500);
             exit;
         }
 
@@ -54,7 +41,7 @@ abstract class BaseApiController
         }
         $name = time() . '_' . $base . ($ext ? '.' . $ext : '');
 
-        if (!move_uploaded_file($file['tmp_name'], $dir . $name)) {
+        if (!Storage::saveUploadedFile($file, $folder, $name)) {
             Response::error('Khong the luu file.', 500);
             exit;
         }
