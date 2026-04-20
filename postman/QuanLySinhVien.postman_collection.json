@@ -1,0 +1,504 @@
+{
+  "info": {
+    "_postman_id": "b3a74d8b-6ab2-4f89-9f3f-1f2c5476f001",
+    "name": "QuanLySinhVien API",
+    "description": "Collection test API QuanLySinhVien theo role: admin, teacher, student.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://quanlysinhvien.74tt21.software/api" },
+    { "key": "adminUsername", "value": "admin" },
+    { "key": "adminPassword", "value": "123456" },
+    { "key": "teacherUsername", "value": "gv_anh" },
+    { "key": "teacherPassword", "value": "123456" },
+    { "key": "studentUsername", "value": "sv01" },
+    { "key": "studentPassword", "value": "123456" },
+    { "key": "userId", "value": "1" },
+    { "key": "subjectId", "value": "1" },
+    { "key": "classId", "value": "1" },
+    { "key": "announcementId", "value": "1" },
+    { "key": "materialId", "value": "1" },
+    { "key": "assignmentId", "value": "1" },
+    { "key": "submissionId", "value": "1" },
+    { "key": "attendanceId", "value": "1" },
+    { "key": "downloadFileName", "value": "sample.pdf" }
+  ],
+  "item": [
+    {
+      "name": "00 - Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('success=true', function () {",
+                  "  var json = pm.response.json();",
+                  "  pm.expect(json.success).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "01 - Auth",
+      "item": [
+        {
+          "name": "Login Admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ten_dang_nhap\": \"{{adminUsername}}\",\n  \"mat_khau\": \"{{adminPassword}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "pm.test('Login admin ok', function () {",
+                "  pm.response.to.have.status(200);",
+                "  var json = pm.response.json();",
+                "  pm.expect(json.success).to.eql(true);",
+                "  pm.expect(json.data.vai_tro).to.eql('admin');",
+                "});"
+              ]
+            }
+          }]
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/auth/logout", "host": ["{{baseUrl}}"], "path": ["auth", "logout"] }
+          }
+        },
+        {
+          "name": "Login Teacher",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ten_dang_nhap\": \"{{teacherUsername}}\",\n  \"mat_khau\": \"{{teacherPassword}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login Student",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ten_dang_nhap\": \"{{studentUsername}}\",\n  \"mat_khau\": \"{{studentPassword}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Admin",
+      "item": [
+        {
+          "name": "Admin Stats",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/admin/stats", "host": ["{{baseUrl}}"], "path": ["admin", "stats"] }
+          }
+        },
+        {
+          "name": "Users - List",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/admin/users", "host": ["{{baseUrl}}"], "path": ["admin", "users"] }
+          }
+        },
+        {
+          "name": "Users - Create",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ten_dang_nhap\": \"sv_postman_{{$timestamp}}\",\n  \"mat_khau\": \"123456\",\n  \"ho_ten\": \"SV Postman\",\n  \"email\": \"sv_postman@test.local\",\n  \"vai_tro\": \"sv\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/admin/users", "host": ["{{baseUrl}}"], "path": ["admin", "users"] }
+          }
+        },
+        {
+          "name": "Users - Detail",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/admin/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["admin", "users", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "Users - Update",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ten_dang_nhap\": \"updated_user\",\n  \"ho_ten\": \"Updated Name\",\n  \"email\": \"updated@test.local\",\n  \"vai_tro\": \"sv\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/admin/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["admin", "users", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "Users - Delete",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/admin/users/{{userId}}", "host": ["{{baseUrl}}"], "path": ["admin", "users", "{{userId}}"] }
+          }
+        },
+
+        {
+          "name": "Subjects - List",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/subjects", "host": ["{{baseUrl}}"], "path": ["admin", "subjects"] } }
+        },
+        {
+          "name": "Subjects - Create",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"ten_mon\": \"Mon test Postman\",\n  \"so_tin_chi\": 3,\n  \"mo_ta\": \"Test API\"\n}" },
+            "url": { "raw": "{{baseUrl}}/admin/subjects", "host": ["{{baseUrl}}"], "path": ["admin", "subjects"] }
+          }
+        },
+        {
+          "name": "Subjects - Update",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"ten_mon\": \"Mon test Postman updated\",\n  \"so_tin_chi\": 4,\n  \"mo_ta\": \"Update\"\n}" },
+            "url": { "raw": "{{baseUrl}}/admin/subjects/{{subjectId}}", "host": ["{{baseUrl}}"], "path": ["admin", "subjects", "{{subjectId}}"] }
+          }
+        },
+        {
+          "name": "Subjects - Delete",
+          "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/admin/subjects/{{subjectId}}", "host": ["{{baseUrl}}"], "path": ["admin", "subjects", "{{subjectId}}"] } }
+        },
+
+        {
+          "name": "Classes - List",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/classes", "host": ["{{baseUrl}}"], "path": ["admin", "classes"] } }
+        },
+        {
+          "name": "Classes - Create",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"id_mon_hoc\": 1,\n  \"id_giao_vien\": 2,\n  \"ten_lop\": \"POSTMAN_CLASS\",\n  \"hoc_ky\": \"HK1-2026\",\n  \"si_so_toi_da\": 50\n}" },
+            "url": { "raw": "{{baseUrl}}/admin/classes", "host": ["{{baseUrl}}"], "path": ["admin", "classes"] }
+          }
+        },
+        {
+          "name": "Classes - Update",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"id_mon_hoc\": 1,\n  \"id_giao_vien\": 2,\n  \"ten_lop\": \"POSTMAN_CLASS_UPDATED\",\n  \"hoc_ky\": \"HK1-2026\",\n  \"si_so_toi_da\": 55\n}" },
+            "url": { "raw": "{{baseUrl}}/admin/classes/{{classId}}", "host": ["{{baseUrl}}"], "path": ["admin", "classes", "{{classId}}"] }
+          }
+        },
+        {
+          "name": "Classes - Delete",
+          "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/admin/classes/{{classId}}", "host": ["{{baseUrl}}"], "path": ["admin", "classes", "{{classId}}"] } }
+        },
+
+        {
+          "name": "Announcements - List",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/announcements", "host": ["{{baseUrl}}"], "path": ["admin", "announcements"] } }
+        },
+        {
+          "name": "Announcements - Create",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tieu_de\": \"TB Postman\",\n  \"noi_dung\": \"Noi dung test\",\n  \"id_lop\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/admin/announcements", "host": ["{{baseUrl}}"], "path": ["admin", "announcements"] }
+          }
+        },
+        {
+          "name": "Announcements - Update",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tieu_de\": \"TB Postman Updated\",\n  \"noi_dung\": \"Noi dung update\",\n  \"id_lop\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/admin/announcements/{{announcementId}}", "host": ["{{baseUrl}}"], "path": ["admin", "announcements", "{{announcementId}}"] }
+          }
+        },
+        {
+          "name": "Announcements - Delete",
+          "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/admin/announcements/{{announcementId}}", "host": ["{{baseUrl}}"], "path": ["admin", "announcements", "{{announcementId}}"] } }
+        },
+
+        {
+          "name": "Materials - List",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/admin/materials", "host": ["{{baseUrl}}"], "path": ["admin", "materials"] } }
+        },
+        {
+          "name": "Materials - Create (multipart)",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "tieu_de", "value": "Tai lieu Postman", "type": "text" },
+                { "key": "id_lop", "value": "1", "type": "text" },
+                { "key": "file_upload", "type": "file", "src": "" }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/admin/materials", "host": ["{{baseUrl}}"], "path": ["admin", "materials"] }
+          }
+        },
+        {
+          "name": "Materials - Update",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tieu_de\": \"Tai lieu Postman Updated\",\n  \"id_lop\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/admin/materials/{{materialId}}", "host": ["{{baseUrl}}"], "path": ["admin", "materials", "{{materialId}}"] }
+          }
+        },
+        {
+          "name": "Materials - Delete",
+          "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/admin/materials/{{materialId}}", "host": ["{{baseUrl}}"], "path": ["admin", "materials", "{{materialId}}"] } }
+        }
+      ]
+    },
+    {
+      "name": "03 - Teacher",
+      "item": [
+        { "name": "Teacher Classes", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/teacher/classes", "host": ["{{baseUrl}}"], "path": ["teacher", "classes"] } } },
+        { "name": "Teacher Class Students", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/teacher/classes/{{classId}}/students", "host": ["{{baseUrl}}"], "path": ["teacher", "classes", "{{classId}}", "students"] } } },
+
+        {
+          "name": "Attendance Save",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"id_lop\": 1,\n  \"ngay_diem_danh\": \"2026-04-19\",\n  \"danh_sach\": [\n    { \"id_sinh_vien\": 4, \"trang_thai\": \"co_mat\" },\n    { \"id_sinh_vien\": 5, \"trang_thai\": \"vang_co_phep\", \"ghi_chu\": \"Om\" }\n  ]\n}" },
+            "url": { "raw": "{{baseUrl}}/teacher/attendance", "host": ["{{baseUrl}}"], "path": ["teacher", "attendance"] }
+          }
+        },
+        { "name": "Attendance List", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/teacher/attendance/{{classId}}?date=2026-04-19", "host": ["{{baseUrl}}"], "path": ["teacher", "attendance", "{{classId}}"], "query": [{ "key": "date", "value": "2026-04-19" }] } } },
+        {
+          "name": "Attendance Update",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"trang_thai\": \"co_mat\",\n  \"ghi_chu\": \"Cap nhat\"\n}" },
+            "url": { "raw": "{{baseUrl}}/teacher/attendance/{{attendanceId}}", "host": ["{{baseUrl}}"], "path": ["teacher", "attendance", "{{attendanceId}}"] }
+          }
+        },
+
+        { "name": "Assignments By Class", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/teacher/assignments/{{classId}}", "host": ["{{baseUrl}}"], "path": ["teacher", "assignments", "{{classId}}"] } } },
+        {
+          "name": "Assignments Create",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "id_lop", "value": "1", "type": "text" },
+                { "key": "tieu_de", "value": "Bai tap Postman", "type": "text" },
+                { "key": "mo_ta", "value": "Lam bai va nop", "type": "text" },
+                { "key": "han_nop", "value": "2026-04-30 23:59:59", "type": "text" },
+                { "key": "file_de_bai", "type": "file", "src": "" }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/teacher/assignments", "host": ["{{baseUrl}}"], "path": ["teacher", "assignments"] }
+          }
+        },
+        { "name": "Submissions By Assignment", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/teacher/assignments/{{assignmentId}}/submissions", "host": ["{{baseUrl}}"], "path": ["teacher", "assignments", "{{assignmentId}}", "submissions"] } } },
+        {
+          "name": "Grade Submission",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"diem\": 8.5,\n  \"nhan_xet\": \"Lam tot\"\n}" },
+            "url": { "raw": "{{baseUrl}}/teacher/submissions/{{submissionId}}/grade", "host": ["{{baseUrl}}"], "path": ["teacher", "submissions", "{{submissionId}}", "grade"] }
+          }
+        },
+        { "name": "Assignments Delete", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/teacher/assignments/{{assignmentId}}", "host": ["{{baseUrl}}"], "path": ["teacher", "assignments", "{{assignmentId}}"] } } },
+
+        {
+          "name": "Grades Update",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"danh_sach\": [\n    { \"id_sinh_vien\": 4, \"diem_giua_ky\": 7.5, \"diem_cuoi_ky\": 8.0 },\n    { \"id_sinh_vien\": 5, \"diem_giua_ky\": 6.5, \"diem_cuoi_ky\": 7.0 }\n  ]\n}" },
+            "url": { "raw": "{{baseUrl}}/teacher/grades/{{classId}}", "host": ["{{baseUrl}}"], "path": ["teacher", "grades", "{{classId}}"] }
+          }
+        },
+
+        { "name": "Teacher Announcements List", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/teacher/announcements", "host": ["{{baseUrl}}"], "path": ["teacher", "announcements"] } } },
+        {
+          "name": "Teacher Announcements Create",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tieu_de\": \"Thong bao GV\",\n  \"noi_dung\": \"Noi dung thong bao\",\n  \"id_lop\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/teacher/announcements", "host": ["{{baseUrl}}"], "path": ["teacher", "announcements"] }
+          }
+        },
+        {
+          "name": "Teacher Announcements Update",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tieu_de\": \"Thong bao GV Updated\",\n  \"noi_dung\": \"Update\",\n  \"id_lop\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/teacher/announcements/{{announcementId}}", "host": ["{{baseUrl}}"], "path": ["teacher", "announcements", "{{announcementId}}"] }
+          }
+        },
+        { "name": "Teacher Announcements Delete", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/teacher/announcements/{{announcementId}}", "host": ["{{baseUrl}}"], "path": ["teacher", "announcements", "{{announcementId}}"] } } },
+
+        { "name": "Teacher Materials List", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/teacher/materials", "host": ["{{baseUrl}}"], "path": ["teacher", "materials"] } } },
+        {
+          "name": "Teacher Materials Create",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "tieu_de", "value": "Tai lieu GV", "type": "text" },
+                { "key": "id_lop", "value": "1", "type": "text" },
+                { "key": "file_upload", "type": "file", "src": "" }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/teacher/materials", "host": ["{{baseUrl}}"], "path": ["teacher", "materials"] }
+          }
+        },
+        {
+          "name": "Teacher Materials Update",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tieu_de\": \"Tai lieu GV updated\",\n  \"id_lop\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/teacher/materials/{{materialId}}", "host": ["{{baseUrl}}"], "path": ["teacher", "materials", "{{materialId}}"] }
+          }
+        },
+        { "name": "Teacher Materials Delete", "request": { "method": "DELETE", "url": { "raw": "{{baseUrl}}/teacher/materials/{{materialId}}", "host": ["{{baseUrl}}"], "path": ["teacher", "materials", "{{materialId}}"] } } }
+      ]
+    },
+    {
+      "name": "04 - Student",
+      "item": [
+        { "name": "My Classes", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/student/my-classes", "host": ["{{baseUrl}}"], "path": ["student", "my-classes"] } } },
+        { "name": "Available Classes", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/student/available-classes", "host": ["{{baseUrl}}"], "path": ["student", "available-classes"] } } },
+        {
+          "name": "Enroll (enroll)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"id_lop\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/student/enroll", "host": ["{{baseUrl}}"], "path": ["student", "enroll"] }
+          }
+        },
+        {
+          "name": "Enroll (enrollments)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"id_lop\": 1\n}" },
+            "url": { "raw": "{{baseUrl}}/student/enrollments", "host": ["{{baseUrl}}"], "path": ["student", "enrollments"] }
+          }
+        },
+        { "name": "Class Detail", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/student/classes/{{classId}}", "host": ["{{baseUrl}}"], "path": ["student", "classes", "{{classId}}"] } } },
+        { "name": "Class Assignments", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/student/classes/{{classId}}/assignments", "host": ["{{baseUrl}}"], "path": ["student", "classes", "{{classId}}", "assignments"] } } },
+        {
+          "name": "Submit Assignment",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": "" }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/student/assignments/{{assignmentId}}/submit", "host": ["{{baseUrl}}"], "path": ["student", "assignments", "{{assignmentId}}", "submit"] }
+          }
+        },
+        {
+          "name": "Submit via /submissions",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "id_bai_tap", "value": "{{assignmentId}}", "type": "text" },
+                { "key": "file", "type": "file", "src": "" }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/student/submissions", "host": ["{{baseUrl}}"], "path": ["student", "submissions"] }
+          }
+        },
+        { "name": "Student Announcements", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/student/announcements", "host": ["{{baseUrl}}"], "path": ["student", "announcements"] } } }
+      ]
+    },
+    {
+      "name": "05 - Files Download",
+      "item": [
+        {
+          "name": "Download Tai Lieu",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/files/tai_lieu/{{downloadFileName}}", "host": ["{{baseUrl}}"], "path": ["files", "tai_lieu", "{{downloadFileName}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 - Authorization Negative Tests",
+      "item": [
+        {
+          "name": "Student call admin endpoint (expect 403)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/admin/users", "host": ["{{baseUrl}}"], "path": ["admin", "users"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 403 or 401', function () {",
+                  "  pm.expect([401,403]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
