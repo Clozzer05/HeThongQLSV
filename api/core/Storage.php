@@ -380,6 +380,6 @@ class Storage
 
     private static function encodeObjectKey(string $objectKey): string
     {
-        return str_replace('%2F', '/', rawurlencode($objectKey));
+        return rawurlencode($objectKey);
     }
 }
