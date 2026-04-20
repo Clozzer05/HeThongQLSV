@@ -150,13 +150,6 @@ async function loadClassDetail() {
         })
         .join('') || '<tr><td colspan="3" style="text-align:center;color:#888;">Chưa có tài liệu.</td></tr>';
 
-    const detailAnnouncementsEl = document.getElementById('detailAnnouncements');
-    if (detailAnnouncementsEl) {
-        detailAnnouncementsEl.innerHTML = (detail.thong_bao || [])
-            .map((t) => `<li><strong>${escapeHtml(t.tieu_de)}:</strong> ${escapeHtml(t.noi_dung)}</li>`)
-            .join('');
-    }
-
     const assignments = Array.isArray(detail.bai_tap) ? detail.bai_tap : [];
     document.getElementById('detailAssignments').innerHTML = assignments.map((a) => `
         <tr>
