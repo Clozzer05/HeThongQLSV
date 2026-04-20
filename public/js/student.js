@@ -151,6 +151,8 @@ async function loadClassDetail() {
             </td>
             <td>
                 <span class="badge ${a.da_nop ? 'badge-success' : 'badge-warning'}">${a.da_nop ? 'Đã nộp' : 'Chưa nộp'}</span>
+                ${a.diem !== null && a.diem !== undefined && a.diem !== '' ? `<div style="margin-top:6px;"><strong>Điểm:</strong> ${escapeHtml(String(a.diem))}</div>` : ''}
+                ${a.nhan_xet ? `<div style="margin-top:4px;"><strong>Nhận xét:</strong> ${escapeHtml(a.nhan_xet)}</div>` : ''}
             </td>
             <td>
                 <input type="file" id="file-${a.id}" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png">

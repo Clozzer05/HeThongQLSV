@@ -120,9 +120,10 @@ class StudentApiController extends BaseApiController
 
         if ($method === 'GET' && $idLop > 0 && $tail === 'assignments') {
             $this->assertStudentClass($studentId, $idLop);
-            $sql = 'SELECT bt.*,
-                        (SELECT bn.id FROM bai_nop bn WHERE bn.id_bai_tap = bt.id AND bn.id_sinh_vien = :sv LIMIT 1) AS da_nop
+            $sql = 'SELECT bt.*, bn.id AS bai_nop_id, bn.diem, bn.nhan_xet,
+                        CASE WHEN bn.id IS NULL THEN 0 ELSE 1 END AS da_nop
                     FROM bai_tap bt
+                    LEFT JOIN bai_nop bn ON bn.id_bai_tap = bt.id AND bn.id_sinh_vien = :sv
                     WHERE bt.id_lop = :lop
                     ORDER BY bt.id DESC';
             $stmt = $this->db->prepare($sql);
@@ -222,9 +223,12 @@ class StudentApiController extends BaseApiController
                                       ORDER BY tb.id DESC');
         $annStmt->execute(['lop' => $idLop]);
 
-        $assStmt = $this->db->prepare('SELECT bt.*,
-                                    (SELECT bn.id FROM bai_nop bn WHERE bn.id_bai_tap = bt.id AND bn.id_sinh_vien = :sv LIMIT 1) AS da_nop
-                                   FROM bai_tap bt WHERE bt.id_lop = :lop ORDER BY bt.id DESC');
+        $assStmt = $this->db->prepare('SELECT bt.*, bn.id AS bai_nop_id, bn.diem, bn.nhan_xet,
+                        CASE WHEN bn.id IS NULL THEN 0 ELSE 1 END AS da_nop
+                       FROM bai_tap bt
+                       LEFT JOIN bai_nop bn ON bn.id_bai_tap = bt.id AND bn.id_sinh_vien = :sv
+                       WHERE bt.id_lop = :lop
+                       ORDER BY bt.id DESC');
         $assStmt->execute(['sv' => $studentId, 'lop' => $idLop]);
 
         return [
