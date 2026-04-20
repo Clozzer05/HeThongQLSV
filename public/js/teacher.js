@@ -114,7 +114,7 @@ async function loadAttendanceStudents() {
     if (!classId) return;
     const students = (await apiRequest(`/teacher/classes/${classId}/students`)).data;
     if (!students || students.length === 0) {
-        document.getElementById('attTable').innerHTML = '<tr><td colspan="3" style="text-align:center;color:#888;">Lớp này chưa có sinh viên đăng ký.</td></tr>';
+        document.getElementById('attTable').innerHTML = '<tr><td colspan="3" style="text-align:center;color:#888;">Lớp này chưa có sinh viên đăng ký</td></tr>';
         return;
     }
     document.getElementById('attTable').innerHTML = students.map((s) => `
@@ -144,7 +144,7 @@ async function saveAttendance() {
         method: 'POST',
         body: { id_lop: Number(classId), ngay_diem_danh: date, danh_sach: rows },
     });
-    showAlert('globalAlert', 'Da luu diem danh.');
+    showAlert('globalAlert', 'Đã lưu điểm danh');
 }
 
 async function loadAssignments() {
@@ -157,8 +157,8 @@ async function loadAssignments() {
             <td>${a.id}</td>
             <td>${escapeHtml(a.tieu_de)}</td>
             <td>${escapeHtml(a.han_nop || '')}</td>
-            <td><button class="btn btn-primary btn-sm" onclick="loadSubmissions(${a.id})">Xem nop bai</button></td>
-            <td><button class="btn btn-danger btn-sm" onclick="deleteAssignment(${a.id})">Xoa</button></td>
+            <td><button class="btn btn-primary btn-sm" onclick="loadSubmissions(${a.id})">Xem bài nộp</button></td>
+            <td><button class="btn btn-danger btn-sm" onclick="deleteAssignment(${a.id})">Xóa</button></td>
         </tr>
     `).join('');
 }
@@ -184,9 +184,9 @@ async function saveAssignment(e) {
         await apiRequest('/teacher/assignments', { method: 'POST', body: fd });
         e.target.reset();
         await loadAssignments();
-        showAlert('globalAlert', 'Da tao bai tap.');
+        showAlert('globalAlert', 'Đã tạo bài tập');
     } catch (error) {
-        showAlert('globalAlert', error.message || 'Upload de bai that bai.', 'error');
+        showAlert('globalAlert', error.message || 'Upload thất bại', 'error');
     }
 }
 
@@ -219,14 +219,14 @@ async function saveSubmissionScore(id) {
     const diem = document.getElementById(`score-${id}`).value;
     const nhan_xet = document.getElementById(`fb-${id}`).value;
     await apiRequest(`/teacher/submissions/${id}/grade`, { method: 'POST', body: { diem, nhan_xet } });
-    showAlert('globalAlert', 'Da cham diem bai nop.');
+    showAlert('globalAlert', 'Đã lưu điểm và nhận xét');
     if (activeAssignmentId) await loadSubmissions(activeAssignmentId);
 }
 
 async function deleteAssignment(id) {
     await apiRequest(`/teacher/assignments/${id}`, { method: 'DELETE' });
     await loadAssignments();
-    showAlert('globalAlert', 'Da xoa bai tap.');
+    showAlert('globalAlert', 'Đã xóa bài tập');
 }
 
 async function loadGradeStudents() {
@@ -257,7 +257,7 @@ async function saveGrades() {
     }).filter(Boolean);
 
     await apiRequest(`/teacher/grades/${classId}`, { method: 'PUT', body: { danh_sach: rows } });
-    showAlert('globalAlert', 'Da cap nhat diem tong ket.');
+    showAlert('globalAlert', 'Đã cập nhật điểm tổng kết');
 }
 
 async function loadMaterials() {
@@ -268,8 +268,8 @@ async function loadMaterials() {
             <td>${escapeHtml(m.tieu_de)}</td>
             <td>${escapeHtml(m.ten_lop || '')}</td>
             <td>
-                ${m.duong_dan_file ? `<a href="${escapeHtml(buildDownloadUrl('tai_lieu', m.duong_dan_file))}" target="_blank" class="btn btn-primary btn-sm">Tai ve</a>` : ''}
-                <button class="btn btn-danger btn-sm" onclick="deleteMaterial(${m.id})">Xoa</button>
+                ${m.duong_dan_file ? `<a href="${escapeHtml(buildDownloadUrl('tai_lieu', m.duong_dan_file))}" target="_blank" class="btn btn-primary btn-sm">ải về</a>` : ''}
+                <button class="btn btn-danger btn-sm" onclick="deleteMaterial(${m.id})">Xóa</button>
             </td>
         </tr>
     `).join('');
@@ -282,7 +282,7 @@ async function saveMaterial(e) {
     fd.append('tieu_de', document.getElementById('mTitle').value);
     const file = document.getElementById('mFile').files[0];
     if (!file) {
-        showAlert('globalAlert', 'Vui long chon file tai lieu.', 'error');
+        showAlert('globalAlert', 'Vui lòng chọn file tài liệu', 'error');
         return;
     }
     const validation = validateUploadFile(file);
@@ -296,16 +296,16 @@ async function saveMaterial(e) {
         await apiRequest('/teacher/materials', { method: 'POST', body: fd });
         e.target.reset();
         await loadMaterials();
-        showAlert('globalAlert', 'Da them tai lieu.');
+        showAlert('globalAlert', 'Đã thêm tài liệu');
     } catch (error) {
-        showAlert('globalAlert', error.message || 'Upload tai lieu that bai.', 'error');
+        showAlert('globalAlert', error.message || 'Upload tài liệu thất bại', 'error');
     }
 }
 
 async function deleteMaterial(id) {
     await apiRequest(`/teacher/materials/${id}`, { method: 'DELETE' });
     await loadMaterials();
-    showAlert('globalAlert', 'Da xoa tai lieu.');
+    showAlert('globalAlert', 'Đã xóa tài liệu');
 }
 
 async function loadAnnouncements() {
@@ -316,7 +316,7 @@ async function loadAnnouncements() {
             <td>${escapeHtml(a.tieu_de)}</td>
             <td>${escapeHtml(a.noi_dung || '')}</td>
             <td>${escapeHtml(a.ten_lop || '')}</td>
-            <td><button class="btn btn-danger btn-sm" onclick="deleteAnnouncement(${a.id})">Xoa</button></td>
+            <td><button class="btn btn-danger btn-sm" onclick="deleteAnnouncement(${a.id})">Xóa</button></td>
         </tr>
     `).join('');
 }
@@ -333,13 +333,13 @@ async function saveAnnouncement(e) {
     e.target.reset();
     document.getElementById('annId').value = '';
     await loadAnnouncements();
-    showAlert('globalAlert', 'Da luu thong bao.');
+    showAlert('globalAlert', 'Đã lưu thông báo');
 }
 
 async function deleteAnnouncement(id) {
     await apiRequest(`/teacher/announcements/${id}`, { method: 'DELETE' });
     await loadAnnouncements();
-    showAlert('globalAlert', 'Da xoa thong bao.');
+    showAlert('globalAlert', 'Đã xóa thông báo');
 }
 
 document.getElementById('asClass').addEventListener('change', loadAssignments);
