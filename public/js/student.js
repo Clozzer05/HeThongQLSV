@@ -122,15 +122,6 @@ async function loadClassDetail() {
             html += `<div><strong>Giảng viên:</strong> ${escapeHtml(detail.lop.ten_giao_vien || 'Chưa có')} (${escapeHtml(detail.lop.email_giao_vien || '')})</div>`;
             html += `<div><strong>Học kỳ:</strong> ${escapeHtml(detail.lop.hoc_ky || '')}</div>`;
         }
-        if (detail.thoi_khoa_bieu && detail.thoi_khoa_bieu.length > 0) {
-            html += '<div><strong>Thời khóa biểu:</strong><ul>';
-            for (const tkb of detail.thoi_khoa_bieu) {
-                html += `<li>Thứ ${tkb.thu}, Tiết ${tkb.tiet_bat_dau} - ${tkb.tiet_ket_thuc}, Phòng: ${escapeHtml(tkb.phong || '')}</li>`;
-            }
-            html += '</ul></div>';
-        } else {
-            html += '<div><strong>Thời khóa biểu:</strong> Chưa cập nhật</div>';
-        }
         infoDiv.innerHTML = html;
     }
 
