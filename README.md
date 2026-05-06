@@ -1,40 +1,37 @@
 # HeThongQLSV
 
-Student Management System (QLSV) with PHP backend and a simple web UI.
+Hệ thống quản lý sinh viên (QLSV) gồm API PHP và giao diện web đơn giản.
 
 Website: https://quanlysv.74tt21.software
 
-## Features
-- Role-based access: admin, teacher, student
-- Class, subject, and user management
-- Assignments, submissions, grading
-- Announcements and materials
-- File uploads (local or GCS)
+## Tính năng
+- Phân quyền theo vai trò: admin, teacher, student
+- Quản lý lớp, môn, người dùng
+- Bài tập, bài nộp, chấm điểm
+- Thông báo và tài liệu
+- Tải lên tệp
 
-## Tech Stack
+## Công nghệ
 - PHP 8.x, Apache
 - MySQL
-- Vanilla HTML/CSS/JS
+- HTML/CSS/JS 
 
-## Project Structure
+## Cấu trúc thư mục
 - api/ : REST API, controllers, core utilities
 - public/ : UI pages, JS, CSS, uploads
-- database/ : schema and seed data
+- database/ : schema và dữ liệu mẫu
 
-## Getting Started (Local)
-1. Create a MySQL database and import database/schema.sql
-2. Update api/config/database.php with your credentials
-3. Run with Docker (or Apache/PHP locally)
+## Chạy local (tùy chọn)
+1. Tạo database MySQL và import database/schema.sql
+2. Cập nhật thông tin kết nối trong api/config/database.php
+3. Chạy bằng Docker hoặc Apache/PHP local
 
-Example with Docker:
-1. Build image: docker build -t qlsv .
+Docker nhanh:
+1. Build: docker build -t qlsv .
 2. Run: docker run -p 8080:8080 qlsv
-3. Open: http://localhost:8080
+3. Mở: http://localhost:8080
 
-## Configuration
+## Cấu hình
 - DB config: api/config/database.php
 - Uploads: public/uploads/
-- API base URL: public/js/common.js (auto-resolves by default)
-
-## License
-Private project.
+- API base URL: public/js/common.js (tự nhận diện)
