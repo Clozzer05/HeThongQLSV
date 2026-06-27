@@ -41,6 +41,18 @@ services:
     networks:
       - app-network 
 
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    restart: always
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge

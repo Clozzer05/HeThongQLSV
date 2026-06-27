@@ -2,9 +2,9 @@ global:
   scrape_interval: 15s
 
 scrape_configs:
-  - job_name: 'hethong-web'
+  - job_name: 'docker-containers'
     static_configs:
-      - targets: ['web:8080']
+      - targets: ['cadvisor:8080']
 
   - job_name: 'prometheus'
     static_configs:
