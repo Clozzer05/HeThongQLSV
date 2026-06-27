@@ -4,6 +4,8 @@ services:
   web:
     build: .
     restart: always
+    networks:
+      - app-network  
 
   db:
     image: mysql:8.0
@@ -13,24 +15,33 @@ services:
       MYSQL_DATABASE: quan_ly_sinh_vien
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - app-network
 
   prometheus:
     image: prom/prometheus:latest
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     restart: always
+    networks:
+      - app-network
 
-  # Đây là "người gác cổng" sẽ làm HTTPS cho bạn
   nginx-proxy:
     image: 'jc21/nginx-proxy-manager:latest'
     restart: always
     ports:
-      - '80:80'    # HTTP
-      - '443:443'  # HTTPS
-      - '81:81'    # Giao diện quản lý
+      - '80:80'
+      - '443:443'
+      - '81:81'
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - app-network 
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   db_data:
