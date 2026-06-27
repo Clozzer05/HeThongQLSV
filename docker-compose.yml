@@ -3,11 +3,7 @@ version: '3.8'
 services:
   web:
     build: .
-    ports:
-      - "80:8080"
-    depends_on:
-      - db
-      - prometheus
+    restart: always
 
   db:
     image: mysql:8.0
@@ -20,10 +16,21 @@ services:
 
   prometheus:
     image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: always
+
+  # Đây là "người gác cổng" sẽ làm HTTPS cho bạn
+  nginx-proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: always
+    ports:
+      - '80:80'    # HTTP
+      - '443:443'  # HTTPS
+      - '81:81'    # Giao diện quản lý
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
 
 volumes:
   db_data:
