@@ -4,26 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang Sinh Viên | Hệ Thống QLSV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
     <link rel="stylesheet" href="../css/style.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("qlsv_theme");
+          if (t) document.documentElement.setAttribute("data-theme", t);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div class="dashboard-wrapper modern-student">
       <aside class="sidebar modern-sidebar">
         <div class="sidebar-logo"><span>HỆ THỐNG QLSV</span></div>
-        
-        <!-- Khối thông tin sinh viên thu nhỏ -->
-        <div class="sidebar-profile" style="padding: 16px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
-          <div class="profile-avatar" style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #fff;">
-            <i class="fas fa-user-graduate" style="font-size: 1.5rem;"></i>
-          </div>
-          <div class="profile-name" style="font-weight: 600; color: #fff; font-size: 0.95rem;">Sinh Viên</div>
-          <div class="profile-role" style="font-size: 0.8rem; color: #94a3b8; margin-top: 2px;">Mã số: SV-2026</div>
-        </div>
-
         <nav class="sidebar-menu">
           <a href="#" data-tab="my-classes" class="tab-link active"
             ><i class="fas fa-home"></i> Bảng điều khiển</a
@@ -37,252 +41,240 @@
           <a href="#" data-tab="announcements" class="tab-link"
             ><i class="fas fa-bell"></i> Thông báo</a
           >
-          
-          <!-- Khối trạng thái hệ thống vào sidebar -->
-          <div class="system-status" style="margin-top: auto; padding: 12px 16px; background: rgba(255, 255, 255, 0.03); border-radius: 8px; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; color: #94a3b8;">
-            <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #10b981;"></span>
-            <span>Kết nối máy chủ: Ổn định</span>
-          </div>
-
-          <a href="#" id="btnLogout" class="logout-btn" style="margin-top: 8px;"
+          <a href="#" id="btnLogout" class="logout-btn"
             ><i class="fas fa-sign-out-alt"></i> Đăng xuất</a
           >
         </nav>
       </aside>
+      <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-      <main class="main-content modern-main" style="display: flex; flex-direction: column; min-height: 100vh;">
-        <!-- Thanh Header trên cùng -->
-        <header class="main-header modern-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color, #e2e8f0);">
-          <div class="welcome-text">
-            <h2 style="margin: 0; font-size: 1.4rem; font-weight: 700; color: #1e293b;">Xin chào, Sinh viên!</h2>
-            <p style="margin: 4px 0 0; color: #64748b; font-size: 0.9rem;">Chúc bạn có một ngày học tập thật hiệu quả.</p>
-            
-            <!-- Khối tiến độ học kỳ bổ sung dưới lời chào -->
-            <div class="semester-progress" style="margin-top: 12px; display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: #64748b;">
-              <span>Tiến độ học kỳ:</span>
-              <div class="progress-bar-bg" style="width: 120px; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
-                <div class="progress-bar-fill" style="width: 65%; height: 100%; background: #4f46e5;"></div>
-              </div>
-              <span style="font-weight: 600; color: #4f46e5;">65%</span>
+      <main class="main-content modern-main">
+        <header class="topbar">
+          <button class="menu-toggle" id="menuToggle" aria-label="Mở menu">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="topbar-title">Bảng điều khiển Sinh viên</h1>
+          <div class="topbar-actions">
+            <button
+              class="theme-toggle"
+              id="themeToggle"
+              title="Chuyển sáng/tối"
+              aria-label="Chuyển sáng/tối"
+            >
+              <i class="fas fa-moon"></i>
+            </button>
+            <div class="profile-chip">
+              <span class="avatar-circle" id="uiAvatar">?</span>
+              <span class="profile-meta">
+                <span class="profile-name" id="uiName">Đang tải…</span>
+                <span class="role-badge" id="uiRole"></span>
+              </span>
             </div>
-          </div>
-          <div class="header-actions" style="display: flex; gap: 15px; align-items: center;">
-            <span style="color: #64748b; font-size: 0.9rem;"><i class="far fa-calendar-alt"></i> Học kỳ: 2025 - 2026</span>
           </div>
         </header>
 
         <div id="globalAlert"></div>
 
-        <!-- NỘI DUNG CHÍNH CHỨA TRONG KHỐI ĐỂ ĐẨY FOOTER XUỐNG DƯỚI -->
-        <div class="main-body-content" style="flex: 1;">
-          <!-- TAB: BẢNG ĐIỀU KHIỂN -->
-          <div class="tab-content" id="tab-my-classes">
-            <div class="modern-card">
-              <div class="modern-card-title">
-                <i class="fas fa-tachometer-alt"></i> Bảng điều khiển
-              </div>
-              <div class="stats-container modern-stats">
-                <div class="stat-item modern-stat card-primary">
-                  <div class="stat-icon">
-                    <i class="fas fa-graduation-cap"></i>
-                  </div>
-                  <div class="stat-info">
-                    <h3>5</h3>
-                    <p>Môn học học kỳ này</p>
-                  </div>
+        <div class="tab-content" id="tab-my-classes">
+          <div class="modern-card">
+            <div class="modern-card-title">
+              <i class="fas fa-tachometer-alt"></i> Bảng điều khiển
+            </div>
+            <div class="stats-container modern-stats">
+              <div class="stat-item modern-stat">
+                <div class="stat-icon">
+                  <i class="fas fa-graduation-cap"></i>
                 </div>
-                <div class="stat-item modern-stat card-success">
-                  <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
-                  <div class="stat-info">
-                    <h3>8.5</h3>
-                    <p>Điểm trung bình tích lũy</p>
-                  </div>
-                </div>
-                <div class="stat-item modern-stat card-warning">
-                  <div class="stat-icon"><i class="fas fa-tasks"></i></div>
-                  <div class="stat-info">
-                    <h3>3</h3>
-                    <p>Bài tập chưa hoàn thành</p>
-                  </div>
+                <div class="stat-info">
+                  <h3>5</h3>
+                  <p>Môn học</p>
                 </div>
               </div>
-            </div>
-
-            <!-- Khối thông tin: Xếp hạng học lực & Điểm rèn luyện -->
-            <div class="modern-card ranking-card" style="margin-bottom: 24px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
-              <div class="modern-card-title" style="color: #4f46e5;">
-                <i class="fas fa-trophy"></i> Thành tích & Rèn luyện cá nhân
-              </div>
-              <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-top: 12px; color: #475569; font-size: 0.95rem;">
-                <div><i class="fas fa-star" style="color: #eab308;"></i> <strong>Xếp hạng lớp:</strong> 05 / 45</div>
-                <div><i class="fas fa-heart" style="color: #ef4444;"></i> <strong>Điểm rèn luyện:</strong> 88 (Tốt)</div>
-                <div><i class="fas fa-medal" style="color: #3b82f6;"></i> <strong>Danh hiệu dự kiến:</strong> Sinh viên Giỏi</div>
-              </div>
-            </div>
-
-            <!-- Khối thông tin bổ sung: Liên kết nhanh -->
-            <div class="modern-card quick-links-card" style="margin-bottom: 24px;">
-              <div class="modern-card-title" style="color: #0d9488;">
-                <i class="fas fa-link"></i> Liên kết nhanh hệ thống
-              </div>
-              <div class="links-group" style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px;">
-                <a href="#" style="padding: 8px 16px; background: #f0fdfa; color: #0f766e; border: 1px solid #ccfbf1; border-radius: 20px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: all 0.2s;"><i class="fas fa-poll"></i> Khảo sát ý kiến giảng viên</a>
-                <a href="#" style="padding: 8px 16px; background: #f0fdfa; color: #0f766e; border: 1px solid #ccfbf1; border-radius: 20px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: all 0.2s;"><i class="fas fa-calendar-alt"></i> Xem lịch thi học kỳ</a>
-                <a href="#" style="padding: 8px 16px; background: #f0fdfa; color: #0f766e; border: 1px solid #ccfbf1; border-radius: 20px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: all 0.2s;"><i class="fas fa-file-invoice"></i> Dịch vụ hành chính một cửa</a>
-              </div>
-            </div>
-
-            <!-- Khối nhắc nhở lịch học và hạn nộp bài tập -->
-            <div class="modern-card deadline-card" style="border-left: 4px solid #ef4444;">
-              <div class="modern-card-title" style="color: #b91c1c; margin-bottom: 12px;">
-                <i class="fas fa-exclamation-circle"></i> Nhắc nhở quan trọng sắp tới
-              </div>
-              <ul style="margin: 0; padding-left: 20px; color: #475569; font-size: 0.95rem; line-height: 1.6;">
-                <li><strong>Hạn nộp bài tập:</strong> Môn Cơ sở dữ liệu lớn (Deadline: 23:59 hôm nay)</li>
-                <li><strong>Lịch kiểm tra:</strong> Chuyên đề đồ họa máy tính (Thứ Sáu tuần này tại phòng Lab)</li>
-              </ul>
-            </div>
-            
-            <div class="data-card modern-card">
-              <div class="card-title modern-card-title">
-                <i class="fas fa-list"></i> Lớp học đã đăng ký
-              </div>
-
-              <!-- Ô tìm kiếm nhanh môn học -->
-              <div class="search-box-wrapper" style="margin: 16px 0; max-width: 320px;">
-                <input type="text" id="searchMyClass" placeholder="🔍 Tìm nhanh môn học hoặc mã lớp..." style="padding: 10px 14px; font-size: 0.9rem;" />
-              </div>
-
-              <div class="table-responsive">
-                <table class="styled-table modern-table">
-                  <thead>
-                    <tr>
-                      <th>Mã lớp</th>
-                      <th>Tên lớp học</th>
-                      <th>Môn học</th>
-                      <th style="text-align: center;">Điểm GK</th>
-                      <th style="text-align: center;">Điểm CK</th>
-                      <th style="text-align: center;">Thao tác</th>
-                    </tr>
-                  </thead>
-                  <tbody id="myClassTable"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- TAB: ĐĂNG KÝ LỚP MỚI -->
-          <div class="tab-content" id="tab-available" style="display: none">
-            <div class="modern-card">
-              <div class="modern-card-title">
-                <i class="fas fa-edit"></i> Đăng ký lớp mới
-              </div>
-              <div class="table-responsive">
-                <table class="styled-table modern-table">
-                  <thead>
-                    <tr>
-                      <th>Mã lớp</th>
-                      <th>Tên lớp</th>
-                      <th>Môn học</th>
-                      <th>Giảng viên</th>
-                      <th style="text-align: center;">Hành động</th>
-                    </tr>
-                  </thead>
-                  <tbody id="availableTable"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- TAB: CHI TIẾT LỚP HỌC -->
-          <div class="tab-content" id="tab-class-detail" style="display: none">
-            <div class="modern-card">
-              <div class="modern-card-title">
-                <i class="fas fa-info-circle"></i> Chi tiết lớp học
-              </div>
-              
-              <div class="filter-action-group" style="margin-bottom: 20px; display: flex; gap: 12px; align-items: center;">
-                <label for="detailClass" style="font-weight: 600;"><i class="fas fa-filter"></i> Lọc theo lớp học:</label>
-                <select id="detailClass" style="max-width: 200px;"></select>
-                <button class="btn btn-primary btn-sm" id="btnLoadDetail">
-                  <i class="fas fa-search"></i> Xem chi tiết
-                </button>
-              </div>
-
-              <div id="classInfoBox" style="margin-bottom: 12px"></div>
-              
-              <div style="margin-bottom: 12px">
-                <strong style="display: block; margin-bottom: 8px;"><i class="fas fa-folder-open"></i> Tài liệu lớp học:</strong>
-                <div class="table-responsive">
-                  <table class="styled-table modern-table">
-                    <thead>
-                      <tr>
-                        <th>Tiêu đề</th>
-                        <th>File</th>
-                        <th style="text-align: center;">Tải về</th>
-                      </tr>
-                    </thead>
-                    <tbody id="detailMaterials"></tbody>
-                  </table>
+              <div class="stat-item modern-stat">
+                <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
+                <div class="stat-info">
+                  <h3>8.5</h3>
+                  <p>ĐTB</p>
                 </div>
               </div>
-              
-              <div style="margin-top: 20px;">
-                <strong style="display: block; margin-bottom: 8px;"><i class="fas fa-tasks"></i> Bài tập về nhà:</strong>
-                <div class="table-responsive">
-                  <table class="styled-table modern-table">
-                    <thead>
-                      <tr>
-                        <th>Tiêu đề</th>
-                        <th>Hạn nộp</th>
-                        <th>Đề bài</th>
-                        <th>Nộp bài</th>
-                        <th style="text-align: center;">Thao tác</th>
-                      </tr>
-                    </thead>
-                    <tbody id="detailAssignments"></tbody>
-                  </table>
+              <div class="stat-item modern-stat">
+                <div class="stat-icon"><i class="fas fa-tasks"></i></div>
+                <div class="stat-info">
+                  <h3>3</h3>
+                  <p>Bài tập</p>
                 </div>
               </div>
             </div>
           </div>
+          <div class="data-card modern-card">
+            <div class="card-title modern-card-title">
+              <i class="fas fa-list"></i> Lớp học đã đăng ký
+            </div>
+            <div class="table-responsive">
+              <table class="styled-table modern-table">
+                <thead>
+                  <tr>
+                    <th>Mã lớp</th>
+                    <th>Tên lớp</th>
+                    <th>Môn học</th>
+                    <th>Điểm GK</th>
+                    <th>Điểm CK</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="myClassTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
-          <!-- TAB: THÔNG BÁO CHUNG -->
-          <div class="tab-content" id="tab-announcements" style="display: none">
-            <div class="modern-card">
-              <div class="modern-card-title">
-                <i class="fas fa-bell"></i> Thông báo hệ thống
-              </div>
+        <div class="tab-content" id="tab-available" style="display: none">
+          <div class="modern-card">
+            <div class="modern-card-title">
+              <i class="fas fa-edit"></i> Đăng ký lớp mới
+            </div>
+            <div class="table-responsive">
+              <table class="styled-table modern-table">
+                <thead>
+                  <tr>
+                    <th>Mã lớp</th>
+                    <th>Tên lớp</th>
+                    <th>Môn học</th>
+                    <th>Giảng viên</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="availableTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-class-detail" style="display: none">
+          <div class="modern-card">
+            <div class="modern-card-title">
+              <i class="fas fa-info-circle"></i> Chi tiết lớp học
+            </div>
+            <div style="margin-bottom: 16px">
+              <label for="detailClass">Chọn lớp:</label>
+              <select id="detailClass"></select>
+              <button class="btn btn-primary btn-sm" id="btnLoadDetail">
+                Xem chi tiết
+              </button>
+            </div>
+            <div id="classInfoBox" style="margin-bottom: 12px"></div>
+            <div style="margin-bottom: 12px">
+              <strong>Tài liệu lớp học:</strong>
+              <table class="styled-table modern-table">
+                <thead>
+                  <tr>
+                    <th>Tiêu đề</th>
+                    <th>File</th>
+                    <th>Tải về</th>
+                  </tr>
+                </thead>
+                <tbody id="detailMaterials"></tbody>
+              </table>
+            </div>
+            <div>
+              <strong>Bài tập:</strong>
               <div class="table-responsive">
                 <table class="styled-table modern-table">
                   <thead>
                     <tr>
-                      <th>Mã</th>
                       <th>Tiêu đề</th>
-                      <th>Lớp</th>
-                      <th>Nội dung</th>
+                      <th>Hạn nộp</th>
+                      <th>Đề bài</th>
+                      <th>Nộp bài</th>
+                      <th>Thao tác</th>
                     </tr>
                   </thead>
-                  <tbody id="annTable"></tbody>
+                  <tbody id="detailAssignments"></tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Khối Footer hệ thống ở dưới cùng -->
-        <footer class="main-footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; margin-top: 40px; border-top: 1px solid var(--border-color, #e2e8f0); color: #94a3b8; font-size: 0.85rem;">
-          <div class="footer-copyright">
-            &copy; 2026 Hệ Thống QLSV. Tất cả các quyền được bảo lưu.
+        <div class="tab-content" id="tab-announcements" style="display: none">
+          <div class="modern-card">
+            <div class="modern-card-title">
+              <i class="fas fa-bell"></i> Thông báo
+            </div>
+            <div class="table-responsive">
+              <table class="styled-table modern-table">
+                <thead>
+                  <tr>
+                    <th>Mã</th>
+                    <th>Tiêu đề</th>
+                    <th>Lớp</th>
+                    <th>Nội dung</th>
+                  </tr>
+                </thead>
+                <tbody id="annTable"></tbody>
+              </table>
+            </div>
           </div>
-          <div class="footer-version" style="display: flex; gap: 15px;">
-            <span>Phiên bản v1.1.0</span>
-            <a href="#" style="color: #4f46e5; text-decoration: none;"><i class="fas fa-headset"></i> Hỗ trợ kỹ thuật</a>
-          </div>
-        </footer>
+        </div>
       </main>
     </div>
     <script src="../js/common.js?v=20260420b"></script>
     <script src="../js/student.js?v=20260420b"></script>
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var wrap = document.querySelector(".dashboard-wrapper");
+        var themeBtn = document.getElementById("themeToggle");
+        function syncIcon() {
+          if (!themeBtn) return;
+          var dark = root.getAttribute("data-theme") === "dark";
+          themeBtn.innerHTML = dark
+            ? '<i class="fas fa-sun"></i>'
+            : '<i class="fas fa-moon"></i>';
+        }
+        syncIcon();
+        if (themeBtn) {
+          themeBtn.addEventListener("click", function () {
+            var dark = root.getAttribute("data-theme") === "dark";
+            var next = dark ? "light" : "dark";
+            root.setAttribute("data-theme", next);
+            try {
+              localStorage.setItem("qlsv_theme", next);
+            } catch (e) {}
+            syncIcon();
+          });
+        }
+        var menuBtn = document.getElementById("menuToggle");
+        var backdrop = document.getElementById("sidebarBackdrop");
+        function closeMenu() {
+          wrap && wrap.classList.remove("sidebar-open");
+        }
+        if (menuBtn)
+          menuBtn.addEventListener("click", function () {
+            wrap && wrap.classList.toggle("sidebar-open");
+          });
+        if (backdrop) backdrop.addEventListener("click", closeMenu);
+        document.querySelectorAll(".sidebar-menu a").forEach(function (a) {
+          a.addEventListener("click", closeMenu);
+        });
+        var ROLE = { admin: "Quản trị", gv: "Giảng viên", sv: "Sinh viên" };
+        if (window.apiRequest) {
+          window
+            .apiRequest("/auth/me")
+            .then(function (res) {
+              var u = (res && res.data) || {};
+              var name = u.ho_ten || u.ten_dang_nhap || "Người dùng";
+              var nameEl = document.getElementById("uiName");
+              var roleEl = document.getElementById("uiRole");
+              var avEl = document.getElementById("uiAvatar");
+              if (nameEl) nameEl.textContent = name;
+              if (roleEl) roleEl.textContent = ROLE[u.vai_tro] || u.vai_tro || "";
+              if (avEl)
+                avEl.textContent = (name.trim()[0] || "?").toUpperCase();
+            })
+            .catch(function () {});
+        }
+      })();
+    </script>
   </body>
 </html>
