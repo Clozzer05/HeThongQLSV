@@ -184,64 +184,79 @@
           </div>
         </div>
 
-<!-- PHẦN 5: TAB ĐIỂM SỐ -->
+<!-- PHẦN 5: TAB ĐIỂM SỐ (NÂNG CẤP GIAO DIỆN NHẬP) -->
         <div class="tab-content" id="tab-grades" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
-              <i class="fas fa-clipboard-list"></i> Cập nhật điểm tổng kết
+              <i class="fas fa-clipboard-list"></i> Bảng nhập điểm tổng kết học phần
             </div>
             <form class="grid-form">
-              <select id="gradeClass"></select>
+              <select id="gradeClass" required></select>
               <button type="button" class="btn btn-primary" id="btnLoadGrades">
-                Tải danh sách
+                <i class="fas fa-sync-alt"></i> Tải danh sách
               </button>
               <button type="button" class="btn btn-success" id="btnSaveGrades">
-                Lưu điểm
+                <i class="fas fa-save"></i> Lưu toàn bộ điểm
               </button>
             </form>
+            
+            <div style="margin: 10px 0; font-size: 13px; color: #666;">
+              <i class="fas fa-info-circle"></i> <strong>Lưu ý:</strong> Thang điểm chuẩn từ 0 đến 10. Hãy nhớ bấm nút "Lưu toàn bộ điểm" sau khi chỉnh sửa.
+            </div>
+
             <div class="table-responsive">
               <table class="styled-table modern-table">
                 <thead>
                   <tr>
+                    <th style="width: 60px; text-align: center;">STT</th>
                     <th>Sinh viên</th>
                     <th>Email</th>
-                    <th>Điểm giữa kỳ</th>
-                    <th>Điểm cuối kỳ</th>
+                    <th style="width: 150px; text-align: center;">Điểm giữa kỳ (40%)</th>
+                    <th style="width: 150px; text-align: center;">Điểm cuối kỳ (60%)</th>
                   </tr>
                 </thead>
-                <tbody id="gradeTable"></tbody>
+                <tbody id="gradeTable">
+                  <!-- JS sẽ đổ các thẻ <input type="number" min="0" max="10" step="0.1"> vào đây -->
+                </tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- PHẦN 6: TAB TÀI LIỆU LỚP HỌC -->
+<!-- PHẦN 6: TAB TÀI LIỆU LỚP HỌC (TỐI ƯU QUẢN LÝ FILE) -->
         <div class="tab-content" id="tab-materials" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
-              <i class="fas fa-folder-open"></i> Tài liệu lớp học
+              <i class="fas fa-folder-open"></i> Kho tài liệu lớp học
             </div>
             <form id="materialForm" enctype="multipart/form-data" class="grid-form">
               <select id="mClass" required></select>
-              <input id="mTitle" placeholder="Tiêu đề tài liệu" required />
-              <input
-                id="mFile"
-                type="file"
-                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png"
-                required
-              />
+              <input id="mTitle" placeholder="Tiêu đề tài liệu (Ví dụ: Slide Chương 1)" required />
+              
+              <div class="file-input-wrapper" style="display: flex; flex-direction: column; gap: 4px;">
+                <input
+                  id="mFile"
+                  type="file"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png"
+                  required
+                />
+                <small style="color: #666; font-size: 11px;">* Hỗ trợ mọi định dạng văn phòng (PDF, Word, Powerpoint...).</small>
+              </div>
+              
               <button class="btn btn-success" type="submit">
-                Thêm tài liệu
+                <i class="fas fa-upload"></i> Tải lên tài liệu
               </button>
             </form>
+
+            <h4 style="margin: 20px 0 10px 0; color: #333;"><i class="fas fa-cloud-download-alt"></i> Tài liệu đã tải lên</h4>
             <div class="table-responsive">
               <table class="styled-table modern-table">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Tiêu đề</th>
-                    <th>Lớp</th>
-                    <th>Hành động</th>
+                    <th style="width: 80px;">ID</th>
+                    <th>Tiêu đề tài liệu</th>
+                    <th>Lớp học áp dụng</th>
+                    <th style="width: 150px; text-align: center;">Hành động</th>
                   </tr>
                 </thead>
                 <tbody id="materialTable"></tbody>
