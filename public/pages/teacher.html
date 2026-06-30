@@ -4,11 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Giảng viên | Hệ Thống QLSV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
     <link rel="stylesheet" href="../css/style.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("qlsv_theme");
+          if (t) document.documentElement.setAttribute("data-theme", t);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div class="dashboard-wrapper modern-student">
@@ -38,8 +52,33 @@
           >
         </nav>
       </aside>
+      <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
       <main class="main-content modern-main">
+        <header class="topbar">
+          <button class="menu-toggle" id="menuToggle" aria-label="Mở menu">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="topbar-title">Bảng điều khiển Giảng viên</h1>
+          <div class="topbar-actions">
+            <button
+              class="theme-toggle"
+              id="themeToggle"
+              title="Chuyển sáng/tối"
+              aria-label="Chuyển sáng/tối"
+            >
+              <i class="fas fa-moon"></i>
+            </button>
+            <div class="profile-chip">
+              <span class="avatar-circle" id="uiAvatar">?</span>
+              <span class="profile-meta">
+                <span class="profile-name" id="uiName">Đang tải…</span>
+                <span class="role-badge" id="uiRole"></span>
+              </span>
+            </div>
+          </div>
+        </header>
+
         <div id="globalAlert" class="alert hidden"></div>
 
         <div class="tab-content" id="tab-classes">
@@ -305,5 +344,61 @@
     </div>
     <script src="../js/common.js"></script>
     <script src="../js/teacher.js"></script>
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var wrap = document.querySelector(".dashboard-wrapper");
+        var themeBtn = document.getElementById("themeToggle");
+        function syncIcon() {
+          if (!themeBtn) return;
+          var dark = root.getAttribute("data-theme") === "dark";
+          themeBtn.innerHTML = dark
+            ? '<i class="fas fa-sun"></i>'
+            : '<i class="fas fa-moon"></i>';
+        }
+        syncIcon();
+        if (themeBtn) {
+          themeBtn.addEventListener("click", function () {
+            var dark = root.getAttribute("data-theme") === "dark";
+            var next = dark ? "light" : "dark";
+            root.setAttribute("data-theme", next);
+            try {
+              localStorage.setItem("qlsv_theme", next);
+            } catch (e) {}
+            syncIcon();
+          });
+        }
+        var menuBtn = document.getElementById("menuToggle");
+        var backdrop = document.getElementById("sidebarBackdrop");
+        function closeMenu() {
+          wrap && wrap.classList.remove("sidebar-open");
+        }
+        if (menuBtn)
+          menuBtn.addEventListener("click", function () {
+            wrap && wrap.classList.toggle("sidebar-open");
+          });
+        if (backdrop) backdrop.addEventListener("click", closeMenu);
+        document.querySelectorAll(".sidebar-menu a").forEach(function (a) {
+          a.addEventListener("click", closeMenu);
+        });
+        var ROLE = { admin: "Quản trị", gv: "Giảng viên", sv: "Sinh viên" };
+        if (window.apiRequest) {
+          window
+            .apiRequest("/auth/me")
+            .then(function (res) {
+              var u = (res && res.data) || {};
+              var name = u.ho_ten || u.ten_dang_nhap || "Người dùng";
+              var nameEl = document.getElementById("uiName");
+              var roleEl = document.getElementById("uiRole");
+              var avEl = document.getElementById("uiAvatar");
+              if (nameEl) nameEl.textContent = name;
+              if (roleEl) roleEl.textContent = ROLE[u.vai_tro] || u.vai_tro || "";
+              if (avEl)
+                avEl.textContent = (name.trim()[0] || "?").toUpperCase();
+            })
+            .catch(function () {});
+        }
+      })();
+    </script>
   </body>
 </html>
