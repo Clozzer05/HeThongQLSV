@@ -1,0 +1,45 @@
+name: Continuous Integration (CI) Pipeline
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  php-lint:
+    name: Check PHP Syntax and Style
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2' 
+          tools: phpcs
+
+      - name: Check PHP Syntax Errors (php -l)
+        run: |
+          find . -path ./vendor -prune -o -name "*.php" -print0 | xargs -0 -n1 php -l
+
+      - name: Run PHP Code Sniffer (PSR-12 Standard)
+        run: phpcs --standard=PSR12 --extensions=php ./api ./controllers ./core
+
+
+  frontend-lint:
+    name: Check Frontend Format (JS, CSS, HTML)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check Frontend Format with Prettier
+        run: npx prettier --check "public/**/*.{js,css,html}"
