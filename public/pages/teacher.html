@@ -210,6 +210,7 @@
           </div>
         </div>
 
+<!-- PHẦN 5: TAB ĐIỂM SỐ -->
         <div class="tab-content" id="tab-grades" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
@@ -240,18 +241,15 @@
           </div>
         </div>
 
+        <!-- PHẦN 6: TAB TÀI LIỆU LỚP HỌC -->
         <div class="tab-content" id="tab-materials" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
               <i class="fas fa-folder-open"></i> Tài liệu lớp học
             </div>
-            <form
-              id="materialForm"
-              enctype="multipart/form-data"
-              class="grid-form"
-            >
+            <form id="materialForm" enctype="multipart/form-data" class="grid-form">
               <select id="mClass" required></select>
-              <input id="mTitle" placeholder="Tiêu đề" required />
+              <input id="mTitle" placeholder="Tiêu đề tài liệu" required />
               <input
                 id="mFile"
                 type="file"
@@ -278,6 +276,7 @@
           </div>
         </div>
 
+        <!-- PHẦN 7: TAB THÔNG BÁO -->
         <div class="tab-content" id="tab-announcements" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
@@ -286,9 +285,10 @@
             <form id="annForm" class="grid-form">
               <input type="hidden" id="annId" />
               <select id="annClass" required></select>
-              <input id="annTitle" placeholder="Tiêu đề" required />
-              <textarea id="annContent" placeholder="Nội dung" required rows="4"></textarea>
-              <button class="btn btn-success" type="submit">
+              <input id="annTitle" placeholder="Tiêu đề thông báo" required />
+              <!-- Sửa ô nội dung thông báo trải dài hết hàng để không lệch khung hình -->
+              <textarea id="annContent" placeholder="Nội dung thông báo chi tiết..." required rows="4" style="grid-column: 1 / -1;"></textarea>
+              <button class="btn btn-success" type="submit" style="grid-column: 1 / -1;">
                 Lưu thông báo
               </button>
             </form>
@@ -310,6 +310,8 @@
         </div>
       </main>
     </div>
+    
+    <!-- PHẦN 8: KẾT NỐI SCRIPT -->
     <script src="../js/common.js"></script>
     <script src="../js/teacher.js"></script>
   </body>
