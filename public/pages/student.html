@@ -44,31 +44,32 @@
               <i class="fas fa-tachometer-alt"></i> Bảng điều khiển
             </div>
             <div class="stats-container modern-stats">
-              <div class="stat-item modern-stat">
+              <div class="stat-item modern-stat card-primary">
                 <div class="stat-icon">
                   <i class="fas fa-graduation-cap"></i>
                 </div>
                 <div class="stat-info">
                   <h3>5</h3>
-                  <p>Môn học</p>
+                  <p>Môn học học kỳ này</p>
                 </div>
               </div>
-              <div class="stat-item modern-stat">
+              <div class="stat-item modern-stat card-success">
                 <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
                 <div class="stat-info">
                   <h3>8.5</h3>
-                  <p>ĐTB</p>
+                  <p>Điểm trung bình tích lũy</p>
                 </div>
               </div>
-              <div class="stat-item modern-stat">
+              <div class="stat-item modern-stat card-warning">
                 <div class="stat-icon"><i class="fas fa-tasks"></i></div>
                 <div class="stat-info">
                   <h3>3</h3>
-                  <p>Bài tập</p>
+                  <p>Bài tập chưa hoàn thành</p>
                 </div>
               </div>
             </div>
           </div>
+          
           <div class="data-card modern-card">
             <div class="card-title modern-card-title">
               <i class="fas fa-list"></i> Lớp học đã đăng ký
@@ -78,11 +79,11 @@
                 <thead>
                   <tr>
                     <th>Mã lớp</th>
-                    <th>Tên lớp</th>
+                    <th>Tên lớp học</th>
                     <th>Môn học</th>
-                    <th>Điểm GK</th>
-                    <th>Điểm CK</th>
-                    <th>Hành động</th>
+                    <th style="text-align: center;">Điểm GK</th>
+                    <th style="text-align: center;">Điểm CK</th>
+                    <th style="text-align: center;">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody id="myClassTable"></tbody>
@@ -104,7 +105,7 @@
                     <th>Tên lớp</th>
                     <th>Môn học</th>
                     <th>Giảng viên</th>
-                    <th>Hành động</th>
+                    <th style="text-align: center;">Hành động</th>
                   </tr>
                 </thead>
                 <tbody id="availableTable"></tbody>
@@ -118,29 +119,35 @@
             <div class="modern-card-title">
               <i class="fas fa-info-circle"></i> Chi tiết lớp học
             </div>
-            <div style="margin-bottom: 16px">
-              <label for="detailClass">Chọn lớp:</label>
-              <select id="detailClass"></select>
+            
+            <div class="filter-action-group" style="margin-bottom: 20px; display: flex; gap: 12px; align-items: center;">
+              <label for="detailClass" style="font-weight: 600;"><i class="fas fa-filter"></i> Lọc theo lớp học:</label>
+              <select id="detailClass" style="max-width: 200px;"></select>
               <button class="btn btn-primary btn-sm" id="btnLoadDetail">
-                Xem chi tiết
+                <i class="fas fa-search"></i> Xem chi tiết
               </button>
             </div>
+
             <div id="classInfoBox" style="margin-bottom: 12px"></div>
+            
             <div style="margin-bottom: 12px">
-              <strong>Tài liệu lớp học:</strong>
-              <table class="styled-table modern-table">
-                <thead>
-                  <tr>
-                    <th>Tiêu đề</th>
-                    <th>File</th>
-                    <th>Tải về</th>
-                  </tr>
-                </thead>
-                <tbody id="detailMaterials"></tbody>
-              </table>
+              <strong style="display: block; margin-bottom: 8px;"><i class="fas fa-folder-open"></i> Tài liệu lớp học:</strong>
+              <div class="table-responsive">
+                <table class="styled-table modern-table">
+                  <thead>
+                    <tr>
+                      <th>Tiêu đề</th>
+                      <th>File</th>
+                      <th style="text-align: center;">Tải về</th>
+                    </tr>
+                  </thead>
+                  <tbody id="detailMaterials"></tbody>
+                </table>
+              </div>
             </div>
-            <div>
-              <strong>Bài tập:</strong>
+            
+            <div style="margin-top: 20px;">
+              <strong style="display: block; margin-bottom: 8px;"><i class="fas fa-tasks"></i> Bài tập về nhà:</strong>
               <div class="table-responsive">
                 <table class="styled-table modern-table">
                   <thead>
@@ -149,7 +156,7 @@
                       <th>Hạn nộp</th>
                       <th>Đề bài</th>
                       <th>Nộp bài</th>
-                      <th>Thao tác</th>
+                      <th style="text-align: center;">Thao tác</th>
                     </tr>
                   </thead>
                   <tbody id="detailAssignments"></tbody>
@@ -162,7 +169,7 @@
         <div class="tab-content" id="tab-announcements" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
-              <i class="fas fa-bell"></i> Thông báo
+              <i class="fas fa-bell"></i> Thông báo hệ thống
             </div>
             <div class="table-responsive">
               <table class="styled-table modern-table">
