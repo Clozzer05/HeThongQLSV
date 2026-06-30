@@ -1,160 +1,187 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang Sinh Viên | Hệ Thống QLSV</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-<body>
-<div class="dashboard-wrapper modern-student">
-    <aside class="sidebar modern-sidebar">
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard-wrapper modern-student">
+      <aside class="sidebar modern-sidebar">
         <div class="sidebar-logo"><span>HỆ THỐNG QLSV</span></div>
         <nav class="sidebar-menu">
-            <a href="#" data-tab="my-classes" class="tab-link active"><i class="fas fa-home"></i> Bảng điều khiển</a>
-            <a href="#" data-tab="available" class="tab-link"><i class="fas fa-edit"></i> Đăng ký lớp</a>
-            <a href="#" data-tab="class-detail" class="tab-link"><i class="fas fa-info-circle"></i> Chi tiết lớp</a>
-            <a href="#" data-tab="announcements" class="tab-link"><i class="fas fa-bell"></i> Thông báo</a>
-            <a href="#" id="btnLogout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+          <a href="#" data-tab="my-classes" class="tab-link active"
+            ><i class="fas fa-home"></i> Bảng điều khiển</a
+          >
+          <a href="#" data-tab="available" class="tab-link"
+            ><i class="fas fa-edit"></i> Đăng ký lớp</a
+          >
+          <a href="#" data-tab="class-detail" class="tab-link"
+            ><i class="fas fa-info-circle"></i> Chi tiết lớp</a
+          >
+          <a href="#" data-tab="announcements" class="tab-link"
+            ><i class="fas fa-bell"></i> Thông báo</a
+          >
+          <a href="#" id="btnLogout" class="logout-btn"
+            ><i class="fas fa-sign-out-alt"></i> Đăng xuất</a
+          >
         </nav>
-    </aside>
+      </aside>
 
-    <main class="main-content modern-main">
-        <header class="main-header modern-header">
-        </header>
+      <main class="main-content modern-main">
+        <header class="main-header modern-header"></header>
 
         <div id="globalAlert"></div>
 
         <div class="tab-content" id="tab-my-classes">
-            <div class="modern-card">
-                <div class="modern-card-title"><i class="fas fa-tachometer-alt"></i> Bảng điều khiển</div>
-                <div class="stats-container modern-stats">
-                    <div class="stat-item modern-stat">
-                        <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
-                        <div class="stat-info">
-                            <h3>5</h3>
-                            <p>Môn học</p>
-                        </div>
-                    </div>
-                    <div class="stat-item modern-stat">
-                        <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
-                        <div class="stat-info">
-                            <h3>8.5</h3>
-                            <p>ĐTB</p>
-                        </div>
-                    </div>
-                    <div class="stat-item modern-stat">
-                        <div class="stat-icon"><i class="fas fa-tasks"></i></div>
-                        <div class="stat-info">
-                            <h3>3</h3>
-                            <p>Bài tập</p>
-                        </div>
-                    </div>
-                </div>
+          <div class="modern-card">
+            <div class="modern-card-title">
+              <i class="fas fa-tachometer-alt"></i> Bảng điều khiển
             </div>
-            <div class="data-card modern-card">
-                <div class="card-title modern-card-title"><i class="fas fa-list"></i> Lớp học đã đăng ký</div>
-                <div class="table-responsive">
-                    <table class="styled-table modern-table">
-                        <thead>
-                            <tr>
-                                <th>Mã lớp</th>
-                                <th>Tên lớp</th>
-                                <th>Môn học</th>
-                                <th>Điểm GK</th>
-                                <th>Điểm CK</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody id="myClassTable">
-
-                        </tbody>
-                    </table>
+            <div class="stats-container modern-stats">
+              <div class="stat-item modern-stat">
+                <div class="stat-icon">
+                  <i class="fas fa-graduation-cap"></i>
                 </div>
+                <div class="stat-info">
+                  <h3>5</h3>
+                  <p>Môn học</p>
+                </div>
+              </div>
+              <div class="stat-item modern-stat">
+                <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
+                <div class="stat-info">
+                  <h3>8.5</h3>
+                  <p>ĐTB</p>
+                </div>
+              </div>
+              <div class="stat-item modern-stat">
+                <div class="stat-icon"><i class="fas fa-tasks"></i></div>
+                <div class="stat-info">
+                  <h3>3</h3>
+                  <p>Bài tập</p>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="data-card modern-card">
+            <div class="card-title modern-card-title">
+              <i class="fas fa-list"></i> Lớp học đã đăng ký
+            </div>
+            <div class="table-responsive">
+              <table class="styled-table modern-table">
+                <thead>
+                  <tr>
+                    <th>Mã lớp</th>
+                    <th>Tên lớp</th>
+                    <th>Môn học</th>
+                    <th>Điểm GK</th>
+                    <th>Điểm CK</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="myClassTable"></tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
-        <div class="tab-content" id="tab-available" style="display:none">
-            <div class="modern-card">
-                <div class="modern-card-title"><i class="fas fa-edit"></i> Đăng ký lớp mới</div>
-                <div class="table-responsive">
-                    <table class="styled-table modern-table">
-                        <thead>
-                            <tr>
-                                <th>Mã lớp</th>
-                                <th>Tên lớp</th>
-                                <th>Môn học</th>
-                                <th>Giảng viên</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody id="availableTable">
-
-                        </tbody>
-                    </table>
-                </div>
+        <div class="tab-content" id="tab-available" style="display: none">
+          <div class="modern-card">
+            <div class="modern-card-title">
+              <i class="fas fa-edit"></i> Đăng ký lớp mới
             </div>
+            <div class="table-responsive">
+              <table class="styled-table modern-table">
+                <thead>
+                  <tr>
+                    <th>Mã lớp</th>
+                    <th>Tên lớp</th>
+                    <th>Môn học</th>
+                    <th>Giảng viên</th>
+                    <th>Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="availableTable"></tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
-        <div class="tab-content" id="tab-class-detail" style="display:none">
-            <div class="modern-card">
-                <div class="modern-card-title"><i class="fas fa-info-circle"></i> Chi tiết lớp học</div>
-                <div style="margin-bottom: 16px;">
-                    <label for="detailClass">Chọn lớp:</label>
-                    <select id="detailClass"></select>
-                    <button class="btn btn-primary btn-sm" id="btnLoadDetail">Xem chi tiết</button>
-                </div>
-                <div id="classInfoBox" style="margin-bottom: 12px;"></div>
-                <div style="margin-bottom: 12px;">
-                    <strong>Tài liệu lớp học:</strong>
-                    <table class="styled-table modern-table">
-                        <thead><tr><th>Tiêu đề</th><th>File</th><th>Tải về</th></tr></thead>
-                        <tbody id="detailMaterials"></tbody>
-                    </table>
-                </div>
-                <div>
-                    <strong>Bài tập:</strong>
-                    <div class="table-responsive">
-                        <table class="styled-table modern-table">
-                            <thead>
-                                <tr>
-                                    <th>Tiêu đề</th>
-                                    <th>Hạn nộp</th>
-                                    <th>Đề bài</th>
-                                    <th>Nộp bài</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody id="detailAssignments"></tbody>
-                        </table>
-                    </div>
-                </div>
+        <div class="tab-content" id="tab-class-detail" style="display: none">
+          <div class="modern-card">
+            <div class="modern-card-title">
+              <i class="fas fa-info-circle"></i> Chi tiết lớp học
             </div>
+            <div style="margin-bottom: 16px">
+              <label for="detailClass">Chọn lớp:</label>
+              <select id="detailClass"></select>
+              <button class="btn btn-primary btn-sm" id="btnLoadDetail">
+                Xem chi tiết
+              </button>
+            </div>
+            <div id="classInfoBox" style="margin-bottom: 12px"></div>
+            <div style="margin-bottom: 12px">
+              <strong>Tài liệu lớp học:</strong>
+              <table class="styled-table modern-table">
+                <thead>
+                  <tr>
+                    <th>Tiêu đề</th>
+                    <th>File</th>
+                    <th>Tải về</th>
+                  </tr>
+                </thead>
+                <tbody id="detailMaterials"></tbody>
+              </table>
+            </div>
+            <div>
+              <strong>Bài tập:</strong>
+              <div class="table-responsive">
+                <table class="styled-table modern-table">
+                  <thead>
+                    <tr>
+                      <th>Tiêu đề</th>
+                      <th>Hạn nộp</th>
+                      <th>Đề bài</th>
+                      <th>Nộp bài</th>
+                      <th>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="detailAssignments"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="tab-content" id="tab-announcements" style="display:none">
-
-            <div class="modern-card">
-                <div class="modern-card-title"><i class="fas fa-bell"></i> Thông báo</div>
-                <div class="table-responsive">
-                    <table class="styled-table modern-table">
-                        <thead>
-                            <tr>
-                                <th>Mã</th>
-                                <th>Tiêu đề</th>
-                                <th>Lớp</th>
-                                <th>Nội dung</th>
-                            </tr>
-                        </thead>
-                        <tbody id="annTable"></tbody>
-                    </table>
-                </div>
+        <div class="tab-content" id="tab-announcements" style="display: none">
+          <div class="modern-card">
+            <div class="modern-card-title">
+              <i class="fas fa-bell"></i> Thông báo
             </div>
+            <div class="table-responsive">
+              <table class="styled-table modern-table">
+                <thead>
+                  <tr>
+                    <th>Mã</th>
+                    <th>Tiêu đề</th>
+                    <th>Lớp</th>
+                    <th>Nội dung</th>
+                  </tr>
+                </thead>
+                <tbody id="annTable"></tbody>
+              </table>
+            </div>
+          </div>
         </div>
-    </main>
+      </main>
     </div>
-<script src="../js/common.js?v=20260420b"></script>
-<script src="../js/student.js?v=20260420b"></script>
-</body>
+    <script src="../js/common.js?v=20260420b"></script>
+    <script src="../js/student.js?v=20260420b"></script>
+  </body>
 </html>
