@@ -207,79 +207,68 @@
           </div>
         </div>
 
-<!-- PHẦN 5: TAB ĐIỂM SỐ (NÂNG CẤP GIAO DIỆN NHẬP) -->
+<!-- TAB ĐIỂM SỐ -->
         <div class="tab-content" id="tab-grades" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
-              <i class="fas fa-clipboard-list"></i> Bảng nhập điểm tổng kết học phần
+              <i class="fas fa-clipboard-list"></i> Cập nhật điểm tổng kết
             </div>
             <form class="grid-form">
-              <select id="gradeClass" required></select>
+              <select id="gradeClass"></select>
               <button type="button" class="btn btn-primary" id="btnLoadGrades">
-                <i class="fas fa-sync-alt"></i> Tải danh sách
+                Tải danh sách
               </button>
               <button type="button" class="btn btn-success" id="btnSaveGrades">
-                <i class="fas fa-save"></i> Lưu toàn bộ điểm
+                Lưu điểm
               </button>
             </form>
-            
-            <div style="margin: 10px 0; font-size: 13px; color: #666;">
-              <i class="fas fa-info-circle"></i> <strong>Lưu ý:</strong> Thang điểm chuẩn từ 0 đến 10. Hãy nhớ bấm nút "Lưu toàn bộ điểm" sau khi chỉnh sửa.
-            </div>
-
             <div class="table-responsive">
               <table class="styled-table modern-table">
                 <thead>
                   <tr>
-                    <th style="width: 60px; text-align: center;">STT</th>
                     <th>Sinh viên</th>
                     <th>Email</th>
-                    <th style="width: 150px; text-align: center;">Điểm giữa kỳ (40%)</th>
-                    <th style="width: 150px; text-align: center;">Điểm cuối kỳ (60%)</th>
+                    <th>Điểm giữa kỳ</th>
+                    <th>Điểm cuối kỳ</th>
                   </tr>
                 </thead>
-                <tbody id="gradeTable">
-                  <!-- JS sẽ đổ các thẻ <input type="number" min="0" max="10" step="0.1"> vào đây -->
-                </tbody>
+                <tbody id="gradeTable"></tbody>
               </table>
             </div>
           </div>
         </div>
 
-<!-- PHẦN 6: TAB TÀI LIỆU LỚP HỌC (TỐI ƯU QUẢN LÝ FILE) -->
+        <!-- TAB TÀI LIỆU -->
         <div class="tab-content" id="tab-materials" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
-              <i class="fas fa-folder-open"></i> Kho tài liệu lớp học
+              <i class="fas fa-folder-open"></i> Tài liệu lớp học
             </div>
-            <form id="materialForm" enctype="multipart/form-data" class="grid-form">
+            <form
+              id="materialForm"
+              enctype="multipart/form-data"
+              class="grid-form"
+            >
               <select id="mClass" required></select>
-              <input id="mTitle" placeholder="Tiêu đề tài liệu (Ví dụ: Slide Chương 1)" required />
-              
-              <div class="file-input-wrapper" style="display: flex; flex-direction: column; gap: 4px;">
-                <input
-                  id="mFile"
-                  type="file"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png"
-                  required
-                />
-                <small style="color: #666; font-size: 11px;">* Hỗ trợ mọi định dạng văn phòng (PDF, Word, Powerpoint...).</small>
-              </div>
-              
+              <input id="mTitle" placeholder="Tiêu đề" required />
+              <input
+                id="mFile"
+                type="file"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png"
+                required
+              />
               <button class="btn btn-success" type="submit">
-                <i class="fas fa-upload"></i> Tải lên tài liệu
+                Thêm tài liệu
               </button>
             </form>
-
-            <h4 style="margin: 20px 0 10px 0; color: #333;"><i class="fas fa-cloud-download-alt"></i> Tài liệu đã tải lên</h4>
             <div class="table-responsive">
               <table class="styled-table modern-table">
                 <thead>
                   <tr>
-                    <th style="width: 80px;">ID</th>
-                    <th>Tiêu đề tài liệu</th>
-                    <th>Lớp học áp dụng</th>
-                    <th style="width: 150px; text-align: center;">Hành động</th>
+                    <th>ID</th>
+                    <th>Tiêu đề</th>
+                    <th>Lớp</th>
+                    <th>Hành động</th>
                   </tr>
                 </thead>
                 <tbody id="materialTable"></tbody>
@@ -288,37 +277,31 @@
           </div>
         </div>
 
-<!-- PHẦN 7: TAB THÔNG BÁO VÀ ĐUÔI FILE HÒAN CHỈNH -->
+        <!-- TAB THÔNG BÁO -->
         <div class="tab-content" id="tab-announcements" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
-              <i class="fas fa-bullhorn"></i> Bảng tin thông báo lớp học
+              <i class="fas fa-bullhorn"></i> Thông báo lớp học
             </div>
             <form id="annForm" class="grid-form">
-              <!-- Cực kỳ quan trọng cho JS: Phân biệt giữa Thêm mới và Cập nhật -->
-              <input type="hidden" id="annId" value="" /> 
-              
+              <input type="hidden" id="annId" />
               <select id="annClass" required></select>
-              <input id="annTitle" placeholder="Tiêu đề thông báo ngắn gọn" required />
-              
-              <!-- Ô nhập thông tin dài bao trọn chiều ngang, tránh vỡ layout Grid -->
-              <textarea id="annContent" placeholder="Nội dung thông báo chi tiết gửi tới sinh viên..." required rows="4" style="grid-column: 1 / -1; font-family: inherit; padding: 10px; border-radius: 4px; border: 1px solid #ccc;"></textarea>
-              
+              <input id="annTitle" placeholder="Tiêu đề" required />
+              <!-- Sửa: Ép ô nhập thông báo dàn hàng ngang toàn bộ grid -->
+              <textarea id="annContent" placeholder="Nội dung" required rows="4" style="grid-column: 1 / -1;"></textarea>
               <button class="btn btn-success" type="submit" style="grid-column: 1 / -1;">
-                <i class="fas fa-paper-plane"></i> Đăng thông báo
+                Lưu thông báo
               </button>
             </form>
-
-            <h4 style="margin: 20px 0 10px 0; color: #333;"><i class="fas fa-history"></i> Lịch sử thông báo đã đăng</h4>
             <div class="table-responsive">
               <table class="styled-table modern-table">
                 <thead>
                   <tr>
-                    <th style="width: 80px;">ID</th>
-                    <th style="width: 200px;">Tiêu đề</th>
-                    <th>Nội dung chi tiết</th>
-                    <th style="width: 150px;">Lớp</th>
-                    <th style="width: 150px; text-align: center;">Hành động</th>
+                    <th>ID</th>
+                    <th>Tiêu đề</th>
+                    <th>Nội dung</th>
+                    <th>Lớp</th>
+                    <th>Hành động</th>
                   </tr>
                 </thead>
                 <tbody id="annTable"></tbody>
@@ -328,8 +311,7 @@
         </div>
       </main>
     </div>
-
-    <!-- SCRIPT HỆ THỐNG -->
+    <!-- LIÊN KẾT SCRIPT GỐC -->
     <script src="../js/common.js"></script>
     <script src="../js/teacher.js"></script>
   </body>
