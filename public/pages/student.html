@@ -14,7 +14,7 @@
     <div class="dashboard-wrapper modern-student">
       <aside class="sidebar modern-sidebar">
         <div class="sidebar-logo"><span>HỆ THỐNG QLSV</span></div>
-        
+
         <div class="sidebar-profile" style="padding: 16px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
           <div class="profile-avatar" style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #fff;">
             <i class="fas fa-user-graduate" style="font-size: 1.5rem;"></i>
@@ -43,7 +43,16 @@
       </aside>
 
       <main class="main-content modern-main">
-        <header class="main-header modern-header"></header>
+
+        <header class="main-header modern-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color, #e2e8f0);">
+          <div class="welcome-text">
+            <h2 style="margin: 0; font-size: 1.4rem; font-weight: 700; color: #1e293b;">Xin chào, Sinh viên! </h2>
+            <p style="margin: 4px 0 0; color: #64748b; font-size: 0.9rem;">Chúc bạn có một ngày học tập thật hiệu quả.</p>
+          </div>
+          <div class="header-actions" style="display: flex; gap: 15px; align-items: center;">
+            <span style="color: #64748b; font-size: 0.9rem;"><i class="far fa-calendar-alt"></i> Học kỳ: 2025 - 2026</span>
+          </div>
+        </header>
 
         <div id="globalAlert"></div>
 
@@ -94,6 +103,7 @@
               <i class="fas fa-list"></i> Lớp học đã đăng ký
             </div>
 
+            <!-- Ô tìm kiếm nhanh môn học -->
             <div class="search-box-wrapper" style="margin: 16px 0; max-width: 320px;">
               <input type="text" id="searchMyClass" placeholder="🔍 Tìm nhanh môn học hoặc mã lớp..." style="padding: 10px 14px; font-size: 0.9rem;" />
             </div>
@@ -116,6 +126,7 @@
           </div>
         </div>
 
+        <!-- TAB: ĐĂNG KÝ LỚP MỚI -->
         <div class="tab-content" id="tab-available" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
@@ -138,6 +149,7 @@
           </div>
         </div>
 
+        <!-- TAB: CHI TIẾT LỚP HỌC -->
         <div class="tab-content" id="tab-class-detail" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
@@ -190,6 +202,7 @@
           </div>
         </div>
 
+        <!-- TAB: THÔNG BÁO CHUNG -->
         <div class="tab-content" id="tab-announcements" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
