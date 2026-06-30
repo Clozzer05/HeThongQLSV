@@ -150,28 +150,30 @@
           </div>
         </div>
 
-<!-- PHẦN 4: TAB BÀI TẬP (BỔ SUNG THÔNG TIN FILE NỘP) -->
+<!-- TAB BÀI TẬP VÀ BÀI NỘP -->
         <div class="tab-content" id="tab-assignments" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
-              <i class="fas fa-tasks"></i> Quản lý Bài tập
+              <i class="fas fa-tasks"></i> Bài tập và bài nộp
             </div>
-            
-            <form id="assignmentForm" enctype="multipart/form-data" class="grid-form">
+            <form
+              id="assignmentForm"
+              enctype="multipart/form-data"
+              class="grid-form"
+            >
               <select id="asClass" required></select>
-              <input id="asTitle" placeholder="Tiêu đề bài tập" required />
-              <input id="asDeadline" type="datetime-local" required />
-              
-              <div class="file-input-wrapper" style="display: flex; flex-direction: column; gap: 4px;">
-                <input id="asFile" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png" />
-                <small style="color: #666; font-size: 11px;">* Hỗ trợ tài liệu, file nén (.zip, .rar) và ảnh. Tối đa 25MB.</small>
-              </div>
-              
-              <textarea id="asDesc" placeholder="Nội dung yêu cầu chi tiết hoặc gợi ý làm bài..." rows="3" style="grid-column: 1 / -1;"></textarea>
-              <button class="btn btn-success" type="submit" style="grid-column: 1 / -1;"><i class="fas fa-plus"></i> Tạo và giao bài tập</button>
+              <input id="asTitle" placeholder="Tiêu đề" required />
+              <!-- Sửa: Đóng cột rộng hết hàng cho textarea -->
+              <textarea id="asDesc" placeholder="Mô tả" style="grid-column: 1 / -1;"></textarea>
+              <input id="asDeadline" type="datetime-local" />
+              <!-- Sửa: Bỏ thuộc tính bắt buộc (required) chọn file -->
+              <input
+                id="asFile"
+                type="file"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png"
+              />
+              <button class="btn btn-success" type="submit" style="grid-column: 1 / -1;">Tạo bài tập</button>
             </form>
-
-            <h4 style="margin: 25px 0 10px 0; color: #333;"><i class="fas fa-list-ul"></i> Các bài tập đã giao</h4>
             <div class="table-responsive">
               <table class="styled-table modern-table">
                 <thead>
@@ -179,15 +181,14 @@
                     <th>ID</th>
                     <th>Tiêu đề</th>
                     <th>Hạn nộp</th>
-                    <th>Tình trạng nộp bài</th>
+                    <th>Nộp bài</th>
                     <th>Hành động</th>
                   </tr>
                 </thead>
                 <tbody id="assignmentTable"></tbody>
               </table>
             </div>
-
-            <h4 style="margin: 30px 0 10px 0; color: #333;"><i class="fas fa-graduation-cap"></i> Danh sách bài nộp cần chấm điểm</h4>
+            <h4 style="margin-top: 24px">Danh sách bài nộp</h4>
             <div class="table-responsive">
               <table class="styled-table modern-table easy-mark-table">
                 <thead>
@@ -195,9 +196,9 @@
                     <th style="text-align: center">Sinh viên</th>
                     <th style="text-align: center">Tên file</th>
                     <th style="text-align: center">Tải về</th>
-                    <th style="text-align: center; width: 100px;">Điểm</th>
-                    <th style="text-align: center">Nhận xét của Giảng viên</th>
-                    <th style="text-align: center; width: 80px;">Lưu</th>
+                    <th style="text-align: center">Điểm</th>
+                    <th style="text-align: center">Nhận xét</th>
+                    <th style="text-align: center">Lưu</th>
                   </tr>
                 </thead>
                 <tbody id="submissionTable"></tbody>
