@@ -15,6 +15,7 @@
       <aside class="sidebar modern-sidebar">
         <div class="sidebar-logo"><span>HỆ THỐNG QLSV</span></div>
         
+        <!-- Khối thông tin sinh viên thu nhỏ -->
         <div class="sidebar-profile" style="padding: 16px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
           <div class="profile-avatar" style="width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #fff;">
             <i class="fas fa-user-graduate" style="font-size: 1.5rem;"></i>
@@ -46,7 +47,7 @@
         <!-- Thanh Header trên cùng -->
         <header class="main-header modern-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color, #e2e8f0);">
           <div class="welcome-text">
-            <h2 style="margin: 0; font-size: 1.4rem; font-weight: 700; color: #1e293b;">Xin chào, Sinh viên!</h2>
+            <h2 style="margin: 0; font-size: 1.4rem; font-weight: 700; color: #1e293b;">Xin chào, Sinh viên! 👋</h2>
             <p style="margin: 4px 0 0; color: #64748b; font-size: 0.9rem;">Chúc bạn có một ngày học tập thật hiệu quả.</p>
           </div>
           <div class="header-actions" style="display: flex; gap: 15px; align-items: center;">
@@ -56,6 +57,7 @@
 
         <div id="globalAlert"></div>
 
+        <!-- NỘI DUNG CHÍNH CHỨA TRONG KHỐI ĐỂ ĐẨY FOOTER XUỐNG DƯỚI -->
         <div class="main-body-content" style="flex: 1;">
           <!-- TAB: BẢNG ĐIỀU KHIỂN -->
           <div class="tab-content" id="tab-my-classes">
@@ -90,6 +92,19 @@
               </div>
             </div>
 
+            <!-- Khối thông tin bổ sung: Xếp hạng học lực & Điểm rèn luyện -->
+            <div class="modern-card ranking-card" style="margin-bottom: 24px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
+              <div class="modern-card-title" style="color: #4f46e5;">
+                <i class="fas fa-trophy"></i> Thành tích & Rèn luyện cá nhân
+              </div>
+              <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-top: 12px; color: #475569; font-size: 0.95rem;">
+                <div><i class="fas fa-star" style="color: #eab308;"></i> <strong>Xếp hạng lớp:</strong> 05 / 45</div>
+                <div><i class="fas fa-heart" style="color: #ef4444;"></i> <strong>Điểm rèn luyện:</strong> 88 (Tốt)</div>
+                <div><i class="fas fa-medal" style="color: #3b82f6;"></i> <strong>Danh hiệu dự kiến:</strong> Sinh viên Giỏi</div>
+              </div>
+            </div>
+
+            <!-- Khối nhắc nhở lịch học và hạn nộp bài tập -->
             <div class="modern-card deadline-card" style="border-left: 4px solid #ef4444;">
               <div class="modern-card-title" style="color: #b91c1c; margin-bottom: 12px;">
                 <i class="fas fa-exclamation-circle"></i> Nhắc nhở quan trọng sắp tới
@@ -105,6 +120,7 @@
                 <i class="fas fa-list"></i> Lớp học đã đăng ký
               </div>
 
+              <!-- Ô tìm kiếm nhanh môn học -->
               <div class="search-box-wrapper" style="margin: 16px 0; max-width: 320px;">
                 <input type="text" id="searchMyClass" placeholder="🔍 Tìm nhanh môn học hoặc mã lớp..." style="padding: 10px 14px; font-size: 0.9rem;" />
               </div>
@@ -127,6 +143,7 @@
             </div>
           </div>
 
+          <!-- TAB: ĐĂNG KÝ LỚP MỚI -->
           <div class="tab-content" id="tab-available" style="display: none">
             <div class="modern-card">
               <div class="modern-card-title">
@@ -149,6 +166,7 @@
             </div>
           </div>
 
+          <!-- TAB: CHI TIẾT LỚP HỌC -->
           <div class="tab-content" id="tab-class-detail" style="display: none">
             <div class="modern-card">
               <div class="modern-card-title">
@@ -201,6 +219,7 @@
             </div>
           </div>
 
+          <!-- TAB: THÔNG BÁO CHUNG -->
           <div class="tab-content" id="tab-announcements" style="display: none">
             <div class="modern-card">
               <div class="modern-card-title">
@@ -223,7 +242,7 @@
           </div>
         </div>
 
-        <!-- Khối Footer hệ thống bổ sung ở dưới cùng -->
+        <!-- Khối Footer hệ thống ở dưới cùng -->
         <footer class="main-footer" style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; margin-top: 40px; border-top: 1px solid var(--border-color, #e2e8f0); color: #94a3b8; font-size: 0.85rem;">
           <div class="footer-copyright">
             &copy; 2026 Hệ Thống QLSV. Tất cả các quyền được bảo lưu.
