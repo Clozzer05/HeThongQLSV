@@ -71,10 +71,10 @@
             <form class="grid-form">
               <select id="attClass"></select>
               <input id="attDate" type="date" />
-              <button class="btn btn-primary" id="btnLoadAtt">
+              <button type="button" class="btn btn-primary" id="btnLoadAtt">
                 Tải danh sách
               </button>
-              <button class="btn btn-success" id="btnSaveAtt">
+              <button type="button" class="btn btn-success" id="btnSaveAtt">
                 Lưu điểm danh
               </button>
               <button type="button" class="btn btn-info" id="btnShowAttHistory">
@@ -160,7 +160,7 @@
             >
               <select id="asClass" required></select>
               <input id="asTitle" placeholder="Tiêu đề" required />
-              <input id="asDesc" placeholder="Mô tả" />
+              <textarea id="asDesc" placeholder="Mô tả"></textarea>
               <input id="asDeadline" type="datetime-local" />
               <input
                 id="asFile"
@@ -210,10 +210,10 @@
             </div>
             <form class="grid-form">
               <select id="gradeClass"></select>
-              <button class="btn btn-primary" id="btnLoadGrades">
+              <button type="button" class="btn btn-primary" id="btnLoadGrades">
                 Tải danh sách
               </button>
-              <button class="btn btn-success" id="btnSaveGrades">
+              <button type="button" class="btn btn-success" id="btnSaveGrades">
                 Lưu điểm
               </button>
             </form>
@@ -280,7 +280,7 @@
               <input type="hidden" id="annId" />
               <select id="annClass" required></select>
               <input id="annTitle" placeholder="Tiêu đề" required />
-              <input id="annContent" placeholder="Nội dung" required />
+              <textarea id="annContent" placeholder="Nội dung" required rows="4"></textarea>
               <button class="btn btn-success" type="submit">
                 Lưu thông báo
               </button>
