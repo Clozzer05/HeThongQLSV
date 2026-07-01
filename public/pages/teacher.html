@@ -163,16 +163,21 @@
             >
               <select id="asClass" required></select>
               <input id="asTitle" placeholder="Tiêu đề" required />
-              <!-- Sửa: Đóng cột rộng hết hàng cho textarea -->
-              <textarea id="asDesc" placeholder="Mô tả" style="grid-column: 1 / -1;"></textarea>
+              
+              <!-- SỬA: Ép mô tả dãn rộng hết hàng ngang và đặt chiều cao tối thiểu -->
+              <textarea id="asDesc" placeholder="Mô tả" style="grid-column: 1 / -1; width: 100%; min-height: 80px; box-sizing: border-box;"></textarea>
+              
               <input id="asDeadline" type="datetime-local" />
-              <!-- Sửa: Bỏ thuộc tính bắt buộc (required) chọn file -->
+              
+              <!-- SỬA: Bỏ thuộc tính required bắt buộc tải file -->
               <input
                 id="asFile"
                 type="file"
                 accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png"
               />
-              <button class="btn btn-success" type="submit" style="grid-column: 1 / -1;">Tạo bài tập</button>
+              
+              <!-- SỬA: Ép nút bấm dàn hết hàng ngang của form để không bị lệch layout -->
+              <button class="btn btn-success" type="submit" style="grid-column: 1 / -1; width: 100%;">Tạo bài tập</button>
             </form>
             <div class="table-responsive">
               <table class="styled-table modern-table">
@@ -287,9 +292,12 @@
               <input type="hidden" id="annId" />
               <select id="annClass" required></select>
               <input id="annTitle" placeholder="Tiêu đề" required />
-              <!-- Sửa: Ép ô nhập thông báo dàn hàng ngang toàn bộ grid -->
-              <textarea id="annContent" placeholder="Nội dung" required rows="4" style="grid-column: 1 / -1;"></textarea>
-              <button class="btn btn-success" type="submit" style="grid-column: 1 / -1;">
+              
+              <!-- SỬA: Ép nội dung dãn rộng toàn bộ khung lưới -->
+              <textarea id="annContent" placeholder="Nội dung" required rows="4" style="grid-column: 1 / -1; width: 100%; box-sizing: border-box;"></textarea>
+              
+              <!-- SỬA: Ép nút lưu thông báo chiếm hết chiều ngang -->
+              <button class="btn btn-success" type="submit" style="grid-column: 1 / -1; width: 100%;">
                 Lưu thông báo
               </button>
             </form>
