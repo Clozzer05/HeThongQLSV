@@ -19,7 +19,12 @@
   --muted: #64748b;
   --heading: #0f172a;
 
-  --sidebar-grad: linear-gradient(170deg, #4f46e5 0%, #6d28d9 55%, #7c3aed 100%);
+  --sidebar-grad: linear-gradient(
+    170deg,
+    #4f46e5 0%,
+    #6d28d9 55%,
+    #7c3aed 100%
+  );
   --sidebar-text: #e9e7ff;
   --sidebar-muted: #c4b5fd;
 
@@ -57,7 +62,12 @@
   --muted: #94a3b8;
   --heading: #f1f5f9;
 
-  --sidebar-grad: linear-gradient(170deg, #1e1b4b 0%, #2e1065 60%, #3b0764 100%);
+  --sidebar-grad: linear-gradient(
+    170deg,
+    #1e1b4b 0%,
+    #2e1065 60%,
+    #3b0764 100%
+  );
   --sidebar-text: #ddd6fe;
   --sidebar-muted: #a78bfa;
 
@@ -85,7 +95,9 @@ body {
   color: var(--text-color);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 a {
@@ -125,7 +137,8 @@ h4 {
   padding: 24px;
   position: relative;
   overflow: hidden;
-  background: radial-gradient(1200px 600px at 15% 0%, #6d28d9 0%, transparent 55%),
+  background:
+    radial-gradient(1200px 600px at 15% 0%, #6d28d9 0%, transparent 55%),
     radial-gradient(1000px 700px at 100% 100%, #4f46e5 0%, transparent 50%),
     linear-gradient(160deg, #312e81 0%, #1e1b4b 100%);
 }
@@ -259,7 +272,10 @@ h4 {
   font-weight: 500;
   padding: 11px 14px;
   border-radius: 12px;
-  transition: background 0.18s, color 0.18s, transform 0.12s;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    transform 0.12s;
   font-size: 0.95rem;
   display: flex;
   align-items: center;
@@ -375,7 +391,10 @@ h4 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s, background 0.18s, color 0.18s;
+  transition:
+    transform 0.15s,
+    background 0.18s,
+    color 0.18s;
 }
 .theme-toggle:hover {
   transform: rotate(-12deg);
@@ -482,7 +501,10 @@ h4 {
   display: flex;
   align-items: center;
   gap: 16px;
-  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+  transition:
+    transform 0.18s,
+    box-shadow 0.18s,
+    border-color 0.18s;
   position: relative;
   overflow: hidden;
 }
@@ -604,7 +626,9 @@ tr:nth-child(even) {
 .easy-mark-table input[type="text"] {
   margin: 0;
   outline: none;
-  transition: border 0.2s, box-shadow 0.2s;
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
 }
 .easy-mark-table input:focus {
   border-color: var(--primary-color);
@@ -623,7 +647,10 @@ textarea {
   font-family: inherit;
   background: var(--surface-2);
   color: var(--text-color);
-  transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+  transition:
+    border-color 0.18s,
+    box-shadow 0.18s,
+    background 0.18s;
 }
 input::placeholder,
 textarea::placeholder {
@@ -684,7 +711,11 @@ input[type="file"]::file-selector-button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: transform 0.12s, box-shadow 0.18s, filter 0.18s, opacity 0.18s;
+  transition:
+    transform 0.12s,
+    box-shadow 0.18s,
+    filter 0.18s,
+    opacity 0.18s;
   box-shadow: var(--shadow-sm);
   white-space: nowrap;
 }
@@ -888,7 +919,9 @@ h3 {
   font-size: 26px;
   cursor: pointer;
   color: var(--muted);
-  transition: color 0.2s, transform 0.2s;
+  transition:
+    color 0.2s,
+    transform 0.2s;
   line-height: 1;
 }
 #closeAttHistory:hover {

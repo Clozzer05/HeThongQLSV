@@ -335,7 +335,8 @@
               var roleEl = document.getElementById("uiRole");
               var avEl = document.getElementById("uiAvatar");
               if (nameEl) nameEl.textContent = name;
-              if (roleEl) roleEl.textContent = ROLE[u.vai_tro] || u.vai_tro || "";
+              if (roleEl)
+                roleEl.textContent = ROLE[u.vai_tro] || u.vai_tro || "";
               if (avEl)
                 avEl.textContent = (name.trim()[0] || "?").toUpperCase();
             })
