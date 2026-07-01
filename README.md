@@ -35,3 +35,4 @@ Docker nhanh:
 - DB config: api/config/database.php
 - Uploads: public/uploads/
 - API base URL: public/js/common.js (tự nhận diện)
+test conflict
