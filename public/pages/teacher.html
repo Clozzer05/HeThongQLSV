@@ -105,90 +105,173 @@
 </div>
 
         <!-- TAB ĐIỂM DANH -->
-        <div class="tab-content" id="tab-attendance" style="display: none">
-          <div class="modern-card">
-            <div class="modern-card-title">
-              <i class="fas fa-user-check"></i> Điểm danh
+        <div class="tab-content" id="tab-attendance" style="display:none;">
+
+    <div class="modern-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    <i class="fas fa-user-check"></i>
+                    Điểm danh sinh viên
+                </h2>
+
+                <p>
+                    Quản lý điểm danh theo từng lớp học.
+                </p>
+
             </div>
-            <form class="grid-form">
-              <select id="attClass"></select>
-              <input id="attDate" type="date" />
-              <button type="button" class="btn btn-primary" id="btnLoadAtt">
-                Tải danh sách
-              </button>
-              <button type="button" class="btn btn-success" id="btnSaveAtt">
-                Lưu điểm danh
-              </button>
-              <button type="button" class="btn btn-info" id="btnShowAttHistory">
-                Lịch sử điểm danh
-              </button>
-            </form>
-            <div class="table-responsive">
-              <table class="styled-table modern-table">
-                <thead>
-                  <tr>
-                    <th>SV</th>
-                    <th>Email</th>
-                    <th>Trạng thái</th>
-                  </tr>
-                </thead>
-                <tbody id="attTable"></tbody>
-              </table>
-            </div>
-            <div
-              id="attHistoryModal"
-              class="modal"
-              style="
-                display: none;
-                position: fixed;
-                z-index: 1000;
-                left: 0;
-                top: 0;
-                width: 100vw;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.3);
-              "
-            >
-              <div
-                class="modal-content"
-                style="
-                  background: #fff;
-                  margin: 5% auto;
-                  padding: 20px;
-                  border-radius: 8px;
-                  max-width: 900px;
-                  position: relative;
-                "
-              >
-                <span
-                  id="closeAttHistory"
-                  style="
-                    position: absolute;
-                    top: 10px;
-                    right: 20px;
-                    font-size: 24px;
-                    cursor: pointer;
-                  "
-                  >&times;</span
-                >
-                <h3>Lịch sử điểm danh</h3>
-                <div class="table-responsive">
-                  <table class="styled-table modern-table">
-                    <thead>
-                      <tr>
-                        <th>Ngày</th>
-                        <th>SV</th>
-                        <th>Email</th>
-                        <th>Trạng thái</th>
-                      </tr>
-                    </thead>
-                    <tbody id="attHistoryTable"></tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
+
+        <div class="toolbar">
+
+            <div class="toolbar-item">
+
+                <label>Lớp học</label>
+
+                <select id="attClass"></select>
+
+            </div>
+
+            <div class="toolbar-item">
+
+                <label>Ngày</label>
+
+                <input id="attDate" type="date">
+
+            </div>
+
+            <div class="toolbar-buttons">
+
+                <button
+                    id="btnLoadAtt"
+                    type="button"
+                    class="btn btn-primary">
+
+                    <i class="fas fa-sync"></i>
+
+                    Tải danh sách
+
+                </button>
+
+                <button
+                    id="btnSaveAtt"
+                    type="button"
+                    class="btn btn-success">
+
+                    <i class="fas fa-save"></i>
+
+                    Lưu
+
+                </button>
+
+                <button
+                    id="btnShowAttHistory"
+                    type="button"
+                    class="btn btn-info">
+
+                    <i class="fas fa-history"></i>
+
+                    Lịch sử
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="styled-table modern-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th width="60">STT</th>
+
+                        <th>Sinh viên</th>
+
+                        <th>Email</th>
+
+                        <th width="180">Điểm danh</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="attTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+<!-- MODAL -->
+
+<div id="attHistoryModal" class="modern-modal" style="display:none;">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>
+
+<i class="fas fa-history"></i>
+
+Lịch sử điểm danh
+
+</h2>
+
+<span id="closeAttHistory">&times;</span>
+
+</div>
+
+<div class="modal-body">
+
+<div class="table-responsive">
+
+<table class="styled-table modern-table">
+
+<thead>
+
+<tr>
+
+<th>Ngày</th>
+
+<th>Sinh viên</th>
+
+<th>Email</th>
+
+<th>Trạng thái</th>
+
+</tr>
+
+</thead>
+
+<tbody id="attHistoryTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 <!-- TAB BÀI TẬP VÀ BÀI NỘP -->
         <div class="tab-content" id="tab-assignments" style="display: none">
