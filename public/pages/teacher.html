@@ -189,172 +189,116 @@
 
 </div>
 
-        <!-- TAB ĐIỂM DANH -->
-        <div class="tab-content" id="tab-attendance" style="display:none;">
+<!-- ===================== TAB ĐIỂM DANH ===================== -->
+<div class="tab-content" id="tab-attendance" style="display:none;">
 
-    <div class="modern-card">
+  <div class="modern-card">
 
-        <div class="card-header">
+    <div class="card-header">
 
-            <div>
-
-                <h2>
-                    <i class="fas fa-user-check"></i>
-                    Điểm danh sinh viên
-                </h2>
-
-                <p>
-                    Quản lý điểm danh theo từng lớp học.
-                </p>
-
-            </div>
-
-        </div>
-
-        <div class="toolbar">
-
-            <div class="toolbar-item">
-
-                <label>Lớp học</label>
-
-                <select id="attClass"></select>
-
-            </div>
-
-            <div class="toolbar-item">
-
-                <label>Ngày</label>
-
-                <input id="attDate" type="date">
-
-            </div>
-
-            <div class="toolbar-buttons">
-
-                <button
-                    id="btnLoadAtt"
-                    type="button"
-                    class="btn btn-primary">
-
-                    <i class="fas fa-sync"></i>
-
-                    Tải danh sách
-
-                </button>
-
-                <button
-                    id="btnSaveAtt"
-                    type="button"
-                    class="btn btn-success">
-
-                    <i class="fas fa-save"></i>
-
-                    Lưu
-
-                </button>
-
-                <button
-                    id="btnShowAttHistory"
-                    type="button"
-                    class="btn btn-info">
-
-                    <i class="fas fa-history"></i>
-
-                    Lịch sử
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <div class="table-responsive">
-
-            <table class="styled-table modern-table">
-
-                <thead>
-
-                    <tr>
-
-                        <th width="60">STT</th>
-
-                        <th>Sinh viên</th>
-
-                        <th>Email</th>
-
-                        <th width="180">Điểm danh</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="attTable">
-
-                </tbody>
-
-            </table>
-
-        </div>
+      <div>
+        <h2>
+          <i class="fas fa-user-check"></i>
+          Điểm danh sinh viên
+        </h2>
+        <p>Quản lý điểm danh theo từng lớp học.</p>
+      </div>
 
     </div>
 
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+
+      <div class="toolbar-item">
+        <label>Lớp học</label>
+        <select id="attClass"></select>
+      </div>
+
+      <div class="toolbar-item">
+        <label>Ngày</label>
+        <input id="attDate" type="date">
+      </div>
+
+      <div class="toolbar-buttons">
+
+        <button id="btnLoadAtt" type="button" class="btn btn-primary">
+          <i class="fas fa-sync"></i> Tải danh sách
+        </button>
+
+        <button id="btnSaveAtt" type="button" class="btn btn-success">
+          <i class="fas fa-save"></i> Lưu
+        </button>
+
+        <button id="btnShowAttHistory" type="button" class="btn btn-info">
+          <i class="fas fa-history"></i> Lịch sử
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-responsive">
+      <table class="styled-table modern-table">
+
+        <thead>
+          <tr>
+            <th width="60">STT</th>
+            <th>Sinh viên</th>
+            <th>Email</th>
+            <th width="180">Điểm danh</th>
+          </tr>
+        </thead>
+
+        <tbody id="attTable"></tbody>
+
+      </table>
+    </div>
+
+  </div>
+</div>
 
 
-<!-- MODAL -->
-
+<!-- ===================== MODAL LỊCH SỬ ĐIỂM DANH ===================== -->
 <div id="attHistoryModal" class="modern-modal" style="display:none;">
 
-<div class="modal-box">
+  <div class="modal-box">
 
-<div class="modal-header">
+    <div class="modal-header">
 
-<h2>
+      <h2>
+        <i class="fas fa-history"></i>
+        Lịch sử điểm danh
+      </h2>
 
-<i class="fas fa-history"></i>
+      <span id="closeAttHistory">&times;</span>
 
-Lịch sử điểm danh
+    </div>
 
-</h2>
+    <div class="modal-body">
 
-<span id="closeAttHistory">&times;</span>
+      <div class="table-responsive">
 
-</div>
+        <table class="styled-table modern-table">
 
-<div class="modal-body">
+          <thead>
+            <tr>
+              <th>Ngày</th>
+              <th>Sinh viên</th>
+              <th>Email</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
 
-<div class="table-responsive">
+          <tbody id="attHistoryTable"></tbody>
 
-<table class="styled-table modern-table">
+        </table>
 
-<thead>
+      </div>
 
-<tr>
+    </div>
 
-<th>Ngày</th>
-
-<th>Sinh viên</th>
-
-<th>Email</th>
-
-<th>Trạng thái</th>
-
-</tr>
-
-</thead>
-
-<tbody id="attHistoryTable">
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+  </div>
 
 </div>
 
