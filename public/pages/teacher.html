@@ -43,26 +43,66 @@
         <div id="globalAlert" class="alert hidden"></div>
 
 <!-- TAB LỚP PHỤ TRÁCH -->
-        <div class="tab-content" id="tab-classes">
-          <div class="modern-card">
-            <div class="modern-card-title">
-              <i class="fas fa-layer-group"></i> Danh sách lớp phụ trách
+ <div class="tab-content active" id="tab-classes">
+
+    <div class="modern-card">
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    <i class="fas fa-layer-group"></i>
+
+                    Danh sách lớp phụ trách
+                </h2>
+
+                <p>
+                    Các lớp đang được phân công giảng dạy.
+                </p>
+
             </div>
-            <div class="table-responsive">
-              <table class="styled-table modern-table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Tên lớp</th>
-                    <th>Môn học</th>
-                    <th>Học kỳ</th>
-                  </tr>
-                </thead>
-                <tbody id="classTable"></tbody>
-              </table>
-            </div>
-          </div>
+
+            <input
+                type="text"
+                id="searchClass"
+                placeholder="Tìm lớp..."
+                class="search-box"
+            >
+
         </div>
+
+        <div class="table-responsive">
+
+            <table class="styled-table modern-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th width="80">ID</th>
+
+                        <th>Tên lớp</th>
+
+                        <th>Môn học</th>
+
+                        <th>Học kỳ</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="classTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
 
         <!-- TAB ĐIỂM DANH -->
         <div class="tab-content" id="tab-attendance" style="display: none">
@@ -156,7 +196,7 @@
             <div class="modern-card-title">
               <i class="fas fa-tasks"></i> Bài tập và bài nộp
             </div>
-            <form
+           <form
               id="assignmentForm"
               enctype="multipart/form-data"
               class="grid-form"
@@ -293,7 +333,7 @@
               <select id="annClass" required></select>
               <input id="annTitle" placeholder="Tiêu đề" required />
               
-              <!-- SỬA: Ép nội dung dãn rộng toàn bộ khung lưới -->
+              <!-- SỬA: Ép ô nội dung dãn rộng toàn bộ hàng ngang -->
               <textarea id="annContent" placeholder="Nội dung" required rows="4" style="grid-column: 1 / -1; width: 100%; box-sizing: border-box;"></textarea>
               
               <!-- SỬA: Ép nút lưu thông báo chiếm hết chiều ngang -->
