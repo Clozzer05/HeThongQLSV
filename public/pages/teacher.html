@@ -14,247 +14,137 @@
 
 <div class="dashboard-wrapper modern-dashboard">
 
-    <!-- ================================================= -->
-    <!-- SIDEBAR -->
-    <!-- ================================================= -->
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="sidebar modern-sidebar">
 
-    <aside class="sidebar modern-sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
 
-        <div class="sidebar-header">
+      <h2>HỆ THỐNG QLSV</h2>
+      <span>Teacher Dashboard</span>
+    </div>
 
-            <div class="logo">
+    <!-- THÔNG TIN GIẢNG VIÊN -->
+    <div class="teacher-profile">
+      <div class="teacher-avatar">
+        <i class="fas fa-user-circle"></i>
+      </div>
 
-                <i class="fas fa-graduation-cap"></i>
+      <div>
+        <h4>Giảng viên</h4>
+        <small>Quản trị lớp học</small>
+      </div>
+    </div>
 
-            </div>
+    <!-- MENU -->
+    <nav class="sidebar-menu">
+      <a href="#" class="tab-link active" data-tab="classes">
+        <i class="fas fa-layer-group"></i>
+        <span>Lớp phụ trách</span>
+      </a>
 
-            <h2>HỆ THỐNG QLSV</h2>
+      <a href="#" class="tab-link" data-tab="attendance">
+        <i class="fas fa-user-check"></i>
+        <span>Điểm danh</span>
+      </a>
 
-            <span>Teacher Dashboard</span>
+      <a href="#" class="tab-link" data-tab="assignments">
+        <i class="fas fa-book-open"></i>
+        <span>Bài tập</span>
+      </a>
 
+      <a href="#" class="tab-link" data-tab="grades">
+        <i class="fas fa-chart-line"></i>
+        <span>Điểm số</span>
+      </a>
+
+      <a href="#" class="tab-link" data-tab="materials">
+        <i class="fas fa-folder-open"></i>
+        <span>Tài liệu</span>
+      </a>
+
+      <a href="#" class="tab-link" data-tab="announcements">
+        <i class="fas fa-bullhorn"></i>
+        <span>Thông báo</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="#" id="btnLogout" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i>
+        Đăng xuất
+      </a>
+    </div>
+
+  </aside>
+
+  <!-- ===================== MAIN START ===================== -->
+  <main class="main-content modern-main">
+
+    <!-- HEADER -->
+    <header class="dashboard-header">
+      <div>
+        <h1>Xin chào Giảng viên 👋</h1>
+        <p>Hệ thống quản lý lớp học</p>
+      </div>
+
+      <div class="header-right">
+        <button class="header-icon">
+          <i class="fas fa-bell"></i>
+        </button>
+
+        <button class="header-icon">
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
+    </header>
+    <!-- ===================== DASHBOARD CARDS ===================== -->
+    <section class="dashboard-cards">
+
+      <div class="info-card">
+        <i class="fas fa-layer-group"></i>
+        <div>
+          <h2 id="totalClass">0</h2>
+          <span>Lớp phụ trách</span>
         </div>
+      </div>
 
-        <!-- ===================== -->
-        <!-- THÔNG TIN GIẢNG VIÊN -->
-        <!-- ===================== -->
-
-        <div class="teacher-profile">
-
-            <div class="teacher-avatar">
-
-                <i class="fas fa-user-circle"></i>
-
-            </div>
-
-            <div>
-
-                <h4>Giảng viên</h4>
-
-                <small>Quản trị lớp học</small>
-
-            </div>
-
+      <div class="info-card">
+        <i class="fas fa-users"></i>
+        <div>
+          <h2 id="totalStudent">0</h2>
+          <span>Sinh viên</span>
         </div>
+      </div>
 
-        <!-- ===================== -->
-        <!-- MENU -->
-        <!-- ===================== -->
-
-        <nav class="sidebar-menu">
-
-            <a href="#" class="tab-link active" data-tab="classes">
-
-                <i class="fas fa-layer-group"></i>
-
-                <span>Lớp phụ trách</span>
-
-            </a>
-
-            <a href="#" class="tab-link" data-tab="attendance">
-
-                <i class="fas fa-user-check"></i>
-
-                <span>Điểm danh</span>
-
-            </a>
-
-            <a href="#" class="tab-link" data-tab="assignments">
-
-                <i class="fas fa-book-open"></i>
-
-                <span>Bài tập</span>
-
-            </a>
-
-            <a href="#" class="tab-link" data-tab="grades">
-
-                <i class="fas fa-chart-line"></i>
-
-                <span>Điểm số</span>
-
-            </a>
-
-            <a href="#" class="tab-link" data-tab="materials">
-
-                <i class="fas fa-folder-open"></i>
-
-                <span>Tài liệu</span>
-
-            </a>
-
-            <a href="#" class="tab-link" data-tab="announcements">
-
-                <i class="fas fa-bullhorn"></i>
-
-                <span>Thông báo</span>
-
-            </a>
-
-        </nav>
-
-        <div class="sidebar-footer">
-
-            <a href="#" id="btnLogout" class="logout-btn">
-
-                <i class="fas fa-sign-out-alt"></i>
-
-                Đăng xuất
-
-            </a>
-
+      <div class="info-card">
+        <i class="fas fa-book"></i>
+        <div>
+          <h2 id="totalAssignment">0</h2>
+          <span>Bài tập</span>
         </div>
+      </div>
 
-    </aside>
-
-    <!-- ================================================= -->
-    <!-- MAIN -->
-    <!-- ================================================= -->
-
-    <main class="main-content modern-main">
-
-        <!-- HEADER -->
-
-        <header class="dashboard-header">
-
-            <div>
-
-                <h1>
-
-                    Xin chào Giảng viên 👋
-
-                </h1>
-
-                <p>
-
-                    Hệ thống quản lý lớp học
-
-                </p>
-
-            </div>
-
-            <div class="header-right">
-
-                <button class="header-icon">
-
-                    <i class="fas fa-bell"></i>
-
-                </button>
-
-                <button class="header-icon">
-
-                    <i class="fas fa-cog"></i>
-
-                </button>
-
-            </div>
-
-        </header>
-
-        <!-- ===================== -->
-        <!-- DASHBOARD -->
-        <!-- ===================== -->
-
-        <section class="dashboard-cards">
-
-            <div class="info-card">
-
-                <i class="fas fa-layer-group"></i>
-
-                <div>
-
-                    <h2 id="totalClass">0</h2>
-
-                    <span>Lớp phụ trách</span>
-
-                </div>
-
-            </div>
-
-            <div class="info-card">
-
-                <i class="fas fa-users"></i>
-
-                <div>
-
-                    <h2 id="totalStudent">0</h2>
-
-                    <span>Sinh viên</span>
-
-                </div>
-
-            </div>
-
-            <div class="info-card">
-
-                <i class="fas fa-book"></i>
-
-                <div>
-
-                    <h2 id="totalAssignment">0</h2>
-
-                    <span>Bài tập</span>
-
-                </div>
-
-            </div>
-
-            <div class="info-card">
-
-                <i class="fas fa-check-circle"></i>
-
-                <div>
-
-                    <h2>Online</h2>
-
-                    <span>Hệ thống</span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- ===================== -->
-        <!-- ALERT -->
-        <!-- ===================== -->
-
-        <div id="globalAlert" class="alert hidden"></div>
-
-        <!-- ===================== -->
-        <!-- LOADING -->
-        <!-- ===================== -->
-
-        <div id="loadingPanel" class="loading-panel" style="display:none;">
-
-            <div class="spinner-border"></div>
-
-            <p>
-
-                Đang tải dữ liệu...
-
-            </p>
-
+      <div class="info-card">
+        <i class="fas fa-check-circle"></i>
+        <div>
+          <h2>Online</h2>
+          <span>Hệ thống</span>
         </div>
+      </div>
+
+    </section>
+
+    <!-- ===================== GLOBAL ALERT ===================== -->
+    <div id="globalAlert" class="alert hidden"></div>
+
+    <!-- ===================== LOADING PANEL ===================== -->
+    <div id="loadingPanel" class="loading-panel" style="display:none;">
+      <div class="spinner-border"></div>
+      <p>Đang tải dữ liệu...</p>
+    </div>
 <!-- TAB LỚP PHỤ TRÁCH -->
  <div class="tab-content active" id="tab-classes">
 
