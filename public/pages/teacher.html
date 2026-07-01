@@ -274,66 +274,263 @@ Lịch sử điểm danh
 </div>
 
 <!-- TAB BÀI TẬP VÀ BÀI NỘP -->
-        <div class="tab-content" id="tab-assignments" style="display: none">
-          <div class="modern-card">
-            <div class="modern-card-title">
-              <i class="fas fa-tasks"></i> Bài tập và bài nộp
-            </div>
-           <form
-              id="assignmentForm"
-              enctype="multipart/form-data"
-              class="grid-form"
-            >
-              <select id="asClass" required></select>
-              <input id="asTitle" placeholder="Tiêu đề" required />
-              
-              <!-- SỬA: Ép mô tả dãn rộng hết hàng ngang và đặt chiều cao tối thiểu -->
-              <textarea id="asDesc" placeholder="Mô tả" style="grid-column: 1 / -1; width: 100%; min-height: 80px; box-sizing: border-box;"></textarea>
-              
-              <input id="asDeadline" type="datetime-local" />
-              
-              <!-- SỬA: Bỏ thuộc tính required bắt buộc tải file -->
-              <input
-                id="asFile"
-                type="file"
-                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png"
-              />
-              
-              <!-- SỬA: Ép nút bấm dàn hết hàng ngang của form để không bị lệch layout -->
-              <button class="btn btn-success" type="submit" style="grid-column: 1 / -1; width: 100%;">Tạo bài tập</button>
-            </form>
-            <div class="table-responsive">
-              <table class="styled-table modern-table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Tiêu đề</th>
-                    <th>Hạn nộp</th>
-                    <th>Nộp bài</th>
-                    <th>Hành động</th>
-                  </tr>
-                </thead>
-                <tbody id="assignmentTable"></tbody>
-              </table>
-            </div>
-            <h4 style="margin-top: 24px">Danh sách bài nộp</h4>
-            <div class="table-responsive">
-              <table class="styled-table modern-table easy-mark-table">
-                <thead>
-                  <tr>
-                    <th style="text-align: center">Sinh viên</th>
-                    <th style="text-align: center">Tên file</th>
-                    <th style="text-align: center">Tải về</th>
-                    <th style="text-align: center">Điểm</th>
-                    <th style="text-align: center">Nhận xét</th>
-                    <th style="text-align: center">Lưu</th>
-                  </tr>
-                </thead>
-                <tbody id="submissionTable"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        <div class="tab-content" id="tab-assignments" style="display:none;">
+
+<div class="modern-card">
+
+<div class="card-header">
+
+<div>
+
+<h2>
+
+<i class="fas fa-book-open"></i>
+
+Quản lý bài tập
+
+</h2>
+
+<p>
+
+Tạo bài tập, quản lý bài nộp và chấm điểm.
+
+</p>
+
+</div>
+
+</div>
+
+<form
+id="assignmentForm"
+class="modern-form"
+enctype="multipart/form-data">
+
+<div class="form-group">
+
+<label>Lớp học</label>
+
+<select id="asClass" required></select>
+
+</div>
+
+<div class="form-group">
+
+<label>Tiêu đề</label>
+
+<input
+id="asTitle"
+type="text"
+placeholder="Nhập tiêu đề bài tập"
+required>
+
+</div>
+
+<div class="form-group full">
+
+<label>Mô tả</label>
+
+<textarea
+id="asDesc"
+rows="5"
+placeholder="Nhập mô tả bài tập..."></textarea>
+
+</div>
+
+<div class="form-group">
+
+<label>Hạn nộp</label>
+
+<input
+id="asDeadline"
+type="datetime-local">
+
+</div>
+
+<div class="form-group">
+
+<label>Tệp đính kèm</label>
+
+<input
+id="asFile"
+type="file"
+accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar,.7z,.jpg,.png">
+
+</div>
+
+<div class="form-group full">
+
+<button
+type="submit"
+class="btn btn-success btn-block">
+
+<i class="fas fa-plus-circle"></i>
+
+Tạo bài tập
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+<br>
+
+<div class="modern-card">
+
+<div class="card-header">
+
+<h2>
+
+<i class="fas fa-list"></i>
+
+Danh sách bài tập
+
+</h2>
+
+</div>
+
+<div class="table-responsive">
+
+<table class="styled-table modern-table">
+
+<thead>
+
+<tr>
+
+<th width="80">ID</th>
+
+<th>Tiêu đề</th>
+
+<th>Hạn nộp</th>
+
+<th>Tệp</th>
+
+<th width="220">Hành động</th>
+
+</tr>
+
+</thead>
+
+<tbody id="assignmentTable">
+
+<tr>
+
+<td colspan="5">
+
+<div class="empty-box">
+
+<i class="fas fa-book"></i>
+
+<p>
+
+Chưa có bài tập nào.
+
+</p>
+
+</div>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<br>
+
+<div class="modern-card">
+
+<div class="card-header">
+
+<h2>
+
+<i class="fas fa-upload"></i>
+
+Danh sách bài nộp
+
+</h2>
+
+</div>
+
+<div class="table-responsive">
+
+<table
+class="styled-table modern-table">
+
+<thead>
+
+<tr>
+
+<th>Sinh viên</th>
+
+<th>Tệp bài nộp</th>
+
+<th width="120">
+
+Tải
+
+</th>
+
+<th width="120">
+
+Điểm
+
+</th>
+
+<th>
+
+Nhận xét
+
+</th>
+
+<th width="100">
+
+Lưu
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody id="submissionTable">
+
+<tr>
+
+<td colspan="6">
+
+<div class="empty-box">
+
+<i class="fas fa-file-upload"></i>
+
+<p>
+
+Chưa có sinh viên nộp bài.
+
+</p>
+
+</div>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
 
 <!-- TAB ĐIỂM SỐ -->
         <div class="tab-content" id="tab-grades" style="display: none">
