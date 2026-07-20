@@ -21,6 +21,10 @@ Website: https://quanlysv.74tt21.software
 > These demo accounts are provided for evaluation purposes.
 
 ---
+## Screenshot
+<img width="1658" height="1025" alt="image" src="https://github.com/user-attachments/assets/5122ab66-7b0f-40cd-bae2-2dd83d843a99" />
+<img width="1667" height="1029" alt="image" src="https://github.com/user-attachments/assets/752d78b5-9395-480a-80d1-b7a1920670de" />
+<img width="1668" height="1016" alt="image" src="https://github.com/user-attachments/assets/852226a8-f279-4e1e-bafc-787a3e5c26f1" />
 
 ##  Features
 
