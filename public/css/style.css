@@ -1,4 +1,12 @@
+/* ============================================================
+   HỆ THỐNG QLSV — Modern LMS UI
+   Design system: Indigo / Violet, sáng + tối
+   Chỉ CSS — không phụ thuộc framework. Giữ nguyên tên class JS.
+   ============================================================ */
+
+/* ---------- Tokens: Light (mặc định) ---------- */
 :root {
+  /* Giữ tên biến cũ để tương thích inline-style trong HTML */
   --primary-color: #6366f1;
   --secondary-color: #64748b;
   --success-color: #16a34a;
@@ -8,6 +16,7 @@
   --border-color: #e2e8f0;
   --text-color: #1e293b;
 
+  /* Biến mở rộng */
   --primary-strong: #4f46e5;
   --accent: #7c3aed;
   --info: #0ea5e9;
@@ -19,12 +28,7 @@
   --muted: #64748b;
   --heading: #0f172a;
 
-  --sidebar-grad: linear-gradient(
-    170deg,
-    #4f46e5 0%,
-    #6d28d9 55%,
-    #7c3aed 100%
-  );
+  --sidebar-grad: linear-gradient(170deg, #4f46e5 0%, #6d28d9 55%, #7c3aed 100%);
   --sidebar-text: #e9e7ff;
   --sidebar-muted: #c4b5fd;
 
@@ -41,6 +45,7 @@
   --radius-pill: 999px;
 }
 
+/* ---------- Tokens: Dark ---------- */
 [data-theme="dark"] {
   --primary-color: #818cf8;
   --secondary-color: #94a3b8;
@@ -62,12 +67,7 @@
   --muted: #94a3b8;
   --heading: #f1f5f9;
 
-  --sidebar-grad: linear-gradient(
-    170deg,
-    #1e1b4b 0%,
-    #2e1065 60%,
-    #3b0764 100%
-  );
+  --sidebar-grad: linear-gradient(170deg, #1e1b4b 0%, #2e1065 60%, #3b0764 100%);
   --sidebar-text: #ddd6fe;
   --sidebar-muted: #a78bfa;
 
@@ -80,6 +80,7 @@
   --shadow-lg: 0 22px 48px rgba(0, 0, 0, 0.55);
 }
 
+/* ---------- Base ---------- */
 * {
   box-sizing: border-box;
 }
@@ -95,9 +96,7 @@ body {
   color: var(--text-color);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
@@ -117,6 +116,7 @@ h4 {
   color: #fff;
 }
 
+/* Scrollbar */
 *::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -129,6 +129,9 @@ h4 {
   background: rgba(120, 120, 140, 0.6);
 }
 
+/* ============================================================
+   AUTH / LOGIN
+   ============================================================ */
 .auth-wrap {
   min-height: 100vh;
   display: flex;
@@ -137,8 +140,7 @@ h4 {
   padding: 24px;
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(1200px 600px at 15% 0%, #6d28d9 0%, transparent 55%),
+  background: radial-gradient(1200px 600px at 15% 0%, #6d28d9 0%, transparent 55%),
     radial-gradient(1000px 700px at 100% 100%, #4f46e5 0%, transparent 50%),
     linear-gradient(160deg, #312e81 0%, #1e1b4b 100%);
 }
@@ -208,6 +210,9 @@ h4 {
   }
 }
 
+/* ============================================================
+   DASHBOARD LAYOUT
+   ============================================================ */
 .dashboard-wrapper,
 .modern-student {
   display: flex;
@@ -215,6 +220,7 @@ h4 {
   background: var(--bg-color);
 }
 
+/* ---------- Sidebar ---------- */
 .modern-sidebar,
 .sidebar {
   width: 256px;
@@ -272,10 +278,7 @@ h4 {
   font-weight: 500;
   padding: 11px 14px;
   border-radius: 12px;
-  transition:
-    background 0.18s,
-    color 0.18s,
-    transform 0.12s;
+  transition: background 0.18s, color 0.18s, transform 0.12s;
   font-size: 0.95rem;
   display: flex;
   align-items: center;
@@ -328,6 +331,7 @@ h4 {
   color: #fecaca !important;
 }
 
+/* ---------- Main ---------- */
 .modern-main,
 .main-content {
   flex: 1;
@@ -337,6 +341,7 @@ h4 {
   flex-direction: column;
 }
 
+/* ---------- Topbar (mới) ---------- */
 .topbar {
   display: flex;
   align-items: center;
@@ -391,10 +396,7 @@ h4 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition:
-    transform 0.15s,
-    background 0.18s,
-    color 0.18s;
+  transition: transform 0.15s, background 0.18s, color 0.18s;
 }
 .theme-toggle:hover {
   transform: rotate(-12deg);
@@ -444,11 +446,15 @@ h4 {
   flex-shrink: 0;
 }
 
+/* Header cũ (student) — ẩn nếu rỗng, dùng topbar thay thế */
 .modern-header,
 .main-header {
   margin: 0;
 }
 
+/* ============================================================
+   CARDS
+   ============================================================ */
 .modern-card,
 .card,
 .data-card {
@@ -484,6 +490,9 @@ h4 {
   font-size: 0.95rem;
 }
 
+/* ============================================================
+   STATS
+   ============================================================ */
 .modern-stats,
 .stats-container {
   display: grid;
@@ -501,10 +510,7 @@ h4 {
   display: flex;
   align-items: center;
   gap: 16px;
-  transition:
-    transform 0.18s,
-    box-shadow 0.18s,
-    border-color 0.18s;
+  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
   position: relative;
   overflow: hidden;
 }
@@ -547,6 +553,7 @@ h4 {
   font-weight: 500;
 }
 
+/* Stat-box cũ */
 .stat-box {
   flex: 1;
   min-width: 200px;
@@ -566,6 +573,9 @@ h4 {
   color: var(--heading);
 }
 
+/* ============================================================
+   TABLES
+   ============================================================ */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -612,11 +622,12 @@ tbody tr:hover {
 tbody tr:last-child td {
   border-bottom: none;
 }
-
+/* bỏ kiểu zebra cũ để dùng hover */
 tr:nth-child(even) {
   background: transparent;
 }
 
+/* easy-mark table (teacher chấm điểm) */
 .easy-mark-table th,
 .easy-mark-table td {
   vertical-align: middle !important;
@@ -626,15 +637,16 @@ tr:nth-child(even) {
 .easy-mark-table input[type="text"] {
   margin: 0;
   outline: none;
-  transition:
-    border 0.2s,
-    box-shadow 0.2s;
+  transition: border 0.2s, box-shadow 0.2s;
 }
 .easy-mark-table input:focus {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px var(--ring);
 }
 
+/* ============================================================
+   FORMS
+   ============================================================ */
 input,
 select,
 textarea {
@@ -647,10 +659,7 @@ textarea {
   font-family: inherit;
   background: var(--surface-2);
   color: var(--text-color);
-  transition:
-    border-color 0.18s,
-    box-shadow 0.18s,
-    background 0.18s;
+  transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
 }
 input::placeholder,
 textarea::placeholder {
@@ -698,6 +707,9 @@ input[type="file"]::file-selector-button {
   border-radius: var(--radius-sm);
 }
 
+/* ============================================================
+   BUTTONS
+   ============================================================ */
 .btn {
   border: none;
   border-radius: var(--radius-sm);
@@ -711,11 +723,7 @@ input[type="file"]::file-selector-button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition:
-    transform 0.12s,
-    box-shadow 0.18s,
-    filter 0.18s,
-    opacity 0.18s;
+  transition: transform 0.12s, box-shadow 0.18s, filter 0.18s, opacity 0.18s;
   box-shadow: var(--shadow-sm);
   white-space: nowrap;
 }
@@ -773,6 +781,9 @@ input[type="file"]::file-selector-button {
   flex-wrap: wrap;
 }
 
+/* ============================================================
+   ALERTS / BADGES / UTIL
+   ============================================================ */
 .alert {
   padding: 12px 16px;
   margin: 12px 0;
@@ -822,6 +833,9 @@ input[type="file"]::file-selector-button {
   margin-bottom: 8px;
 }
 
+/* ============================================================
+   TAB CONTENT (KHÔNG set display — JS điều khiển)
+   ============================================================ */
 .tab-content {
   animation: fade-in 0.28s ease;
 }
@@ -836,6 +850,9 @@ input[type="file"]::file-selector-button {
   }
 }
 
+/* ============================================================
+   GENERIC (nav, container, row) — giữ tương thích
+   ============================================================ */
 .container {
   max-width: 1140px;
   margin: 0 auto;
@@ -885,6 +902,9 @@ h3 {
   font-weight: 700;
 }
 
+/* ============================================================
+   MODAL (lịch sử điểm danh)
+   ============================================================ */
 .modal {
   display: none;
   position: fixed;
@@ -919,9 +939,7 @@ h3 {
   font-size: 26px;
   cursor: pointer;
   color: var(--muted);
-  transition:
-    color 0.2s,
-    transform 0.2s;
+  transition: color 0.2s, transform 0.2s;
   line-height: 1;
 }
 #closeAttHistory:hover {
@@ -929,6 +947,9 @@ h3 {
   transform: rotate(90deg);
 }
 
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 @media (max-width: 992px) {
   .modern-sidebar,
   .sidebar {
