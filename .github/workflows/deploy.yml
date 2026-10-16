@@ -18,6 +18,7 @@ jobs:
           host: ${{ secrets.HOST_IP }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
+          port: 2222
           script: |
             cd HeThongQLSV
             git pull origin main

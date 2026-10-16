@@ -81,6 +81,7 @@
 
         <div id="globalAlert" class="alert hidden"></div>
 
+        <!-- TAB LỚP PHỤ TRÁCH -->
         <div class="tab-content" id="tab-classes">
           <div class="modern-card">
             <div class="modern-card-title">
@@ -102,6 +103,7 @@
           </div>
         </div>
 
+        <!-- TAB ĐIỂM DANH -->
         <div class="tab-content" id="tab-attendance" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
@@ -110,10 +112,10 @@
             <form class="grid-form">
               <select id="attClass"></select>
               <input id="attDate" type="date" />
-              <button class="btn btn-primary" id="btnLoadAtt">
+              <button type="button" class="btn btn-primary" id="btnLoadAtt">
                 Tải danh sách
               </button>
-              <button class="btn btn-success" id="btnSaveAtt">
+              <button type="button" class="btn btn-success" id="btnSaveAtt">
                 Lưu điểm danh
               </button>
               <button type="button" class="btn btn-info" id="btnShowAttHistory">
@@ -187,6 +189,7 @@
           </div>
         </div>
 
+        <!-- TAB BÀI TẬP VÀ BÀI NỘP -->
         <div class="tab-content" id="tab-assignments" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
@@ -199,15 +202,26 @@
             >
               <select id="asClass" required></select>
               <input id="asTitle" placeholder="Tiêu đề" required />
-              <input id="asDesc" placeholder="Mô tả" />
+              <!-- Sửa: Đóng cột rộng hết hàng cho textarea -->
+              <textarea
+                id="asDesc"
+                placeholder="Mô tả"
+                style="grid-column: 1 / -1"
+              ></textarea>
               <input id="asDeadline" type="datetime-local" />
+              <!-- Sửa: Bỏ thuộc tính bắt buộc (required) chọn file -->
               <input
                 id="asFile"
                 type="file"
                 accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.jpg,.jpeg,.png"
-                required
               />
-              <button class="btn btn-success" type="submit">Tạo bài tập</button>
+              <button
+                class="btn btn-success"
+                type="submit"
+                style="grid-column: 1 / -1"
+              >
+                Tạo bài tập
+              </button>
             </form>
             <div class="table-responsive">
               <table class="styled-table modern-table">
@@ -242,6 +256,7 @@
           </div>
         </div>
 
+        <!-- TAB ĐIỂM SỐ -->
         <div class="tab-content" id="tab-grades" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
@@ -249,10 +264,10 @@
             </div>
             <form class="grid-form">
               <select id="gradeClass"></select>
-              <button class="btn btn-primary" id="btnLoadGrades">
+              <button type="button" class="btn btn-primary" id="btnLoadGrades">
                 Tải danh sách
               </button>
-              <button class="btn btn-success" id="btnSaveGrades">
+              <button type="button" class="btn btn-success" id="btnSaveGrades">
                 Lưu điểm
               </button>
             </form>
@@ -272,6 +287,7 @@
           </div>
         </div>
 
+        <!-- TAB TÀI LIỆU -->
         <div class="tab-content" id="tab-materials" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
@@ -310,6 +326,7 @@
           </div>
         </div>
 
+        <!-- TAB THÔNG BÁO -->
         <div class="tab-content" id="tab-announcements" style="display: none">
           <div class="modern-card">
             <div class="modern-card-title">
@@ -319,8 +336,19 @@
               <input type="hidden" id="annId" />
               <select id="annClass" required></select>
               <input id="annTitle" placeholder="Tiêu đề" required />
-              <input id="annContent" placeholder="Nội dung" required />
-              <button class="btn btn-success" type="submit">
+              <!-- Sửa: Ép ô nhập thông báo dàn hàng ngang toàn bộ grid -->
+              <textarea
+                id="annContent"
+                placeholder="Nội dung"
+                required
+                rows="4"
+                style="grid-column: 1 / -1"
+              ></textarea>
+              <button
+                class="btn btn-success"
+                type="submit"
+                style="grid-column: 1 / -1"
+              >
                 Lưu thông báo
               </button>
             </form>
@@ -342,6 +370,7 @@
         </div>
       </main>
     </div>
+    <!-- LIÊN KẾT SCRIPT GỐC -->
     <script src="../js/common.js"></script>
     <script src="../js/teacher.js"></script>
     <script>
